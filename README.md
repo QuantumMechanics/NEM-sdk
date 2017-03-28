@@ -62,12 +62,12 @@ var nem = require("path/to/build/index.js").default;
 
 ### 1.3 - Organisation
 
-The sdk is organised in namespaces and sub-namespaces. 
+The SDK is organised in namespaces and sub-namespaces. 
 
 There is 4 main namespaces:
 
 **nem.com**
-- **requests**: requests to NIS and the outside world
+- **requests**: Requests to NIS and the outside world
 
 **nem.crypto**
 - **keyPair**: Functions to create keypair from hex and sign data with it
@@ -129,7 +129,7 @@ var object = nem.model.objects.get("keyword");
 #### Example:
 
 ```javascript
-// Create an empty object
+// Get an empty object
 var transferTransaction = nem.model.objects.get("transferTransaction");
 ```
 #### Return:
@@ -194,7 +194,7 @@ Consult `src/model/objects.js` for details about objects and creation parameters
 
 **Keywords**:
 - `transfertransaction`
-- `mosaicTransfertransaction`
+- `mosaicTransferTransaction`
 
 This namespace is used to prepare and send transactions. 
 
@@ -280,7 +280,11 @@ The node version contains only the strict necessary while browser example needs 
 - See `examples/node/mosaicTransfer.js` for node
 - See `examples/browser/mosaicTransfer` for browser
 
-Similar to transfer transaction, it use the same un-prepared `transferTransaction` object, but needs an array of `mosaicAttachment` objects and a `mosaicDefinitionMetaDataPair` object containing mosaic definitions of the mosaics you are joigning to the transaction. 
+Similar to transfer transaction, it use the same un-prepared `transferTransaction` object, but needs an array of `mosaicAttachment` objects.
+
+Keyword of the preparation function is `mosaicTransferTransaction`.
+
+Preparation of mosaic transfer transactions requires a `mosaicDefinitionMetaDataPair` object containing mosaic definitions of the mosaics you are joigning to the transaction. 
 
 Definitions are needed to know informations about the included mosaic(s) and calculate quantity and fee accordingly.
 
@@ -289,8 +293,6 @@ Definitions are needed to know informations about the included mosaic(s) and cal
  1) You can take it from NIS API using http://bob.nem.ninja/docs/#retrieving-mosaic-definitions and put the definition into `model/object.js`, in the `mosaicDefinitionMetaDataPair` object (like shown by the comments). If mosaics used in your application are fixed, it is the way to go.
 
  2) Query the network using the embedded API requests (`nem.com.requests.namespace.mosaicDefinitions`) as shown in the examples. If mosaics used in your application are not fixed, it is the way to go.
-
-Keyword of the preparation function is `mosaicTransferTransaction`.
 
 ## 4 - Requests
 
@@ -372,7 +374,7 @@ nem.com.requests.chain.height(endpoint).then(function(res) {
 nem.com.requests.account.get(endpoint, "TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S").then(...);
 ```
 
-### 4.3 - More
+### 4.4 - More
 
 Consult `src/com/requests` for details about requests parameters.
 
@@ -442,8 +444,10 @@ var fmtAddress = nem.utils.format.address(address); //TBCI2A-67UQZA-KCR6NS-4JWAE
 ```javascript
 var xemQuantity = 10003002; // Smallest unit
 
+var fmt = nem.utils.format.nemValue(transactionEntity.fee)
+
 // Format quantity
-var fmtFee = nem.utils.format.nemValue(transactionEntity.fee)[0] + "." + nem.utils.format.nemValue(transactionEntity.fee)[1]; // 10.003002 XEM
+var fmtFee = fmt[0] + "." + fmt[1]; // 10.003002 XEM
 ```
 
 ## 6 - Private Keys
