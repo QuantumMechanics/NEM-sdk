@@ -1,0 +1,36 @@
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+
+	<div class="jumbotron text-center">
+	  <h1>Broadcast signed transaction</h1>
+	  <p><i>Put internet back on and paste the signed transaction to release it to the network</i></p>
+	</div>
+
+	<div id="transfer" style="width: 850px;margin: auto;border: 1px solid #444;padding: 20px;overflow: auto;">
+		<div class="col-md-12">
+			<div class="form-group">
+				<fieldset>
+					<label>Signed transaction</label>
+					<textarea  class="form-control" rows="5" cols="25" id="transaction"></textarea>
+				</fieldset>
+			</div>
+			<div class="form-group">
+				<fieldset>
+					<button class="btn btn-success" style="width:100%;" id="send">Send</button>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="../../../../dist/nem-sdk.js"></script>
+<script src="script.js"></script>
+
+</html>
