@@ -10,7 +10,7 @@ Nano Wallet will integrate this library instead of everything being merged in th
 ## Table of Contents
 1. [Introduction](#1---introduction)
   - 1. [Installation](#11---installation)
-  - 2. [Build](12---build)
+  - 2. [Build](#12---build)
   - 3. [Organisation](#13---organisation)
 2. [Objects](#2---objects)
   - 1. [Get objects](#21---get-objects)
