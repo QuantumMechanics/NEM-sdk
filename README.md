@@ -1,11 +1,53 @@
 # NEM-sdk
 NEM Developer Kit for Node.js and the browser
 
-## 1 - Introduction
-
 This SDK is just a "draft" for now, lot of things will change as development and feedback goes, but it is enough to start developing great applications.
 
 Nano Wallet will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
+
+# Documentation
+
+## Table of Contents
+1. [Introduction](#1---introduction)
+  - 1. [Installation](#11---installation)
+  - 2. [Build](12---build)
+  - 3. [Organisation](#13---organisation)
+2. [Objects](#2---objects)
+  - 1. [Get objects](#21---get-objects)
+  - 2. [Create objects](#22---create-objects)
+  - 3. [More](#23---more)
+3. [Transactions](#3---transactions)
+  - 1. [Create and prepare transaction objects](#31---create-and-prepare-transaction-objects)
+  - 2. [Sending prepared transactions](#32---sending-prepared-transactions)
+  - 3. [Transfer transactions without mosaics](#33---transfer-transactions-without-mosaics)
+  - 4. [Transfer transactions with mosaics](#34---transfer-transactions-with-mosaics)
+4. [Requests](#4---requests)
+  - 1. [Create endpoints](#41---create-endpoints)
+  - 2. [API](#42---api)
+  - 3. [Usage](#43---usage)
+  - 4. [More](#44---more)
+5. [Helpers and Format](#5---helpers-and-format)
+  - 1. [Helpers](#51---helpers)
+  - 2. [Format](#52---format)
+6. [Private Keys](#6---private-keys)
+  - 1. [Create private keys](#61---create-private-keys)
+  - 2. [Create key pairs](#62---create-key-pairs)
+  - 3. [Sign with key pair](#63---sign-with-key-pair)
+  - 4. [Extract public key from key pair](#64---extract-public-key-from-key-pair)
+7. [Addresses](#7---addresses)
+  - 1. [Convert public key to an address](#71---convert-public-key-to-an-address)
+  - 2. [Verify address validity](#72---verify-address-validity)
+  - 3. [Verify if address is from given network](#73---verify-if-address-is-from-given-network)
+  - 4. [More](#74---more)
+8. [Crypto Helpers](#8---crypto-helpers)
+9. [Wallets](#9---wallets)
+  - 1. [Create simple wallets](#91---create-simple-wallets)
+  - 2. [Create brain wallets](#92---create-brain-wallets)
+  - 3. [Create private key wallets](#93---create-private-key-wallets)
+  - 4. [Create wallet files](#94---create-wallet-files)
+  - 5. [Decrypt account in wallet](#95---decrypt-account-in-wallet)
+
+## 1 - Introduction
 
 #### Features:
 - Easy integration
@@ -204,7 +246,7 @@ For now only preparation of simple and mosaics transactions with encrypted, unen
 
 In part 2 you can see in the examples how to build a transfer transaction object, with or without data.
 
-Transaction objects you will create via `nem.model.object` are un-prepared transaction objects. They only contain raw / incomplete data and need to be arranged before being signed and sent.
+Transaction objects you will create via `nem.model.objects` are un-prepared transaction objects. They only contain raw / incomplete data and need to be arranged before being signed and sent.
 
 #### Usage:
 
@@ -290,7 +332,7 @@ Definitions are needed to know informations about the included mosaic(s) and cal
 
 #### Two ways are possible to get mosaic definitions:
 
- 1) You can take it from NIS API using http://bob.nem.ninja/docs/#retrieving-mosaic-definitions and put the definition into `model/object.js`, in the `mosaicDefinitionMetaDataPair` object (like shown by the comments). If mosaics used in your application are fixed, it is the way to go.
+ 1) You can take it from NIS API using http://bob.nem.ninja/docs/#retrieving-mosaic-definitions and put the definition into `model/objects.js`, in the `mosaicDefinitionMetaDataPair` object (like shown by the comments). If mosaics used in your application are fixed, it is the way to go.
 
  2) Query the network using the embedded API requests (`nem.com.requests.namespace.mosaicDefinitions`) as shown in the examples. If mosaics used in your application are not fixed, it is the way to go.
 
@@ -495,7 +537,7 @@ To create a key pair you need a private key.
 var keyPair = nem.crypto.keyPair.create(privateKey);
 ```
 
-### 6.3 - Sign with key pairs
+### 6.3 - Sign with key pair
 
 To sign a transaction or any other data simply use the above `keyPair` object:
 
@@ -529,8 +571,6 @@ The version without hyphens ("-") is the one we'll use in our queries and lower 
 - **Mijin (96)**: M
 
 ### 7.1 - Convert public key to an address
-
-Addresses are just public keys "compressed" in base 32.
 
 ```javascript
 var address = nem.model.address.toAddress(publicKey, networkId)
@@ -571,7 +611,7 @@ Namespace: `nem.crypto.helpers`
 
 ## 9 - Wallets
 
-Namespace: `nem.model.wallets`
+Namespace: `nem.model.wallet`
 
 **Public methods**:
 - `createPRNG`
@@ -588,9 +628,9 @@ Each wallet has an `algo` property, it is needed to know how to decrypt the acco
 
 Wallet files (.wlt) are just storing a wallet object as base 64 strings.
 
-### 9.1 - Create a simple wallet
+### 9.1 - Create simple wallets
 
-Create a wallet with the primary account's private key generated from a PRNG
+`nem.model.wallet.createPRNG` create a wallet with the primary account's private key generated from a PRNG
 
 ```javascript
 // Set a wallet name
@@ -600,12 +640,12 @@ var walletName = "QuantumMechanicsPRNG";
 var password = "Something";
 
 // Create PRNG wallet
-var wallet = nem.model.wallet.createPRNG(walletName, password, nem.model.network.data.testnet.id));
+var wallet = nem.model.wallet.createPRNG(walletName, password, nem.model.network.data.testnet.id);
 ```
 
-### 9.2 - Create a brain wallet
+### 9.2 - Create brain wallets
 
-Create a wallet with primary account's private key derived from a password/passphrase
+`nem.model.wallet.createBrain` create a wallet with primary account's private key derived from a password/passphrase
 
 ```javascript
 // Set a wallet name
@@ -615,12 +655,12 @@ var walletName = "QuantumMechanicsBrain";
 var password = "Something another thing and something else";
 
 // Create Brain wallet
-var wallet = nem.model.wallet.createBrain(walletName, password, nem.model.network.data.testnet.id));
+var wallet = nem.model.wallet.createBrain(walletName, password, nem.model.network.data.testnet.id);
 ```
 
-### 9.3 - Create a private key wallet
+### 9.3 - Create private key wallets
 
-Create a wallet with primary account's private key imported
+`nem.model.wallet.importPrivatekey` create a wallet with primary account's private key imported
 
 ```javascript
 // Set a wallet name
@@ -630,10 +670,10 @@ var walletName = "QuantumMechanicsImported";
 var password = "Something";
 
 // Create a private key wallet
-var wallet = nem.model.wallet.importPrivatekey(walletName, password, privateKey, nem.model.network.data.testnet.id));
+var wallet = nem.model.wallet.importPrivatekey(walletName, password, privateKey, nem.model.network.data.testnet.id);
 ``` 
 
-### 9.4 - Create the wallet file
+### 9.4 - Create wallet files
 
 Create an empty file, name it `walletName.wlt` and put the base 64 string given by below code
 
@@ -645,9 +685,9 @@ var wordArray = nem.crypto.js.enc.Utf8.parse(JSON.stringify(wallet));
 var base64 = nem.crypto.js.enc.Base64.stringify(wordArray);
 ``` 
 
-### 9.4 - Decrypt wallet account
+### 9.5 - Decrypt account in wallet
 
-`nem.crypto.helpers.passwordToPrivatekey` is a function to decrypt an account into a wallet and return it's private key into the common object
+`nem.crypto.helpers.passwordToPrivatekey` is a function to decrypt an account into a wallet and return it's private key into the `common` object
 
 ```javascript
 // Create a common object
