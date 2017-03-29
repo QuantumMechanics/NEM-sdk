@@ -662,7 +662,7 @@ var wallet = nem.model.wallet.createBrain(walletName, password, nem.model.networ
 
 ### 9.3 - Create private key wallets
 
-`nem.model.wallet.importPrivatekey` create a wallet objectv with primary account's private key imported
+`nem.model.wallet.importPrivatekey` create a wallet object with primary account's private key imported
 
 ```javascript
 // Set a wallet name
