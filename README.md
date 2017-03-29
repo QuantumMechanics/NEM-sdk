@@ -1,6 +1,8 @@
 # NEM-sdk
 NEM Developer Kit for Node.js and the browser
 
+---
+
 This SDK is just a "draft" for now, lot of things will change as development and feedback goes, but it is enough to start developing great applications.
 
 Nano Wallet will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
@@ -235,7 +237,7 @@ Consult `src/model/objects.js` for details about objects and creation parameters
 - `send`
 
 **Keywords**:
-- `transfertransaction`
+- `transferTransaction`
 - `mosaicTransferTransaction`
 
 This namespace is used to prepare and send transactions. 
@@ -294,7 +296,7 @@ Amounts are in the smallest unit possible in a prepared transaction object:
 
 Once your transaction is prepared simply use the `send` function of the namespace:
 
-```
+```javascript
 // Serialize transfer transaction and announce
 nem.model.transactions.send(common, transactionEntity, endpoint).then(function(res) {....});
 
@@ -306,7 +308,7 @@ nem.model.transactions.send(common, transactionEntity, endpoint).then(function(r
 
 **`endpoint`** is an endpoint object (See 4.1)
 
-**`res`** returned by the callback will contain a NemAnnounceResult object (http://bob.nem.ninja/docs/#nemAnnounceResult)
+**`res`** returned by the callback will contain a `NemAnnounceResult` object (http://bob.nem.ninja/docs/#nemAnnounceResult)
 
 ### 3.3 - Transfer transactions without mosaics
 
@@ -326,7 +328,7 @@ Similar to transfer transaction, it use the same un-prepared `transferTransactio
 
 Keyword of the preparation function is `mosaicTransferTransaction`.
 
-Preparation of mosaic transfer transactions requires a `mosaicDefinitionMetaDataPair` object containing mosaic definitions of the mosaics you are joigning to the transaction. 
+Preparation of mosaic transfer transactions requires a `mosaicDefinitionMetaDataPair` object containing mosaic definitions of the mosaics you are joining to the transaction. 
 
 Definitions are needed to know informations about the included mosaic(s) and calculate quantity and fee accordingly.
 
@@ -340,7 +342,7 @@ Definitions are needed to know informations about the included mosaic(s) and cal
 
 ### 4.1 - Create endpoints
 
-To make requests to an NIS you need to pass an endpoint object. The object contains the node host and port so it is easier to handle.
+To make requests to an NIS you need to pass an `endpoint` object. The object contains the node host and port so it is easier to handle.
 
 ```javascript
 // Custom endpoint
@@ -400,7 +402,7 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 
 ### 4.3 - Usage
 
-Requests are wrapped in `Promises` which allow to use "then" for callbacks
+Requests are wrapped in `Promises` which allow to use `then()` for callbacks
 
 #### Examples:
 
@@ -486,10 +488,10 @@ var fmtAddress = nem.utils.format.address(address); //TBCI2A-67UQZA-KCR6NS-4JWAE
 ```javascript
 var xemQuantity = 10003002; // Smallest unit
 
-var fmt = nem.utils.format.nemValue(transactionEntity.fee)
+var fmt = nem.utils.format.nemValue(xemQuantity)
 
 // Format quantity
-var fmtFee = fmt[0] + "." + fmt[1]; // 10.003002 XEM
+var fmtFee = fmt[0] + "." + fmt[1]; // 10.003002
 ```
 
 ## 6 - Private Keys
@@ -630,7 +632,7 @@ Wallet files (.wlt) are just storing a wallet object as base 64 strings.
 
 ### 9.1 - Create simple wallets
 
-`nem.model.wallet.createPRNG` create a wallet with the primary account's private key generated from a PRNG
+`nem.model.wallet.createPRNG` create a wallet object with the primary account's private key generated from a PRNG
 
 ```javascript
 // Set a wallet name
@@ -645,7 +647,7 @@ var wallet = nem.model.wallet.createPRNG(walletName, password, nem.model.network
 
 ### 9.2 - Create brain wallets
 
-`nem.model.wallet.createBrain` create a wallet with primary account's private key derived from a password/passphrase
+`nem.model.wallet.createBrain` create a wallet object with primary account's private key derived from a password/passphrase
 
 ```javascript
 // Set a wallet name
@@ -660,7 +662,7 @@ var wallet = nem.model.wallet.createBrain(walletName, password, nem.model.networ
 
 ### 9.3 - Create private key wallets
 
-`nem.model.wallet.importPrivatekey` create a wallet with primary account's private key imported
+`nem.model.wallet.importPrivatekey` create a wallet objectv with primary account's private key imported
 
 ```javascript
 // Set a wallet name
