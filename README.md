@@ -7,6 +7,21 @@ This SDK is just a "draft" for now, lot of things will change as development and
 
 Nano Wallet will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
 
+---
+
+#### Features:
+- Easy integration
+- Organised in namespaces
+- Create wallets compatible with Nano Wallet client
+- Simple transactions
+- Mosaic transactions
+- Encrypted, unencrypted and hex messaging
+- Helpers and formatting functions
+- 22 NIS API requests with promises
+- Commented code and examples
+
+---
+
 # Documentation
 
 ## Table of Contents
@@ -49,22 +64,13 @@ Nano Wallet will integrate this library instead of everything being merged in th
   - 4. [Create wallet files](#94---create-wallet-files)
   - 5. [Decrypt account in wallet](#95---decrypt-account-in-wallet)
 
-## 1 - Introduction
+---
 
-#### Features:
-- Easy integration
-- Organised in namespaces
-- Create wallets compatible with Nano Wallet client
-- Simple transactions
-- Mosaic transactions
-- Encrypted, unencrypted and hex messaging
-- Helpers and formatting functions
-- 22 NIS API requests with promises
-- Commented code and examples
+## 1 - Introduction
 
 ### 1.1 - Installation
 
-#### For the browser
+#### For the browser:
 
 Download the library source, open the `dist/` folder and put `nem-sdk.js` into your project.
 
@@ -79,7 +85,7 @@ Library include the `require()` function so you can `require()` the module direc
 </script>
 ```
 
-#### For Node
+#### For Node:
 
 No npm version yet so node users need to build the library from source or use the browser version in their node project
 
@@ -92,15 +98,15 @@ var nem = require("path/to/build/index.js").default;
 ``` 
 ### 1.2 - Build
 
-#### Install dependencies
+#### Install dependencies:
 
 ```npm install```
 
-#### Build
+#### Build:
 
 ```npm run build```
 
-#### Build for the browser (after above build)
+#### Build for the browser (after above build):
 
 ```npm run browserify```
 
@@ -163,7 +169,7 @@ You can get an empty object by using `get` or use `create` for an object with pa
 
 Return an empty object
 
-#### Usage
+#### Usage:
 
 ```javascript
 // Get an empty object
@@ -195,7 +201,7 @@ var transferTransaction = nem.model.objects.get("transferTransaction");
 
 Return an object with parameters
 
-#### Usage
+#### Usage:
 
 ```javascript
 // Create an object with parameters
@@ -286,7 +292,7 @@ var transactionEntity = nem.model.transactions.prepare("transferTransaction")(co
 
 You can easily see the difference between an un-prepared transaction object (2.2) and above prepared object.
 
-#### Note
+#### Note:
 
 Amounts are in the smallest unit possible in a prepared transaction object:
 
@@ -312,7 +318,7 @@ nem.model.transactions.send(common, transactionEntity, endpoint).then(function(r
 
 ### 3.3 - Transfer transactions without mosaics
 
-The two provided exemple speaks for themselves:
+The two provided example speaks for themselves:
 
 - See `examples/node/transfer.js` for node
 - See `examples/browser/transfer` for browser
@@ -358,7 +364,7 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 
 22 NIS API calls and a few other external requests are implemented and organised in namespaces:
 
-#### **nem.com.requests.account**:
+#### **nem.com.requests.account**
 - **data**: Gets account data
 - **harvestedBlocks**: Gets harvested blocks
 - **incomingTransactions**: Gets incoming transactions
@@ -373,30 +379,30 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 - **mosaicDefinitionsCreated**: Gets mosaic definitions that an account has created
 - **unlockInfo**: Gets information about the maximum number of allowed harvesters and how many harvesters are already using the node
 
-#### **nem.com.requests.apostille**:
+#### **nem.com.requests.apostille**
 - **audit**: Audit an apostille
 
-#### **nem.com.requests.chain**:
+#### **nem.com.requests.chain**
 - **height**: Gets the chain height
 - **lastBlock**: Gets the last block
 - **time**: Get network time
 
-#### **nem.com.requests.endpoint**:
+#### **nem.com.requests.endpoint**
 - **heartbeat**: Gets the node status
 
-#### **nem.com.requests.market**:
+#### **nem.com.requests.market**
 - **xem**: Gets XEM price in BTC
 - **btc**: Gets BTC price in $
 
-#### **nem.com.requests.namespace**:
+#### **nem.com.requests.namespace**
 - **roots**: Gets root namespaces
 - **info**: Gets the namespace with given id
 - **mosaicDefinitions**: Gets mosaic definitions of a namespace
 
-#### **nem.com.requests.supernodes**:
+#### **nem.com.requests.supernodes**
 - **all**: Gets all supernodes info
 
-#### **nem.com.requests.transaction**:
+#### **nem.com.requests.transaction**
 - **byHash**: Gets a transaction by hash
 - **announce**: Announce a transaction to the network
 
@@ -415,7 +421,7 @@ nem.com.requests.chain.height(endpoint).then(function(res) {
 })
 
 // Gets account data
-nem.com.requests.account.get(endpoint, "TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S").then(...);
+nem.com.requests.account.data(endpoint, "TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S").then(...);
 ```
 
 ### 4.4 - More
@@ -483,15 +489,15 @@ var address = "TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S";
 // Add hyphens to NEM address
 var fmtAddress = nem.utils.format.address(address); //TBCI2A-67UQZA-KCR6NS-4JWAEI-CEIGEI-M72G3M-VW5S
 ```
-#### Format a nem quantity example
+#### Format a nem quantity example:
 
 ```javascript
 var xemQuantity = 10003002; // Smallest unit
 
+// Format quantity
 var fmt = nem.utils.format.nemValue(xemQuantity)
 
-// Format quantity
-var fmtFee = fmt[0] + "." + fmt[1]; // 10.003002
+var fmtAmount = fmt[0] + "." + fmt[1]; // 10.003002
 ```
 
 ## 6 - Private Keys
@@ -557,6 +563,16 @@ var publicKey = keyPair.publicKey.toString();
 
 ## 7 - Addresses
 
+**Namespace**: `nem.model.address`
+
+**Public methods**:
+- `b32encode`
+- `b32decode`
+- `toAddress`
+- `isFromNetwork`
+- `isValid`
+- `clean`
+
 Addresses are base32 string used to receive XEM. They look like this:
 
 > NAMOAV-HFVPJ6-FP32YP-2GCM64-WSRMKX-A5KKYW-WHPY
@@ -596,7 +612,7 @@ Consult `src/model/address.js` for more details
 
 ## 8 - Crypto Helpers
 
-Namespace: `nem.crypto.helpers`
+**Namespace**: `nem.crypto.helpers`
 
 **Public methods**:
 - `toMobileKey`
@@ -613,7 +629,7 @@ Namespace: `nem.crypto.helpers`
 
 ## 9 - Wallets
 
-Namespace: `nem.model.wallet`
+**Namespace**: `nem.model.wallet`
 
 **Public methods**:
 - `createPRNG`
@@ -670,6 +686,9 @@ var walletName = "QuantumMechanicsImported";
 
 // Set a password
 var password = "Something";
+
+// Set private key
+var privateKey = "Private key to import";
 
 // Create a private key wallet
 var wallet = nem.model.wallet.importPrivatekey(walletName, password, privateKey, nem.model.network.data.testnet.id);
