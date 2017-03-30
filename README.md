@@ -102,13 +102,10 @@ var nem = require("nem-sdk").default;
 import nem from 'nem-sdk';
 ```
 
-**Using `Build/` folder or browser version in node**:
+**Using `build/` folder**:
 
 ```javascript
-// Use browser version in node
-var nem = require("Path/to/nem-sdk.js").default;
-
-// Use the library build/ folder
+// Use the build/ folder
 var nem = require("path/to/build/index.js").default;
 ``` 
 ### 1.2 - Build
