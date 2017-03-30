@@ -81211,7 +81211,7 @@ function duplex(writer, reader) {
     }
 }
 
-},{"stream":369}],"nem":[function(require,module,exports){
+},{"stream":369}],"nem-sdk":[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
