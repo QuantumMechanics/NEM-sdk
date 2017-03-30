@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 	// Load nem-browser library
-	var nem = require("nem").default;
+	var nem = require("nem-sdk").default;
 
     // Create an NIS endpoint object
 	var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, nem.model.nodes.defaultPort);

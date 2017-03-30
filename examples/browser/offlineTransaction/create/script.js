@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
 	// Load nem-browser library
-	var nem = require("nem").default;
+	var nem = require("nem-sdk").default;
 
 	// Get an empty un-prepared transfer transaction object
 	var transferTransaction = nem.model.objects.get("transferTransaction");

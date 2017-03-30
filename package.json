@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --presets babel-preset-es2015 --out-dir build --source-maps",
-    "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem > dist/nem-sdk.js"
+    "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js"
   },
   "keywords": [],
   "author": "",
