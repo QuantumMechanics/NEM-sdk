@@ -19,6 +19,7 @@ Nano Wallet will integrate this library instead of everything being merged in th
 - Helpers and formatting functions
 - 22 NIS API requests with promises
 - Commented code and examples
+- Browser examples ready to use out of the box
 
 ---
 
@@ -80,14 +81,28 @@ Library include the `require()` function so you can `require()` the module direc
 <script src="nem-sdk.js"></script>
 <script>
   // Include the library
-  var nem = require("nem").default;
+  var nem = require("nem-sdk").default;
   console.log(nem)
 </script>
 ```
 
 #### For Node:
 
-No npm version yet so node users need to build the library from source or use the browser version in their node project
+**Using npm**:
+
+`npm install nem-sdk`
+
+```javascript
+// Use require
+var nem = require("nem-sdk").default;
+```
+
+```javascript
+// ES6
+import nem from 'nem-sdk';
+```
+
+**Using `Build/` folder or browser version in node**:
 
 ```javascript
 // Use browser version in node
