@@ -1,13 +1,18 @@
 {
   "name": "nem-sdk",
-  "version": "1.0.1-RC2",
+  "version": "1.0.1-RC3",
   "description": "NEM Developer Kit for Node.js and the browser",
   "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/QuantumMechanics/NEM-sdk.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --presets babel-preset-es2015 --out-dir build --source-maps",
     "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js",
     "version": "npm run build && npm run browserify && git add -A dist/",
+    "postversion": "git push origin master && git push --tags",
     "postinstall": "npm run build"
   },
   "keywords": [],
