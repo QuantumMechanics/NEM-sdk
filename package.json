@@ -11,7 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel src --presets babel-preset-es2015 --out-dir build --source-maps",
     "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js",
-    "version": "npm run build && npm run browserify && git add -A dist/",
+    "minify": "uglifyjs dist/nem-sdk.js > dist/nem-sdk.min.js",
+    "version": "npm run build && npm run browserify && npm run minify && git add -A dist/",
     "postversion": "git push origin master && git push --tags",
     "postinstall": "npm run build"
   },
@@ -28,6 +29,7 @@
   "devDependencies": {
     "browserify": "14.1.0",
     "through": "2.3.8",
-    "duplexer": "0.1.1"
+    "duplexer": "0.1.1",
+    "uglify-js": "~1.3.5"
   }
 }
