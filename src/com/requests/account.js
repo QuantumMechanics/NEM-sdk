@@ -94,6 +94,36 @@ let incomingTransactions = function(endpoint, address, txHash){
 }
 
 /**
+ * Gets an array of TransactionMetaDataPair objects where the sender has the address given as parameter to the request.
+ *
+ * @param {object} endpoint - An NIS endpoint object
+ * @param {string} address - An account address
+ * @param {string} txHash - A starting hash for search (optional)
+ *
+ * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
+ */
+let outgoingTransactions = function(endpoint, address, txHash){
+	return new Promise((resolve, reject) => {
+		// Configure the request
+		var options = {
+		    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/outgoing',
+		    method: 'GET',
+		    headers: urlEncodedHeader,
+		    qs: {'address': address, 'hash': txHash}
+		}
+
+		// Start the request
+		Request(options, function (error, response, body) {
+		    if (!error && response.statusCode == 200) {
+		        resolve(JSON.parse(body).data);
+		    } else {
+				reject(error);
+		    }
+		});
+	});
+}
+
+/**
  * Gets the array of transactions for which an account is the sender or receiver and which have not yet been included in a block.
  *
  * @param {object} endpoint - An NIS endpoint object
