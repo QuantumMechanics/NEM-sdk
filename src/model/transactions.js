@@ -153,6 +153,31 @@ let _constructTransferTransaction = function(senderPublicKey, recipientCompresse
     return entity;
 }
 
+/***
+ * Create an importance transfer transaction object
+ *
+ * @param {string} recipientCompressedKey - The recipient account public key
+ * @param {number} mode - Activate (1) or deactivate (0)
+ * @param {string} remotePublicKey - The remote account's public key
+ * @param {number} due - The deadline in minutes
+ * @param {number} network - A network id
+*/
+let _constructImportanceTransferTransaction = function(senderPublicKey, mode, remoteAccount, due, network) {
+    let timeStamp = Helpers.createNEMTimeStamp();
+    let version = NETWORK_VERSION(1, network);
+    let data = _createCommonPart(TransactionTypes.importanceTransfer, senderPublicKey, timeStamp, due, version);
+    // FIXME
+    let totalFee = 6 * 1000000;
+    let custom = {
+        'fee': totalFee,
+        'mode': mode,
+        'remoteAccount': remoteAccount
+    };
+    let entity = Helpers.extendObj(data, custom);
+    return entity;
+}
+
+
 let prepareSignatureTransaction = function(){
 
 }
@@ -169,8 +194,24 @@ let prepareNamespaceProvisionTransaction = function () {
 
 }
 
-let prepareImportanceTransferTransaction = function() {
-
+/**
+ * Prepare an importance transfer transaction object
+ *
+ * @param {object} common - A password/privateKey object
+ * @param {object} tx - The un-prepared transfer transaction object
+ * @param {number} network - A network id
+ *
+ * @return {object} - An [ImportanceTransferTransaction]{@link http://bob.nem.ninja/docs/#importanceTransferTransaction} object ready for serialization
+ */
+let prepareImportanceTransferTransaction = function(common, tx, network) {
+    let kp = KeyPair.create(nem.utils.helpers.fixPrivateKey(common.privateKey));
+    let actualSender = tx.isMultisig ? tx.multisigAccount.publicKey : kp.publicKey.toString();
+    let due = network === Network.data.testnet.id ? 60 : 24 * 60;
+    let entity = _constructImportanceTransferTransaction(actualSender, tx.mode, tx.remoteAccount, due, network);
+    if (tx.isMultisig) {
+        entity = _multisigWrapper(kp.publicKey.toString(), entity, due, network);
+    }
+    return entity;
 }
 
 let prepareApostilleTransaction = function() {
@@ -214,6 +255,9 @@ let prepare = function(objectName) {
             break;
         case "mosaicTransferTransaction":
             return prepareMosaicTransferTransaction;
+            break;
+        case "importanceTransferTransaction":
+            return prepareImportanceTransferTransaction;
             break;
         default:
             return {};
