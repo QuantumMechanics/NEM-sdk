@@ -102,7 +102,21 @@ let mosaicDefinitionTransaction = {}
 
 let namespaceProvisionTransaction = {}
 
-let importanceTransferTransaction = {}
+/**
+ * An un-prepared importance transfer transaction object
+ *
+ * @return {object}
+ */
+let importanceTransferTransaction(remoteAccount,mode) = {
+    return={
+            "isMultisig": false,
+            "multisigAccount" : "",
+            "isEncrypted" : false,
+            "remoteAccount": remoteAccount,
+            "mode": mode
+        }
+
+}
 
 /**
  * Get an empty object 
@@ -159,6 +173,9 @@ let create = function(objectName) {
             break;
         case "transferTransaction":
             return transferTransaction;
+            break;
+        case "importanceTransferTransaction":
+            return importanceTransferTransaction;
             break;
         default:
             return {};
