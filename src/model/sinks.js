@@ -3,7 +3,7 @@
  *
  * @type {object}
  */
-let sinks = {
+module.exports = {
     namespace: {
         '-104': 'TAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTDJE-YP35',
         '104': 'NAMESP-ACEWH4-MKFMBC-VFERDP-OOP4FK-7MTBXD-PZZA',
@@ -20,7 +20,3 @@ let sinks = {
         '96': 'MCGDK2-J46BOD-GGKMPI-KCBGTB-BIWL6A-L5ZKLK-Q56A'
     }
 };
-
-module.exports = {
-    sinks
-}
