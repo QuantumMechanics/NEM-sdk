@@ -46,12 +46,12 @@ let _buildWallet = function(walletName, addr, brain, algo, encrypted, network) {
 let createPRNG = function (walletName, password, network) {
     if (!walletName.length || !password.length || !network) throw new Error('A parameter is missing !');
     // Generate keypair from random private key
-    var pk = convert.ua2hex(nacl.randomBytes(32));
-    var kp = KeyPair.create(pk);
+    var privateKey = convert.ua2hex(nacl.randomBytes(32));
+    var kp = KeyPair.create(privateKey);
     // Create address from public key
     let addr = Address.toAddress(kp.publicKey.toString(), network);
     // Encrypt private key using password
-    let encrypted = CryptoHelpers.encodePrivKey(pk, password);
+    let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
     return _buildWallet(walletName, addr, true, "pass:bip32", encrypted, network);
 }
 
@@ -66,8 +66,8 @@ let createPRNG = function (walletName, password, network) {
  */
 let createBrain = function (walletName, passphrase, network) {
     if (!walletName.length || !passphrase.length || !network) throw new Error('A parameter is missing !');
-    var r = CryptoHelpers.derivePassSha(passphrase, 6000);
-    var kp = KeyPair.create(r.priv);
+    var privateKey = CryptoHelpers.derivePassSha(passphrase, 6000).priv;
+    var kp = KeyPair.create(privateKey);
     // Create address from public key
     let addr = Address.toAddress(kp.publicKey.toString(), network);
     return _buildWallet(walletName, addr, true, "pass:6k", "", network);
@@ -83,20 +83,19 @@ let createBrain = function (walletName, passphrase, network) {
  *
  * @return {object} - A private key wallet object
  */
-let importPrivatekey = function (walletName, password, privateKey, network) {
+let importPrivateKey = function (walletName, password, privateKey, network) {
     if (!walletName.length || !password.length || !network || !privateKey) throw new Error('A parameter is missing !');
-    if (privateKey.length !== 64 || privateKey.length !== 66) throw new Error('Private key length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(privateKey)) throw new Error('Private key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
     // Create address from private key
     let kp = KeyPair.create(privateKey);
     let addr = Address.toAddress(kp.publicKey.toString(), network);
     // Encrypt private key using password
-    let encrypted = CryptoHelpers.encodePrivKey(pk, password);
+    let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
     return _buildWallet(walletName, addr, false, "pass:enc", encrypted, network);
 }
 
 module.exports = {
     createPRNG,
     createBrain,
-    importPrivatekey
+    importPrivateKey
 }
