@@ -5,7 +5,7 @@ NEM Developer Kit for Node.js and the browser
 
 This SDK is just a "draft" for now, lot of things will change as development and feedback goes, but it is enough to start developing great applications.
 
-Nano Wallet will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
+[Nano Wallet](https://github.com/NemProject/NanoWallet) will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
 
 ---
 
@@ -16,6 +16,8 @@ Nano Wallet will integrate this library instead of everything being merged in th
 - Simple transactions
 - Mosaic transactions
 - Encrypted, unencrypted and hex messaging
+- Create and audit Apostilles
+- Create and verify signatures
 - Helpers and formatting functions
 - 22 NIS API requests with promises
 - Commented code and examples
@@ -52,6 +54,7 @@ Nano Wallet will integrate this library instead of everything being merged in th
   - 2. [Create key pairs](#62---create-key-pairs)
   - 3. [Sign with key pair](#63---sign-with-key-pair)
   - 4. [Extract public key from key pair](#64---extract-public-key-from-key-pair)
+  - 5. [Verify a signature](#65---verify-a-signature)
 7. [Addresses](#7---addresses)
   - 1. [Convert public key to an address](#71---convert-public-key-to-an-address)
   - 2. [Verify address validity](#72---verify-address-validity)
@@ -64,6 +67,10 @@ Nano Wallet will integrate this library instead of everything being merged in th
   - 3. [Create private key wallets](#93---create-private-key-wallets)
   - 4. [Create wallet files](#94---create-wallet-files)
   - 5. [Decrypt account in wallet](#95---decrypt-account-in-wallet)
+10. [Apostille](#10---apostille)
+  - 1. [Create an Apostille](#101---create-an-apostille)
+  - 2. [Verify an Apostille](#102---verify-an-apostille)
+  - 3. [More](#103---more)
 
 ---
 
@@ -253,6 +260,7 @@ Consult `src/model/objects.js` for details about objects and creation parameters
 **Public methods**:
 - `prepare`
 - `send`
+- `prepareMessage`
 
 **Keywords**:
 - `transferTransaction`
@@ -382,6 +390,7 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 - **incomingTransactions**: Gets incoming transactions
 - **unconfirmedTransactions**: Gets unconfirmed transactions
 - **allTransactions**: Gets all transactions
+- **outgoingTransactions**: Gets outgoing transactions
 - **stopHarvesting**: Stop delegated harvesting
 - **startHarvesting**: Start delegated harvesting
 - **forwarded**: Gets the account data of the account for which the given account is the delegate account
@@ -462,7 +471,8 @@ Consult `src/com/requests` for details about requests parameters.
 - `getExtension`
 - `createNEMTimeStamp`
 - `fixPrivateKey`
-- `prepareMessage`
+- `isPrivateKeyValid`
+- `isPublicKeyValid`
 - `checkAndFormatUrl`
 - `createTimeStamp`
 - `getTimestampShort`
@@ -573,6 +583,20 @@ You can extract the public key from the `keyPair` object very easily
 var publicKey = keyPair.publicKey.toString();
 ```
 
+### 6.5 - Verify a signature
+
+To verify a signature you need the signer public key, the data that have been signed and the signature
+
+```javascript
+var signer = "0257b05f601ff829fdff84956fb5e3c65470a62375a1cc285779edd5ca3b42f6"
+var signature = "392511e5b1d78e0991d4cb2a10037cc8be775e56d76b8157a4da726ccb44042e9b419084c09128ffe2a78fe78e2a19beb0e2f57e14b66c962187e61457bd9e09"
+var data = "NEM is awesome !";
+// Verify
+var result = keyPair.verify(signer, data, signature);
+```
+
+- See `examples/nodejs/verifySignature.js` for node demonstration
+
 ## 7 - Addresses
 
 **Namespace**: `nem.model.address`
@@ -592,7 +616,7 @@ Addresses are base32 string used to receive XEM. They look like this:
 
 The version without hyphens ("-") is the one we'll use in our queries and lower level processing. The formatted version is only for visual purposes.
 
-#### Beggining of the address depend of the network:
+#### Beginning of the address depend of the network:
 
 - **Mainnet (104)**: N
 
@@ -646,7 +670,7 @@ Consult `src/model/address.js` for more details
 **Public methods**:
 - `createPRNG`
 - `createBrain`
-- `importPrivatekey`
+- `importPrivateKey`
 
 The SDK allow to create wallets 100% compatible with the Nano Wallet client (as BIP32 not implemented yet the client will ask for an upgrade).
 
@@ -690,7 +714,7 @@ var wallet = nem.model.wallet.createBrain(walletName, password, nem.model.networ
 
 ### 9.3 - Create private key wallets
 
-`nem.model.wallet.importPrivatekey` create a wallet object with primary account's private key imported
+`nem.model.wallet.importPrivateKey` create a wallet object with primary account's private key imported
 
 ```javascript
 // Set a wallet name
@@ -703,7 +727,7 @@ var password = "Something";
 var privateKey = "Private key to import";
 
 // Create a private key wallet
-var wallet = nem.model.wallet.importPrivatekey(walletName, password, privateKey, nem.model.network.data.testnet.id);
+var wallet = nem.model.wallet.importPrivateKey(walletName, password, privateKey, nem.model.network.data.testnet.id);
 ``` 
 
 ### 9.4 - Create wallet files
@@ -736,3 +760,65 @@ nem.crypto.helpers.passwordToPrivatekey(common, walletAccount, wallet.algo);
 console.log(common)
 
 ``` 
+
+## 10 - Apostille
+
+**Namespace**: `nem.model.apostille`
+
+**Public methods**:
+- `create`
+- `generateAccount`
+- `hashing`
+- `verify`
+
+This namespace is used to create and verify Apostilles. For detailled informations about Apostille: https://www.nem.io/ApostilleWhitePaper.pdf
+
+### 10.1 - Create an Apostille
+
+`nem.model.apostille.create` create an apostille object containing information about the apostille, and the transaction ready to be sent via `nem.model.transactions.send`.
+
+```javascript
+// Create a common object holding key
+var common = nem.model.objects.create("common")("", "privateKey");
+
+// Simulate the file content
+var fileContent = nem.crypto.js.enc.Utf8.parse('Apostille is awesome !');
+
+// Create the Apostille
+var apostille = nem.model.apostille.create(common, "Test.txt", fileContent, "Test Apostille", nem.model.apostille.hashing["SHA256"], false, true, nem.model.network.data.testnet.id);
+
+// Serialize transfer transaction and announce
+nem.model.transactions.send(common, apostille.transaction, endpoint).then(...)
+```
+
+- See `examples/node/apostille/create` for creation example in node
+
+### 10.2 - Verify an Apostille
+
+`nem.model.apostille.verify` verify an apostille from a file content (as Word Array) and an apostille transaction object.
+
+```javascript
+// Create an NIS endpoint object
+var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, nem.model.nodes.defaultPort);
+
+// Simulate the file content
+var fileContent = nem.crypto.js.enc.Utf8.parse('Apostille is awesome !');
+
+// Transaction hash of the Apostille
+var txHash = "9b2dc096fb55e610c97a870b1d385458ca3d60b6f656428a981069ab8edd9a28";
+
+// Get the Apostille transaction from the chain
+nem.com.requests.transaction.byHash(endpoint, txHash).then(function(res) {
+  // Verify
+  console.log("Is apostille valid ?")
+  console.log(nem.model.apostille.verify(fileContent, res.transaction));
+}, function(err) {
+  console.log(err);
+});
+```
+
+- See `examples/node/apostille/audit` for verification example in node
+
+### 10.3 - More
+
+Consult `src/model/apostille.js` for more details
