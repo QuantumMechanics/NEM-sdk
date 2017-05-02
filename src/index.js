@@ -17,6 +17,7 @@ import objects from './model/objects';
 import requests from './com/requests';
 import fees from './model/fees';
 import CryptoJS from 'crypto-js';
+import apostille from './model/apostille';
 
 export default {
 	crypto: {
@@ -34,7 +35,8 @@ export default {
 		wallet,
 		transactions,
 		objects,
-		fees
+		fees,
+		apostille
 	},
 	utils: {
 		convert,
