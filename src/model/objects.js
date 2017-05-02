@@ -83,7 +83,7 @@ let invoice = function() {
  */
 let transferTransaction = function(recipient, amount, message) {
     return {
-        "amount": amount || "",
+        "amount": amount || 0,
         "recipient": recipient || "",
         "recipientPublicKey": "",
         "isMultisig": false,
