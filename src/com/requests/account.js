@@ -427,5 +427,6 @@ module.exports = {
 	mosaicDefinitionsCreated,
 	mosaicDefinitions,
 	mosaics,
-	allTransactions
+	allTransactions,
+	outgoingTransactions
 }
