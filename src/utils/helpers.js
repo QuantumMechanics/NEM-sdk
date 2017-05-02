@@ -1,5 +1,4 @@
 import convert from './convert';
-import CryptoHelpers from '../crypto/cryptoHelpers';
 import TransactionTypes from '../model/transactionTypes';
 
 /**
@@ -208,29 +207,45 @@ let createNEMTimeStamp = function() {
  *
  * @return {string} - The fixed hex private key
  */
-let fixPrivateKey = function(privatekey) {
-    return ("0000000000000000000000000000000000000000000000000000000000000000" + privatekey.replace(/^00/, '')).slice(-64);
+let fixPrivateKey = function(privateKey) {
+    return ("0000000000000000000000000000000000000000000000000000000000000000" + privateKey.replace(/^00/, '')).slice(-64);
 }
 
 /**
- * Build a message object
+ * Check if a private key is valid
  *
- * @param {object} common - An object containing wallet private key
- * @param {object} tx - A transaction object containing the message
+ * @param {string} privatekey - A private key
  *
- * @return {object} - The message object
+ * @return {boolean} - True if valid, false otherwise
  */
-let prepareMessage = function(common, tx) {
-    if (tx.encryptMessage && common.privateKey) {
-        return {
-            'type': 2,
-            'payload': CryptoHelpers.encode(common.privateKey, tx.recipientPubKey, tx.message.toString())
-        };
+let isPrivateKeyValid = function(privateKey) {
+    if (privateKey.length !== 64 && privateKey.length !== 66) {
+        console.error('Private key length must be 64 or 66 characters !');
+        return false;
+    } else if (!isHexadecimal(privateKey)) {
+        console.error('Private key must be hexadecimal only !');
+        return false;
     } else {
-        return {
-            'type': 1,
-            'payload': convert.utf8ToHex(tx.message.toString())
-        };
+        return true;
+    }
+}
+
+/**
+ * Check if a public key is valid
+ *
+ * @param {string} publicKey - A public key
+ *
+ * @return {boolean} - True if valid, false otherwise
+ */
+let isPublicKeyValid = function(publicKey) {
+    if (publicKey.length !== 64) {
+        console.error('Public key length must be 64 or 66 characters !');
+        return false;
+    } else if (!isHexadecimal(publicKey)) {
+        console.error('Public key must be hexadecimal only !');
+        return false;
+    } else {
+        return true;
     }
 }
 
@@ -427,7 +442,8 @@ module.exports = {
     getExtension,
     createNEMTimeStamp,
     fixPrivateKey,
-    prepareMessage,
+    isPrivateKeyValid,
+    isPublicKeyValid,
     checkAndFormatUrl,
     createTimeStamp,
     getTimestampShort,
