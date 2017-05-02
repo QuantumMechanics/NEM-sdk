@@ -2,7 +2,7 @@
 var nem = require("../../build/index.js").default;
 
 // Create keypair
-var kp = nem.crypto.keyPair.create("790c566699d4add2462f78bb108ca99b7e964098914a336710696db7f04d67a4");
+var kp = nem.crypto.keyPair.create("private key");
 
 // Data to sign
 var data = "NEM is awesome !"
