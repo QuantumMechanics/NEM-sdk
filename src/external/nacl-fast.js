@@ -968,21 +968,6 @@ function checkArrayTypes() {
   }
 }
 
-nacl.verifySIgnature = function(msg, sig, publicKey) {
-  checkArrayTypes(msg, sig, publicKey);
-  if (sig.length !== crypto_sign_BYTES)
-	console.log(sig.length);
-    throw new Error('bad signature size');
-  if (publicKey.length !== crypto_sign_PUBLICKEYBYTES)
-    throw new Error('bad public key size');
-  var sm = new Uint8Array(crypto_sign_BYTES + msg.length);
-  var m = new Uint8Array(crypto_sign_BYTES + msg.length);
-  var i;
-  for (i = 0; i < crypto_sign_BYTES; i++) sm[i] = sig[i];
-  for (i = 0; i < msg.length; i++) sm[i+crypto_sign_BYTES] = msg[i];
-  return (crypto_sign_open(m, sm, sm.length, publicKey) >= 0);
-};
-
 function cleanup(arr) {
   for (var i = 0; i < arr.length; i++) arr[i] = 0;
 }
@@ -1024,6 +1009,15 @@ nacl.verify = function(x, y) {
 nacl.setPRNG = function(fn) {
   randombytes = fn;
 };
+
+// For signature verification in KeyPair.js
+nacl.gf = gf;
+nacl.unpackneg = unpackneg;
+nacl.reduce = reduce;
+nacl.scalarmult = scalarmult;
+nacl.scalarbase = scalarbase;
+nacl.add = add;
+nacl.pack = pack;
 
 (function() {
   // Initialize PRNG if environment provides CSPRNG.
