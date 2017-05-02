@@ -94,14 +94,55 @@ let KeyPair = function(privkey) {
 let create = function(hexdata) {
     // Errors
     if(!hexdata) throw new Error('Missing argument !');
-    if (hexdata.length !== 64 && hexdata.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(hexdata)) throw new Error('Private key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(hexdata)) throw new Error('Private key is not valid !');
     // Processing
     let r = new KeyPair(hexdata);
     // Result
     return r;
 }
 
+/**
+ * Verify a signature.
+ *
+ * @param {string} pk - The public key to use for verification.
+ * @param {string} data - The data to verify.
+ * @param {string} signature - The signature to verify.
+ *
+ * @return {boolean}  - True if the signature is valid, false otherwise.
+ */
+let verify = function(pk, data, signature) {
+    let hasher = new hashobj();
+
+    // Convert public key to Uint8Array
+    let _pk = convert.hex2ua(pk);
+    // Convert signature to Uint8Array
+    let _signature = convert.hex2ua(signature);
+
+    const c = nacl;
+    const p = [c.gf(), c.gf(), c.gf(), c.gf()];
+    const q = [c.gf(), c.gf(), c.gf(), c.gf()];
+
+    if (c.unpackneg(q, _pk)) return false;
+
+    const h = new Uint8Array(64);
+    hasher.reset();
+    hasher.update(_signature.subarray(0, 64/2));
+    hasher.update(_pk);
+    hasher.update(data);
+    hasher.finalize(h);
+
+    c.reduce(h);
+    c.scalarmult(p, q, h);
+
+    const t = new Uint8Array(64);
+    c.scalarbase(q, _signature.subarray(64/2));
+    c.add(p, q);
+    c.pack(t, p);
+
+    return 0 === nacl.lowlevel.crypto_verify_32(_signature, 0, t, 0);
+}
+
 module.exports = {
-    create
+    create,
+    verify
 }

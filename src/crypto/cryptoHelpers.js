@@ -17,8 +17,7 @@ import Helpers from '../utils/helpers';
 let toMobileKey = function(password, privateKey) {
     // Errors
     if (!password || !privateKey) throw new Error('Missing argument !');
-    if (privateKey.length !== 64 && privateKey.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(privateKey)) throw new Error('Private key must be hexadecimal only !')
+    if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
     // Processing
     let salt = CryptoJS.lib.WordArray.random(256 / 8);
     let key = CryptoJS.PBKDF2(password, salt, {
@@ -142,8 +141,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
 let checkAddress = function(priv, network, _expectedAddress) {
     // Errors
     if (!priv || !network || !_expectedAddress) throw new Error('Missing parameter !');
-    if (priv.length !== 64 && priv.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(priv)) throw new Error('Private key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(priv)) throw new Error('Private key is not valid !');
     //Processing
     let expectedAddress = _expectedAddress.toUpperCase().replace(/-/g, '');
     let kp = KeyPair.create(priv);
@@ -237,8 +235,7 @@ let decrypt = function(data) {
 let encodePrivKey = function(privateKey, password) {
     // Errors
     if (!privateKey || !password) throw new Error('Missing parameter !');
-    if (privateKey.length !== 64 && privateKey.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(privateKey)) throw new Error('Private key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
     // Processing
     let pass = derivePassSha(password, 20);
     let r = encrypt(privateKey, convert.hex2ua(pass.priv));
@@ -263,10 +260,8 @@ let encodePrivKey = function(privateKey, password) {
 let _encode = function(senderPriv, recipientPub, msg, iv, salt) {
     // Errors
     if (!senderPriv || !recipientPub || !msg || !iv || !salt) throw new Error('Missing parameter !');
-    if (senderPriv.length !== 64 && senderPriv.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(senderPriv)) throw new Error('Private key must be hexadecimal only !');
-    if (recipientPub.length !== 64) throw new Error('Invalid public key, length must be 64 characters !');
-    if (!Helpers.isHexadecimal(recipientPub)) throw new Error('Public key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(senderPriv)) throw new Error('Private key is not valid !');
+    if (!Helpers.isPublicKeyValid(recipientPub)) throw new Error('Public key is not valid !');
     // Processing
     let sk = convert.hex2ua_reversed(senderPriv);
     let pk = convert.hex2ua(recipientPub);
@@ -294,10 +289,8 @@ let _encode = function(senderPriv, recipientPub, msg, iv, salt) {
 let encode = function(senderPriv, recipientPub, msg) {
     // Errors
     if (!senderPriv || !recipientPub || !msg) throw new Error('Missing parameter !');
-    if (senderPriv.length !== 64 && senderPriv.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(senderPriv)) throw new Error('Private key must be hexadecimal only !');
-    if (recipientPub.length !== 64) throw new Error('Invalid public key, length must be 64 characters !');
-    if (!Helpers.isHexadecimal(recipientPub)) throw new Error('Public key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(senderPriv)) throw new Error('Private key is not valid !');
+    if (!Helpers.isPublicKeyValid(recipientPub)) throw new Error('Public key is not valid !');
     // Processing
     let iv = nacl.randomBytes(16)
     //console.log("IV:", convert.ua2hex(iv));
@@ -319,10 +312,8 @@ let encode = function(senderPriv, recipientPub, msg) {
 let decode = function(recipientPrivate, senderPublic, _payload) {
     // Errors
     if(!recipientPrivate || !senderPublic || !_payload) throw new Error('Missing parameter !');
-    if (recipientPrivate.length !== 64 && recipientPrivate.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(recipientPrivate)) throw new Error('Private key must be hexadecimal only !');
-    if (senderPublic.length !== 64) throw new Error('Invalid public key, length must be 64 characters !');
-    if (!Helpers.isHexadecimal(senderPublic)) throw new Error('Public key must be hexadecimal only !');
+    if (!Helpers.isPrivateKeyValid(recipientPrivate)) throw new Error('Private key is not valid !');
+    if (!Helpers.isPublicKeyValid(senderPublic)) throw new Error('Public key is not valid !');
     // Processing
     let binPayload = convert.hex2ua(_payload);
     let salt = new Uint8Array(binPayload.buffer, 0, 32);
