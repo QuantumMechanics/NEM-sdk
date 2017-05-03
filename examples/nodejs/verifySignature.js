@@ -2,7 +2,7 @@
 var nem = require("../../build/index.js").default;
 
 // Create keypair
-var kp = nem.crypto.keyPair.create("private key");
+var kp = nem.crypto.keyPair.create("privateKey");
 
 // Data to sign
 var data = "NEM is awesome !"
@@ -16,5 +16,9 @@ console.log("Original data: " + data);
 console.log("Signature: " + sig.toString());
 
 // Result
-console.log("\nIs signature valid ? ");
-console.log(nem.crypto.keyPair.verify(kp.publicKey.toString(), data, sig.toString()));
+console.log("\nResult: ");
+if(nem.crypto.keyPair.verify(kp.publicKey.toString(), data, sig.toString())) {
+	console.log("Signature is valid");
+} else {
+	console.log("Signature is invalid");
+}
