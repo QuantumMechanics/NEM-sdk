@@ -12,9 +12,13 @@ var txHash = "4c665fdb1b9569eca3f2f7ccc78dd6252a4ad95cd1fafe6fa39be66ea77558d5";
 
 // Get the Apostille transaction from the chain
 nem.com.requests.transaction.byHash(endpoint, txHash).then(function(res) {
-	console.log("Is apostille valid ?")
-	console.log(nem.model.apostille.verify(fileContent, res.transaction));
+	// Verify
+	if (nem.model.apostille.verify(fileContent, res.transaction)) {
+		console.log("Apostille is valid");
+	} else {
+	    console.log("Apostille is invalid");
+	}
 }, function(err) {
+	console.log("Apostille is invalid");
 	console.log(err);
-	console.log(false);
 });

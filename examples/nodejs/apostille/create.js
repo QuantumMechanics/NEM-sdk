@@ -5,7 +5,7 @@ var nem = require("../../../build/index.js").default;
 var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestnet, nem.model.nodes.defaultPort);
 
 // Create a common object holding key
-var common = nem.model.objects.create("common")("", "private key");
+var common = nem.model.objects.create("common")("", "privateKey");
 
 // Simulate the file content
 var fileContent = nem.crypto.js.enc.Utf8.parse('Apostille is awesome !');
