@@ -1506,8 +1506,21 @@ var create = function create(hexdata) {
  * @return {boolean}  - True if the signature is valid, false otherwise.
  */
 var verify = function verify(pk, data, signature) {
-    var hasher = new hashobj();
+    // Errors
+    if (!pk || !data || !signature) throw new Error('Missing argument !');
+    if (!_helpers2.default.isPublicKeyValid(pk)) throw new Error('Public key is not valid !');
 
+    if (!_helpers2.default.isHexadecimal(signature)) {
+        console.error('Signature must be hexadecimal only !');
+        return false;
+    }
+    if (signature.length !== 128) {
+        console.error('Signature length is incorrect !');
+        return false;
+    }
+
+    // Create an hasher object
+    var hasher = new hashobj();
     // Convert public key to Uint8Array
     var _pk = _convert2.default.hex2ua(pk);
     // Convert signature to Uint8Array
