@@ -592,7 +592,7 @@ var signer = "0257b05f601ff829fdff84956fb5e3c65470a62375a1cc285779edd5ca3b42f6"
 var signature = "392511e5b1d78e0991d4cb2a10037cc8be775e56d76b8157a4da726ccb44042e9b419084c09128ffe2a78fe78e2a19beb0e2f57e14b66c962187e61457bd9e09"
 var data = "NEM is awesome !";
 // Verify
-var result = keyPair.verify(signer, data, signature);
+var result = nem.crypto.keyPair.verify(signer, data, signature);
 ```
 
 - See `examples/nodejs/verifySignature.js` for node demonstration
@@ -810,9 +810,13 @@ var txHash = "9b2dc096fb55e610c97a870b1d385458ca3d60b6f656428a981069ab8edd9a28";
 // Get the Apostille transaction from the chain
 nem.com.requests.transaction.byHash(endpoint, txHash).then(function(res) {
   // Verify
-  console.log("Is apostille valid ?")
-  console.log(nem.model.apostille.verify(fileContent, res.transaction));
+  if (nem.model.apostille.verify(fileContent, res.transaction)) {
+    console.log("Apostille is valid");
+  } else {
+    console.log("Apostille is invalid");
+  }
 }, function(err) {
+  console.log("Apostille is invalid");
   console.log(err);
 });
 ```
