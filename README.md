@@ -185,7 +185,8 @@ This namespace allow to esily `get` or `create` objects to use in the SDK. Each 
 - `mosaicAttachment`: An object containing mosaic data to join in a transfer transaction
 - `mosaicDefinitionMetaDataPair`: An object of objects containing mosaics properties
 - `invoice`: An invoice object working on NEM mobile clients
-- `transferTransaction`**: An un-prepared transfer transaction object
+- `transferTransaction`: An un-prepared transfer transaction object
+- `signatureTransaction`: An un-prepared signature transaction object
 
 ### 2.1 - Get objects
 
@@ -297,6 +298,7 @@ Consult `src/model/objects.js` for details about objects and creation parameters
 
 **Keywords**:
 - `transferTransaction`
+- `signatureTransaction`
 - `mosaicTransferTransaction`
 
 This namespace is used to prepare and send transactions. 
@@ -371,6 +373,33 @@ You can easily see the difference between an un-prepared transaction object (2.2
 Amounts are in the smallest unit possible in a prepared transaction object:
 
 > 1000000 = 1 XEM
+
+#### Signature transaction example:
+
+```javascript
+// Create an object with parameters (multisig account address and co-signed transaction hash)
+var signatureTransaction = nem.model.objects.create("signatureTransaction")("TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S", "161d7f74ab9d332acd46f96650e74371d65b6e1a0f47b076bdd7ccea37903175");
+
+// Prepare the above object
+var transactionEntity = nem.model.transactions.prepare("signatureTransaction")(common, signatureTransaction, nem.model.network.data.testnet.id)
+```
+
+#### Return:
+
+```javascript
+{
+  type: 4098,
+  version: -1744830463,
+  signer: '0257b05f601ff829fdff84956fb5e3c65470a62375a1cc285779edd5ca3b42f6',
+  timeStamp: 62995509,
+  deadline: 62999109,
+  otherHash: {
+    data: '161d7f74ab9d332acd46f96650e74371d65b6e1a0f47b076bdd7ccea37903175'
+  },
+  otherAccount: 'TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S',
+  fee: 6000000
+}
+```
 
 ### 3.2 - Sending prepared transactions
 

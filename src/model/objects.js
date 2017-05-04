@@ -94,7 +94,21 @@ let transferTransaction = function(recipient, amount, message) {
     }
 }
 
-let signatureTransaction = {}
+/**
+ * An un-prepared signature transaction object
+ *
+ * @param  {string} multisigAccount - The multisig account address
+ * @param  {string} txHash - The multisig transaction hash
+ * @return {object}
+ */
+let signatureTransaction = function(multisigAccount, txHash) {
+    return {
+        "otherHash": {
+            "data": txHash || ""
+        },
+        "otherAccount": multisigAccount || ""
+    }
+}
 
 let multisignatureModificationTransaction = {}
 
@@ -105,7 +119,7 @@ let namespaceProvisionTransaction = {}
 let importanceTransferTransaction = {}
 
 /**
- * Get an empty object 
+ * Get an empty object
  *
  * @param {string} objectName - The name of the object
  *
@@ -131,9 +145,12 @@ let get = function(objectName) {
         case "transferTransaction":
             return transferTransaction();
             break;
+        case "signatureTransaction":
+            return signatureTransaction();
+            break;
         default:
             return {};
-    } 
+    }
 }
 
 /**
@@ -160,9 +177,12 @@ let create = function(objectName) {
         case "transferTransaction":
             return transferTransaction;
             break;
+        case "signatureTransaction":
+            return signatureTransaction;
+            break;
         default:
             return {};
-    } 
+    }
 }
 
 module.exports = {
