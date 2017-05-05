@@ -102,11 +102,16 @@ let transferTransaction = function(recipient, amount, message) {
  * @return {object}
  */
 let signatureTransaction = function(multisigAccount, txHash) {
+    let compressedAccount = "";
+    if (typeof multisigAccount != "undefined" && multisigAccount.length) {
+        compressedAccount = multisigAccount.toUpperCase().replace(/-/g, "");
+    }
+
     return {
         "otherHash": {
             "data": txHash || ""
         },
-        "otherAccount": multisigAccount || ""
+        "otherAccount": compressedAccount
     }
 }
 

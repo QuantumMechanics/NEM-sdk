@@ -170,15 +170,16 @@ let prepareSignatureTransaction = function(common, tx, network) {
     let kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
     let due = network === Network.data.testnet.id ? 60 : 24 * 60;
 
+    let senderPublicKey = kp.publicKey.toString();
     let timeStamp = Helpers.createNEMTimeStamp();
     let version = NETWORK_VERSION(1, network);
-    let data = _createCommonPart(TransactionTypes.multisigSignature, kp.publicKey.toString(), timeStamp, due, version);
+    let data = _createCommonPart(TransactionTypes.multisigSignature, senderPublicKey, timeStamp, due, version);
     let fee = Fees.signatureTransaction;
 
     let custom = {
         'fee': fee
     };
-    let entity = Helpers.extendObj(data, custom);
+    let entity = Helpers.extendObj(tx, data, custom);
     return entity;
 }
 
