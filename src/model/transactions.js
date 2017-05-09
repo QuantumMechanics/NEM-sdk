@@ -41,7 +41,7 @@ let _multisigWrapper = function(senderPublicKey, innerEntity, due, network) {
     let version = NETWORK_VERSION(1, network);
     let data = _createCommonPart(TransactionTypes.multisigTransaction, senderPublicKey, timeStamp, due, version, network);
     let custom = {
-        'fee': Fees.MultisigTransaction,
+        'fee': Fees.multisigTransaction,
         'otherTrans': innerEntity
     };
     let entity = Helpers.extendObj(data, custom);
