@@ -1,6 +1,6 @@
 {
   "name": "nem-sdk",
-  "version": "1.1.2",
+  "version": "1.2.2",
   "description": "NEM Developer Kit for Node.js and the browser",
   "main": "build/index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/QuantumMechanics/NEM-sdk.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --compilers js:babel-core/register -- recursive",
     "build": "babel src --presets babel-preset-es2015 --out-dir build --source-maps",
     "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js",
     "minify": "uglifyjs dist/nem-sdk.js > dist/nem-sdk.min.js",
@@ -24,10 +24,15 @@
     "babel-preset-es2015": "^6.6.0",
     "crypto-js": "3.1.9-1",
     "jquery": "3.0.0",
-    "request": "2.81.0"
+    "request": "2.81.0",
+    "sockjs-client": "1.1.4"
   },
   "devDependencies": {
+    "babel-core": "^6.7.2",
+    "babel-plugin-transform-inline-environment-variables": "^6.8.0",
     "browserify": "14.1.0",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
     "through": "2.3.8",
     "duplexer": "0.1.1",
     "uglify-js": "~1.3.5"
