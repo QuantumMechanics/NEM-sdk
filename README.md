@@ -141,6 +141,7 @@ There is 4 main namespaces:
 
 #### `nem.com`
 - `requests`: Requests to NIS and the outside world
+- `websockets`: Connection, subscription and requests to NIS websockets
 
 #### `nem.crypto`
 - `keyPair`: Functions to create keypair from hex and sign data with it
@@ -549,7 +550,7 @@ You first need to create a connector object pointing to the right endpoint then 
 
 If connection is a success, the `connector.connect` function will resolve a promise in a `.then()` function, in which you can request and subscribe to channels.
 
-Subscribtion takes a connector and resolve in a simple callback function (`.then()` not supported), where your data will be received from the channel. It acts exactly like a `.on('something')`.
+Subscription takes a connector and resolve in a simple callback function (`.then()` not supported), where your data will be received from the channel. It acts exactly like a `.on('something')`.
 
 #### Parameters
 
@@ -560,13 +561,13 @@ Name           | Type             | Description                     |
 endpoint       | object           | An endpoint object (using websocket port) | 
 address        | string           | A NEM account address      |
 
-##### All subscribtion methods
+##### All subscription methods
 
 Name           | Type             | Description                     |
 ---------------|------------------|---------------------------------|
 connector      | object           | An open connector object        |
 callback       | function         | A callback function where data will be received | 
-address        | string           | A NEM account address (optional, for custom account subscribtion)|
+address        | string           | A NEM account address (optional, for custom account subscription)|
 
 ##### All request methods 
 
