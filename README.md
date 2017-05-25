@@ -48,8 +48,8 @@ This SDK is just a "draft" for now, lot of things will change as development and
   - 3. [Usage](#43---usage)
   - 4. [More](#44---more)
   - 5. [Websockets](#45---websockets)
-  - 6. [Usage](#46---usage-1)
-  - 7. [More](#47---more-1)
+  - 6. [Usage](#46---usage)
+  - 7. [More](#47---more)
 5. [Helpers and Format](#5---helpers-and-format)
   - 1. [Helpers](#51---helpers)
   - 2. [Format](#52---format)
@@ -543,7 +543,7 @@ If anyone has a solution to that, it is welcome.
 - `data`: Requests account data from channel
 - `transactions.recent`: Requests recent transactions from channel
 
-### 4.3 - Usage
+### 4.6 - Usage
 
 You first need to create a connector object pointing to the right endpoint then use this connector to open the connection.
 
@@ -611,7 +611,7 @@ connector.connect().then(function() {
 });
 ```
 
-### 4.4 - More
+### 4.7 - More
 
 Consult `src/com/websockets` for details.
 
