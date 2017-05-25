@@ -46,7 +46,7 @@ let toMobileKey = function(password, privateKey) {
  */
 let derivePassSha = function(password, count) {
     // Errors
-    if(!password) throw new Error('Missing parameter !');
+    if(!password) throw new Error('Missing argument !');
     if(!count || count <= 0) throw new Error('Please provide a count number above 0');
     // Processing
     let data = password;
@@ -74,7 +74,7 @@ let derivePassSha = function(password, count) {
  */
 let passwordToPrivatekey = function(common, walletAccount, algo) {
     // Errors
-    if(!common || !common.password || !walletAccount || !algo) throw new Error('Missing parameter !');
+    if(!common || !common.password || !walletAccount || !algo) throw new Error('Missing argument !');
     // Processing
     let r = undefined;
     if (algo === "pass:6k") { // Brain wallets
@@ -83,7 +83,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
             r = derivePassSha(common.password, 6000);
         } else if (!walletAccount.encrypted || !walletAccount.iv) {
             // Else if one is missing there is a problem
-            alert("Account might be compromised, missing encrypted or iv");
+            //console.log("Account might be compromised, missing encrypted or iv");
             return false;
         } else {
             // Else child accounts have encrypted and iv so we decrypt
@@ -121,7 +121,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
             'priv': d
         };
     } else {
-        alert("Unknown wallet encryption method");
+        //console.log("Unknown wallet encryption method");
         return false;
     }
     // Result
@@ -140,7 +140,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
  */
 let checkAddress = function(priv, network, _expectedAddress) {
     // Errors
-    if (!priv || !network || !_expectedAddress) throw new Error('Missing parameter !');
+    if (!priv || !network || !_expectedAddress) throw new Error('Missing argument !');
     if (!Helpers.isPrivateKeyValid(priv)) throw new Error('Private key is not valid !');
     //Processing
     let expectedAddress = _expectedAddress.toUpperCase().replace(/-/g, '');
@@ -189,7 +189,7 @@ let randomKey = function() {
  */
 let encrypt = function(data, key) {
     // Errors
-    if (!data || !key) throw new Error('Missing parameter !');
+    if (!data || !key) throw new Error('Missing argument !');
     // Processing
     let iv = nacl.randomBytes(16)
     let encKey = convert.ua2words(key, 32);
@@ -214,7 +214,7 @@ let encrypt = function(data, key) {
  */
 let decrypt = function(data) {
     // Errors
-    if (!data) throw new Error('Missing parameter !');
+    if (!data) throw new Error('Missing argument !');
     // Processing
     let encKey = convert.ua2words(data.key, 32);
     let encIv = {
@@ -234,7 +234,7 @@ let decrypt = function(data) {
  */
 let encodePrivKey = function(privateKey, password) {
     // Errors
-    if (!privateKey || !password) throw new Error('Missing parameter !');
+    if (!privateKey || !password) throw new Error('Missing argument !');
     if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
     // Processing
     let pass = derivePassSha(password, 20);
@@ -259,7 +259,7 @@ let encodePrivKey = function(privateKey, password) {
  */
 let _encode = function(senderPriv, recipientPub, msg, iv, salt) {
     // Errors
-    if (!senderPriv || !recipientPub || !msg || !iv || !salt) throw new Error('Missing parameter !');
+    if (!senderPriv || !recipientPub || !msg || !iv || !salt) throw new Error('Missing argument !');
     if (!Helpers.isPrivateKeyValid(senderPriv)) throw new Error('Private key is not valid !');
     if (!Helpers.isPublicKeyValid(recipientPub)) throw new Error('Public key is not valid !');
     // Processing
@@ -288,7 +288,7 @@ let _encode = function(senderPriv, recipientPub, msg, iv, salt) {
  */
 let encode = function(senderPriv, recipientPub, msg) {
     // Errors
-    if (!senderPriv || !recipientPub || !msg) throw new Error('Missing parameter !');
+    if (!senderPriv || !recipientPub || !msg) throw new Error('Missing argument !');
     if (!Helpers.isPrivateKeyValid(senderPriv)) throw new Error('Private key is not valid !');
     if (!Helpers.isPublicKeyValid(recipientPub)) throw new Error('Public key is not valid !');
     // Processing
@@ -311,7 +311,7 @@ let encode = function(senderPriv, recipientPub, msg) {
  */
 let decode = function(recipientPrivate, senderPublic, _payload) {
     // Errors
-    if(!recipientPrivate || !senderPublic || !_payload) throw new Error('Missing parameter !');
+    if(!recipientPrivate || !senderPublic || !_payload) throw new Error('Missing argument !');
     if (!Helpers.isPrivateKeyValid(recipientPrivate)) throw new Error('Private key is not valid !');
     if (!Helpers.isPublicKeyValid(senderPublic)) throw new Error('Public key is not valid !');
     // Processing
