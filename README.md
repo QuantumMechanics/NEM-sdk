@@ -44,12 +44,12 @@ This SDK is just a "draft" for now, lot of things will change as development and
   - 4. [Transfer transactions with mosaics](#34---transfer-transactions-with-mosaics)
 4. [Communications](#4---communications)
   - 1. [Create endpoints](#41---create-endpoints)
-  - 2. [API requests](#42---api)
+  - 2. [API requests](#42---api-requests)
   - 3. [Usage](#43---usage)
   - 4. [More](#44---more)
   - 5. [Websockets](#45---websockets)
-  - 6. [Usage](#46---usage)
-  - 7. [More](#47---more)
+  - 6. [Usage](#46---usage-1)
+  - 7. [More](#47---more-1)
 5. [Helpers and Format](#5---helpers-and-format)
   - 1. [Helpers](#51---helpers)
   - 2. [Format](#52---format)
@@ -593,7 +593,7 @@ connector.connect().then(function() {
   console.log("Connected");
 
   // Subscribe to new blocks channel
-  nem.com.websockets.subscribe.chain.newBlocks(connector, function(res) {
+  nem.com.websockets.subscribe.chain.blocks(connector, function(res) {
     console.log(res);
   });
 
