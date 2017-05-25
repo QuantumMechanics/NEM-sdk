@@ -104,30 +104,30 @@ let create = function(hexdata) {
 /**
  * Verify a signature.
  *
- * @param {string} pk - The public key to use for verification.
+ * @param {string} publicKey - The public key to use for verification.
  * @param {string} data - The data to verify.
  * @param {string} signature - The signature to verify.
  *
  * @return {boolean}  - True if the signature is valid, false otherwise.
  */
-let verify = function(pk, data, signature) {
+let verifySignature = function(publicKey, data, signature) {
     // Errors
-    if(!pk || !data || !signature) throw new Error('Missing argument !');
-    if (!Helpers.isPublicKeyValid(pk)) throw new Error('Public key is not valid !');
+    if(!publicKey || !data || !signature) throw new Error('Missing argument !');
+    if (!Helpers.isPublicKeyValid(publicKey)) throw new Error('Public key is not valid !');
     
     if (!Helpers.isHexadecimal(signature)) {
-        console.error('Signature must be hexadecimal only !');
+        //console.error('Signature must be hexadecimal only !');
         return false;
     }
     if (signature.length !== 128) {
-        console.error('Signature length is incorrect !') 
+        //console.error('Signature length is incorrect !') 
         return false;
     }
 
     // Create an hasher object
     let hasher = new hashobj();
     // Convert public key to Uint8Array
-    let _pk = convert.hex2ua(pk);
+    let _pk = convert.hex2ua(publicKey);
     // Convert signature to Uint8Array
     let _signature = convert.hex2ua(signature);
 
@@ -157,5 +157,5 @@ let verify = function(pk, data, signature) {
 
 module.exports = {
     create,
-    verify
+    verifySignature
 }

@@ -160,7 +160,7 @@ let verify = function(fileContent, apostilleTransaction) {
 	// Check if apostille is signed
 	if(isSigned(hashingByte)) {
 		// Verify signature
-		return KeyPair.verify(apostilleTransaction.signer, fileHash, apostilleTransaction.message.payload.substring(10));
+		return KeyPair.verifySignature(apostilleTransaction.signer, fileHash, apostilleTransaction.message.payload.substring(10));
 	} else {
 		// Check if hashed file match hash in transaction (without checksum)
 		return fileHash === apostilleTransaction.message.payload.substring(10);
