@@ -8,7 +8,7 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 var fileContent = nem.crypto.js.enc.Utf8.parse('Apostille is awesome !');
 
 // Transaction hash of the Apostille
-var txHash = "4c665fdb1b9569eca3f2f7ccc78dd6252a4ad95cd1fafe6fa39be66ea77558d5";
+var txHash = "5e7c54e47372659b4ae27e500d48e4514e827d8f6e1b88f07bdbc8c53e471422";
 
 // Get the Apostille transaction from the chain
 nem.com.requests.transaction.byHash(endpoint, txHash).then(function(res) {

@@ -17,7 +17,7 @@ console.log("Signature: " + sig.toString());
 
 // Result
 console.log("\nResult: ");
-if(nem.crypto.keyPair.verify(kp.publicKey.toString(), data, sig.toString())) {
+if(nem.crypto.verifySignature(kp.publicKey.toString(), data, sig.toString())) {
 	console.log("Signature is valid");
 } else {
 	console.log("Signature is invalid");
