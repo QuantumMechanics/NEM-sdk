@@ -1,4 +1,5 @@
-import keyPair from './crypto/keyPair';
+import { create as createKeyPair } from './crypto/keyPair';
+import { verifySignature } from './crypto/keyPair';
 import address from './model/address';
 import convert from './utils/convert';
 import format from './utils/format';
@@ -17,14 +18,18 @@ import objects from './model/objects';
 import requests from './com/requests';
 import fees from './model/fees';
 import CryptoJS from 'crypto-js';
+import websockets from './com/websockets';
 import apostille from './model/apostille';
 
 export default {
 	crypto: {
-		keyPair,
+		keyPair: {
+			create: createKeyPair
+		},
 		helpers: cryptoHelpers,
 		nacl,
-		js: CryptoJS
+		js: CryptoJS,
+		verifySignature: verifySignature
 	},
 	model: {
 		address,
@@ -46,6 +51,7 @@ export default {
 		format
 	},
 	com: {
-		requests
+		requests,
+		websockets
 	}
 };
