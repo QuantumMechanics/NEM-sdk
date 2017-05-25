@@ -523,7 +523,7 @@ Consult `src/com/requests` for details about requests parameters.
 
 If anyone has a solution to that, it is welcome.
 
-#### `nem.com.websocket.connector`
+#### `nem.com.websockets.connector`
 - `create`: Create a connector object
 
 #### `nem.com.websockets.subscribe`
@@ -537,7 +537,7 @@ If anyone has a solution to that, it is welcome.
 
 #### `nem.com.websockets.subscribe.chain`
 - `height`: Subscribes to new chain height channel
-- `newBlocks`: Subscribes to new blocks channel
+- `blocks`: Subscribes to new blocks channel
 
 #### `nem.com.websockets.requests.account`
 - `data`: Requests account data from channel
