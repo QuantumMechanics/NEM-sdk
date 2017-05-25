@@ -175,14 +175,14 @@ let hexToUtf8 = function(data) {
 /**
 * Verify if message is not encrypted and return utf8
 *
-* @param {string} data - Hex data
+* @param {object} msg - A message object
 *
 * @return {string} result - Utf8 string
 */
-let hexMessage = function(data) {
-    if (data === undefined) return data;
-    if (data.type === 1) {
-        return hexToUtf8(data.payload);
+let hexMessage = function(msg) {
+    if (msg === undefined) return msg;
+    if (msg.type === 1) {
+        return hexToUtf8(msg.payload);
     } else {
         return '';
     }
