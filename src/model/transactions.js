@@ -7,6 +7,7 @@ import Serialization from '../utils/serialization';
 import KeyPair from '../crypto/keyPair';
 import CryptoHelpers from '../crypto/cryptoHelpers';
 import Requests from '../com/requests';
+import Address from './address';
 
 /**
  * Set the network version
@@ -40,7 +41,7 @@ let _multisigWrapper = function(senderPublicKey, innerEntity, due, network) {
     let version = NETWORK_VERSION(1, network);
     let data = _createCommonPart(TransactionTypes.multisigTransaction, senderPublicKey, timeStamp, due, version, network);
     let custom = {
-        'fee': Fees.MultisigTransaction,
+        'fee': Fees.multisigTransaction,
         'otherTrans': innerEntity
     };
     let entity = Helpers.extendObj(data, custom);
@@ -155,8 +156,31 @@ let _constructTransferTransaction = function(senderPublicKey, recipientCompresse
     return entity;
 }
 
-let prepareSignatureTransaction = function(){
+/**
+ * Prepare a signature transaction object
+ *
+ * @param {object} common - A common object
+ * @param {object} tx - The un-prepared signature transaction object
+ * @param {number} network - A network id
+ *
+ * @return {object} - A [TransferTransaction]{@link http://bob.nem.ninja/docs/#transferTransaction} object ready for serialization
+ */
+let prepareSignatureTransaction = function(common, tx, network) {
+    if (!common || !tx || !network) throw new Error('Missing parameter !');
+    let kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
+    let due = network === Network.data.testnet.id ? 60 : 24 * 60;
 
+    let senderPublicKey = kp.publicKey.toString();
+    let timeStamp = Helpers.createNEMTimeStamp();
+    let version = NETWORK_VERSION(1, network);
+    let data = _createCommonPart(TransactionTypes.multisigSignature, senderPublicKey, timeStamp, due, version);
+    let fee = Fees.signatureTransaction;
+
+    let custom = {
+        'fee': fee
+    };
+    let entity = Helpers.extendObj(tx, data, custom);
+    return entity;
 }
 
 let prepareMultisignatureModificationTransaction = function(){
@@ -221,7 +245,7 @@ let send = function(common, entity, endpoint) {
 }
 
 /**
- * Prepare a transaction object 
+ * Prepare a transaction object
  *
  * @param {string} objectName - The name of the object to prepare
  *
@@ -235,9 +259,12 @@ let prepare = function(objectName) {
         case "mosaicTransferTransaction":
             return prepareMosaicTransferTransaction;
             break;
+        case "signatureTransaction":
+            return prepareSignatureTransaction;
+            break;
         default:
             return {};
-    } 
+    }
 }
 
 module.exports = {
