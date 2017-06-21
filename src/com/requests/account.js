@@ -69,17 +69,27 @@ let harvestedBlocks = function(endpoint, address){
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
  * @param {string} txHash - A starting hash for search (optional)
+ * @param {string} txId - A starting ID (optional)
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let incomingTransactions = function(endpoint, address, txHash){
+let incomingTransactions = function(endpoint, address, txHash, txId){
 	return new Promise((resolve, reject) => {
+		var params = {'address': address};
+
+		// add optional parameters
+		if (txHash)
+			params['hash'] = txHash;
+
+		if (txId)
+			params['id'] = txId;
+
 		// Configure the request
 		var options = {
 		    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/incoming',
 		    method: 'GET',
 		    headers: urlEncodedHeader,
-		    qs: {'address': address, 'hash': txHash}
+		    qs: params
 		}
 
 		// Start the request
@@ -99,17 +109,27 @@ let incomingTransactions = function(endpoint, address, txHash){
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
  * @param {string} txHash - A starting hash for search (optional)
+ * @param {string} txId - A starting ID (optional)
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let outgoingTransactions = function(endpoint, address, txHash){
+let outgoingTransactions = function(endpoint, address, txHash, txId){
 	return new Promise((resolve, reject) => {
+		var params = {'address': address};
+
+		// add optional parameters
+		if (txHash)
+			params['hash'] = txHash;
+
+		if (txId)
+			params['id'] = txId;
+
 		// Configure the request
 		var options = {
 		    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/outgoing',
 		    method: 'GET',
 		    headers: urlEncodedHeader,
-		    qs: {'address': address, 'hash': txHash}
+		    qs: params
 		}
 
 		// Start the request
@@ -390,17 +410,28 @@ let mosaics = function(endpoint, address){
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
  * @param {string} txHash - A starting hash (optional)
+ * @param {string} txId - A starting ID (optional)
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let allTransactions = function(endpoint, address, txHash){
+let allTransactions = function(endpoint, address, txHash, txId){
 	return new Promise((resolve, reject) => {
+
+		var params = {'address': address};
+
+		// add optional parameters
+		if (txHash)
+			params['hash'] = txHash;
+
+		if (txId)
+			params['id'] = txId;
+
 		// Configure the request
 		var options = {
 		    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/all',
 		    method: 'GET',
 		    headers: urlEncodedHeader,
-		    qs: { 'address': address, 'hash': txHash || '' }
+		    qs: params
 		}
 
 		// Start the request
