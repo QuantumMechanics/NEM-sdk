@@ -526,12 +526,22 @@ describe('nem.crypto.helpers tests', function() {
             keySize: 256 / 32,
             iterations: 2000
         });
-        let decrypted = CryptoJS.AES.decrypt(encrypted.substring(64, 128), key.toString(), {iv: CryptoJS.enc.Hex.parse(encrypted.substring(0, 64))});
+        
+        let iv = encrypted.substring(0, 32);
+        let encryptedPrvKey = encrypted.substring(32, 128);
 
+        let obj = {
+            ciphertext: CryptoJS.enc.Hex.parse(encryptedPrvKey),
+            iv: convert.hex2ua(iv),
+            key: convert.hex2ua(key.toString())
+        }
+
+        let decrypted = CryptoHelpers.decrypt(obj);
+        
         // Assert:
         expect(encrypted.length).equal(128);
         expect(salt.toString().length).equal(32 * 2);
-        expect(decrypted.toString()).equal(privateKey);
+        expect(decrypted).equal(privateKey);
     });
 
 });
