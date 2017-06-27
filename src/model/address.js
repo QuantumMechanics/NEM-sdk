@@ -142,7 +142,7 @@ let isValid = function(_address) {
 * @return {string} - A clean address
 */
 let clean = function(_address) {
-    return _address.toUpperCase().replace(/-/g, '');
+    return _address.toUpperCase().replace(/-|\s/g,"");
 };
 
 module.exports = {
