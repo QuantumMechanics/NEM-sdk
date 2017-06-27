@@ -511,8 +511,7 @@ describe('nem.crypto.helpers tests', function() {
 
     });
 
-    // Seems to work on mobile but can't manage to decrypt here !
-    xit("Can encrypt and decrypt private key for mobile", function() {
+    it("Can encrypt and decrypt private key for mobile", function() {
         // Arrange:
         let privateKey = "2a91e1d5c110a8d0105aad4683f962c2a56663a3cad46666b16d243174673d90";
         let password = "TestTest";
@@ -543,5 +542,4 @@ describe('nem.crypto.helpers tests', function() {
         expect(salt.toString().length).equal(32 * 2);
         expect(decrypted).equal(privateKey);
     });
-
 });
