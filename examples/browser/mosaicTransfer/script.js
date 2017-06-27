@@ -96,7 +96,7 @@ $(document).ready(function () {
 			nem.com.requests.namespace.mosaicDefinitions(endpoint, $("#namespaceId").val()).then(function(res) {
 
 				// Look for the mosaic definition(s) we want in the request response (Could use ["eur", "usd"] to return eur and usd mosaicDefinitionMetaDataPairs)
-				var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res.data, [$("#mosaicName").val()]);
+				var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res, [$("#mosaicName").val()]);
 
 				// Get full name of mosaic to use as object key
 				var fullMosaicName  = $("#namespaceId").val() + ':' + $("#mosaicName").val();
