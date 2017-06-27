@@ -23,7 +23,7 @@ nem.com.requests.account.data(endpoint, address).then(function(res) {
 });
 
 // Get harvested blocks
-nem.com.requests.account.harvestedBlocks(endpoint, address).then(function(res) {
+nem.com.requests.account.harvesting.blocks(endpoint, address).then(function(res) {
 	console.log("\nHarvested blocks:");
 	console.log(res);
 }, function(err) {
@@ -47,7 +47,7 @@ nem.com.requests.namespace.mosaicDefinitions(endpoint, "nw.fiat").then(function(
 });
 
 // Get incoming transactions
-nem.com.requests.account.incomingTransactions(endpoint, address).then(function(res) {
+nem.com.requests.account.transactions.incoming(endpoint, address).then(function(res) {
 	console.log("\nIncoming transactions:");
 	console.log(res);
 }, function(err) {
@@ -55,7 +55,7 @@ nem.com.requests.account.incomingTransactions(endpoint, address).then(function(r
 });
 
 // Get unconfirmed transactions
-nem.com.requests.account.unconfirmedTransactions(endpoint, address).then(function(res) {
+nem.com.requests.account.transactions.unconfirmed(endpoint, address).then(function(res) {
 	console.log("\nUnconfirmed transactions:");
 	console.log(res);
 }, function(err) {
@@ -84,7 +84,7 @@ nem.com.requests.account.unlockInfo(endpoint).then(function(res) {
 
 // Start harvesting for an account
 var privateKey = "05fb0e2f6e4e6b06fb13906ced18c11544dc61a1de0c585663ba6abd35a41d08";
-nem.com.requests.account.startHarvesting(endpoint, privateKey).then(function(res) {
+nem.com.requests.account.harvesting.start(endpoint, privateKey).then(function(res) {
 	console.log("\nUnlock account:");
 	console.log(res);
 }, function(err) {
@@ -93,7 +93,7 @@ nem.com.requests.account.startHarvesting(endpoint, privateKey).then(function(res
 });
 
 // Stop harvesting for an account
-nem.com.requests.account.stopHarvesting(endpoint, privateKey).then(function(res) {
+nem.com.requests.account.harvesting.stop(endpoint, privateKey).then(function(res) {
 	console.log("\nLock account:");
 	console.log(res);
 }, function(err) {
@@ -111,7 +111,7 @@ nem.com.requests.market.xem().then(function(res) {
 
 // Get BTC to USD market information
 nem.com.requests.market.btc().then(function(res) {
-	console.log("\nBTC to USB market info:");
+	console.log("\nBTC to USD market info:");
 	console.log(res);
 }, function(err) {
 	console.error(err);
@@ -154,7 +154,7 @@ nem.com.requests.namespace.roots(endpoint).then(function(res) {
 });
 
 // Get namespaces owned by account
-nem.com.requests.account.namespaces(endpoint, address).then(function(res) {
+nem.com.requests.account.namespaces.owned(endpoint, address).then(function(res) {
 	console.log("\nNamespaces of account:");
 	console.log(res);
 }, function(err) {
@@ -162,7 +162,7 @@ nem.com.requests.account.namespaces(endpoint, address).then(function(res) {
 });
 
 // Get all transactions of account
-nem.com.requests.account.allTransactions(endpoint, address).then(function(res) {
+nem.com.requests.account.transactions.all(endpoint, address).then(function(res) {
 	console.log("\nAll transactions of the account:");
 	console.log(res);
 }, function(err) {

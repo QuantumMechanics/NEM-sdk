@@ -1,16 +1,6 @@
-import Request from 'request';
+import Send from './send';
+import Headers from './headers';
 import Helpers from '../../utils/helpers';
-
-let urlEncodedHeader = {
-	'Content-Type': 'application/x-www-form-urlencoded'
-}
-
-let jsonHeader = function(data) {
-	return {
-		"Content-Type": "application/json",
-	    "Content-Length": Buffer.from(data).byteLength
-	}
-}
 
 /**
  * Broadcast a transaction to the NEM network
@@ -21,24 +11,15 @@ let jsonHeader = function(data) {
  * @return {object} - A [NemAnnounceResult]{@link http://bob.nem.ninja/docs/#nemAnnounceResult} object
  */
 let announce = function(endpoint, serializedTransaction) {
-    return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/transaction/announce',
-		    method: 'POST',
-		    headers: jsonHeader(serializedTransaction),
-		    json: JSON.parse(serializedTransaction)
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(body);
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/transaction/announce',
+	    method: 'POST',
+	    headers: Headers.json(serializedTransaction),
+	    json: JSON.parse(serializedTransaction)
+	}
+	// Send the request
+	return Send(options);
 }
 
 /**
@@ -50,24 +31,15 @@ let announce = function(endpoint, serializedTransaction) {
  * @return {object} - A [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} object
  */
 let byHash = function(endpoint, txHash){
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/transaction/get',
-		    method: 'GET',
-		    headers: urlEncodedHeader,
-		    qs: {'hash': txHash}
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/transaction/get',
+	    method: 'GET',
+	    headers: Headers.urlEncoded,
+	    qs: {'hash': txHash}
+	}
+	// Send the request
+	return Send(options);
 }
 
 module.exports = {

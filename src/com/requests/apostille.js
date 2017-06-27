@@ -1,9 +1,6 @@
-import Request from 'request';
+import Send from './send';
+import Headers from './headers';
 import Nodes from '../../model/nodes';
-
-let urlEncodedHeader = {
-	'Content-Type': 'application/x-www-form-urlencoded'
-}
 
 /**
  * Audit an apostille file
@@ -15,24 +12,15 @@ let urlEncodedHeader = {
  * @return {boolean} - True if valid, false otherwise
  */
 let audit = function(publicKey, data, signedData) {
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Nodes.apostilleAuditServer,
-		    method: 'POST',
-		    headers: urlEncodedHeader,
-		    qs: {'publicKey': publicKey, 'data': data,'signedData': signedData}
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Nodes.apostilleAuditServer,
+	    method: 'POST',
+	    headers: Headers.urlEncoded,
+	    qs: {'publicKey': publicKey, 'data': data,'signedData': signedData}
+	}
+	// Send the request
+	return Send(options);
 }
 
 module.exports = {

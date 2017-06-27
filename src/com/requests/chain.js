@@ -1,4 +1,4 @@
-import Request from 'request';
+import Send from './send';
 import Helpers from '../../utils/helpers';
 
 /**
@@ -9,22 +9,13 @@ import Helpers from '../../utils/helpers';
  * @return {object} - A [BlockHeight]{@link http://bob.nem.ninja/docs/#block-chain-height} object
  */
 let height = function (endpoint) {
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/chain/height',
-		    method: 'GET'
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/chain/height',
+	    method: 'GET'
+	}
+	// Send the request
+	return Send(options);
 }
 
 /**
@@ -35,22 +26,13 @@ let height = function (endpoint) {
  * @return {object} -
  */
 let lastBlock = function(endpoint){
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/chain/last-block',
-		    method: 'GET'
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/chain/last-block',
+	    method: 'GET'
+	}
+	// Send the request
+	return Send(options);
 }
 
 /**
@@ -61,22 +43,13 @@ let lastBlock = function(endpoint){
  * @return {object} - A [communicationTimeStamps]{@link http://bob.nem.ninja/docs/#communicationTimeStamps} object
  */
 let time = function (endpoint) {
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/time-sync/network-time',
-		    method: 'GET'
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/time-sync/network-time',
+	    method: 'GET'
+	}
+	// Send the request
+	return Send(options);
 }
 
 module.exports = {

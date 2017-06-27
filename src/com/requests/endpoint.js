@@ -1,4 +1,4 @@
-import Request from 'request';
+import Send from './send';
 import Helpers from '../../utils/helpers';
 
 /**
@@ -9,22 +9,13 @@ import Helpers from '../../utils/helpers';
  * @return {object} - A [NemRequestResult]{@link http://bob.nem.ninja/docs/#nemRequestResult} object
  */
 let heartbeat = function(endpoint) {
-	return new Promise((resolve, reject) => {
-		// Configure the request
-		var options = {
-		    url: Helpers.formatEndpoint(endpoint) + '/heartbeat',
-		    method: 'GET'
-		}
-
-		// Start the request
-		Request(options, function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-		        resolve(JSON.parse(body));
-		    } else {
-		    	reject(error);
-		    }
-		});
-	});
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/heartbeat',
+	    method: 'GET'
+	}
+	// Send the request
+	return Send(options);
 };
 
 module.exports = {
