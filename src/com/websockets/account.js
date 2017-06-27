@@ -253,7 +253,7 @@ let subscribeMosaics = function(connector, callback, address) {
     // Use address if provided
     let _address = undefined !== address ? address.replace(/-/g, "").toUpperCase() : self.address;
     self.stompClient.subscribe('/account/mosaic/owned/' + _address, function(data) {
-        callback(JSON.parse(data.body));
+        callback(JSON.parse(data.body), _address);
     });
 }
 
@@ -274,7 +274,7 @@ let subscribeNamespaces = function(connector, callback, address) {
     // Use address if provided
     let _address = undefined !== address ? address.replace(/-/g, "").toUpperCase() : self.address;
     self.stompClient.subscribe('/account/namespace/owned/' + _address, function(data) {
-        callback(JSON.parse(data.body));
+        callback(JSON.parse(data.body), _address);
     });
 }
 
@@ -308,5 +308,3 @@ module.exports = {
         } 
 	}
 }
-
-// End region
