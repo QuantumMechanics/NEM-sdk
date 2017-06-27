@@ -4,35 +4,7 @@ import Helpers from '../utils/helpers';
 import KeyPair from '../crypto/keyPair';
 import CryptoHelpers from '../crypto/cryptoHelpers';
 import Address from '../model/address';
-
-/**
- * Create a wallet object
- *
- * @param {string} walletName - The wallet name
- * @param {string} addr - The main account address
- * @param {boolean} brain - Is brain or not
- * @param {string} algo - The wallet algorithm
- * @param {object} encrypted - The encrypted private key object
- * @param {number} network - The network id
- *
- * @return {object} - A wallet object
- */
-let _buildWallet = function(walletName, addr, brain, algo, encrypted, network) {
-    return {
-        "name": walletName,
-        "accounts": {
-            "0": {
-                "brain": brain,
-                "algo": algo,
-                "encrypted": encrypted.ciphertext || "",
-                "iv": encrypted.iv || "",
-                "address": addr.toUpperCase().replace(/-/g, ''),
-                "label": 'Primary',
-                "network": network,
-            }
-        }
-    };
-}
+import Objects from './objects';
 
 /**
  * Create a wallet containing a private key generated using a Pseudo Random Number Generator
@@ -52,7 +24,7 @@ let createPRNG = function (walletName, password, network) {
     let addr = Address.toAddress(kp.publicKey.toString(), network);
     // Encrypt private key using password
     let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
-    return _buildWallet(walletName, addr, true, "pass:bip32", encrypted, network);
+    return Objects.create("wallet")(walletName, addr, true, "pass:bip32", encrypted, network);
 }
 
 /**
@@ -70,7 +42,7 @@ let createBrain = function (walletName, passphrase, network) {
     var kp = KeyPair.create(privateKey);
     // Create address from public key
     let addr = Address.toAddress(kp.publicKey.toString(), network);
-    return _buildWallet(walletName, addr, true, "pass:6k", "", network);
+    return Objects.create("wallet")(walletName, addr, true, "pass:6k", "", network);
 }
 
 /**
@@ -91,7 +63,7 @@ let importPrivateKey = function (walletName, password, privateKey, network) {
     let addr = Address.toAddress(kp.publicKey.toString(), network);
     // Encrypt private key using password
     let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
-    return _buildWallet(walletName, addr, false, "pass:enc", encrypted, network);
+    return Objects.create("wallet")(walletName, addr, false, "pass:enc", encrypted, network);
 }
 
 module.exports = {
