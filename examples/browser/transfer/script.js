@@ -45,7 +45,7 @@ $(document).ready(function () {
 		// Check form for errors
 		if(!$("#privateKey").val() || !$("#recipient").val()) return alert('Missing parameter !');
 		if(undefined === $("#amount").val() || !nem.utils.helpers.isTextAmountValid($("#amount").val())) return alert('Invalid amount !');
-		if (!nem.model.address.isValid($("#recipient").val())) return alert('Invalid recipent address !');
+		if (!nem.model.address.isValid(nem.model.address.clean($("#recipient").val()))) return alert('Invalid recipent address !');
 
 		// Set the private key in common object
 		common.privateKey = $("#privateKey").val();

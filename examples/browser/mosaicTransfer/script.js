@@ -49,7 +49,7 @@ $(document).ready(function () {
 		if(!transferTransaction.mosaics.length) return alert('You must attach at least one mosaic !');
 		if(!$("#privateKey").val() || !$("#recipient").val()) return alert('Missing parameter !');
 		if(undefined === $("#amount").val() || !nem.utils.helpers.isTextAmountValid($("#amount").val())) return alert('Invalid amount !');
-		if (!nem.model.address.isValid($("#recipient").val())) return alert('Invalid recipent address !');
+		if (!nem.model.address.isValid(nem.model.address.clean($("#recipient").val()))) return alert('Invalid recipent address !');
 
 		// Set the private key in common object
 		common.privateKey = $("#privateKey").val();
@@ -96,7 +96,7 @@ $(document).ready(function () {
 			nem.com.requests.namespace.mosaicDefinitions(endpoint, $("#namespaceId").val()).then(function(res) {
 
 				// Look for the mosaic definition(s) we want in the request response (Could use ["eur", "usd"] to return eur and usd mosaicDefinitionMetaDataPairs)
-				var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res, [$("#mosaicName").val()]);
+				var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res.data, [$("#mosaicName").val()]);
 
 				// Get full name of mosaic to use as object key
 				var fullMosaicName  = $("#namespaceId").val() + ':' + $("#mosaicName").val();

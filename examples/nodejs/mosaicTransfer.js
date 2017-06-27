@@ -46,7 +46,7 @@ nem.com.requests.namespace.mosaicDefinitions(endpoint, mosaicAttachment2.mosaicI
 	var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res, ["eur"]);
 	
 	// Get full name of mosaic to use as object key
-	var fullMosaicName  = nem.utils.helpers.mosaicIdToName(mosaicAttachment2.mosaicId);
+	var fullMosaicName  = nem.utils.format.mosaicIdToName(mosaicAttachment2.mosaicId);
 
 	// Check if the mosaic was found
 	if(undefined === neededDefinition[fullMosaicName]) return console.error("Mosaic not found !");
