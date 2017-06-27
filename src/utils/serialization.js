@@ -1,5 +1,5 @@
 import convert from './convert';
-import helpers from './helpers';
+import Format from './format';
 import TransactionTypes from '../model/transactionTypes';
 
 /***
@@ -104,7 +104,7 @@ let _serializeMosaics = function(entity) {
     for (var j = 0; j < entity.length; ++j) {
         temporary.push({
             'entity': entity[j],
-            'value': helpers.mosaicIdToName(entity[j].mosaicId) + " : " + entity[j].quantity
+            'value': Format.mosaicIdToName(entity[j].mosaicId) + " : " + entity[j].quantity
         })
     }
     temporary.sort(function(a, b) {

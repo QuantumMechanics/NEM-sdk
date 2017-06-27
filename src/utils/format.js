@@ -1,6 +1,6 @@
 import convert from './convert';
 import Address from '../model/address';
-import helpers from './helpers';
+import TransactionTypes from '../model/transactionTypes';
 
 /**
 * Convert a public key to NEM address
@@ -42,7 +42,7 @@ let nemDate = function(data) {
 
 let supply = function(data, mosaicId, mosaics) {
     if (data === undefined) return data;
-    let mosaicName = helpers.mosaicIdToName(mosaicId);
+    let mosaicName = mosaicIdToName(mosaicId);
     if (!(mosaicName in mosaics)) {
         return ['unknown mosaic divisibility', data];
     }
@@ -202,6 +202,44 @@ let splitHex = function(data) {
     return r;
 }
 
+/**
+ * Return mosaic name from mosaicId object
+ *
+ * @param {object} mosaicId - A mosaicId object
+ *
+ * @return {string} - The mosaic name
+ */
+let mosaicIdToName = function(mosaicId) {
+    if (!mosaicId) return mosaicId;
+    return mosaicId.namespaceId + ":" + mosaicId.name;
+}
+
+/**
+ * Return the name of a transaction type id
+ *
+ * @param {number} id - A transaction type id
+ *
+ * @return {string} - The transaction type name
+ */
+let txTypeToName = function(id) {
+    switch (id) {
+        case TransactionTypes.transfer:
+            return 'Transfer';
+        case TransactionTypes.importanceTransfer:
+            return 'ImportanceTransfer';
+        case TransactionTypes.multisigModification:
+            return 'MultisigModification';
+        case TransactionTypes.provisionNamespace:
+            return 'ProvisionNamespace';
+        case TransactionTypes.mosaicDefinition:
+            return 'MosaicDefinition';
+        case TransactionTypes.mosaicSupply:
+            return 'MosaicSupply';
+        default:
+            return 'Unknown_' + id;
+    }
+}
+
 module.exports = {
     splitHex,
     hexMessage,
@@ -214,5 +252,7 @@ module.exports = {
     supply,
     nemDate,
     pubToAddress,
-    address
+    address,
+    mosaicIdToName,
+    txTypeToName
 }
