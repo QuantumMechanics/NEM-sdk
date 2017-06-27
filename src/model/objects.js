@@ -1,189 +1,89 @@
-import Network from './network';
-
-let endpoint = function(host, port) {
-    return {
-        "host": host || "",
-        "port": port || ""
-    }
-};
-
-let common = function(password, privateKey) {
-	return {
-        "password": password || "",
-	    "privateKey": privateKey || ""
-    }
-};
-
-let mosaicAttachment = function(namespaceId, mosaicName, quantity) {
-    return {
-        "mosaicId": {
-        	"namespaceId": namespaceId || "",
-        	"name": mosaicName || ""
-        },
-        "quantity": quantity || 0
-    }
-};
-
-let mosaicDefinitionMetaDataPair = function() {
-    return {
-        "nem:xem": {
-            "mosaicDefinition" : {
-                "creator": "3e82e1c1e4a75adaa3cba8c101c3cd31d9817a2eb966eb3b511fb2ed45b8e262",
-                "description": "reserved xem mosaic",
-                "id": {
-                    "namespaceId": "nem",
-                    "name": "xem"
-                },
-                "properties": [{
-                    "name": "divisibility",
-                    "value": "6"
-                }, {
-                    "name": "initialSupply",
-                    "value": "8999999999"
-                }, {
-                    "name": "supplyMutable",
-                    "value": "false"
-                }, {
-                    "name": "transferable",
-                    "value": "true"
-                }],
-                "levy": {}
-            }
-        }/*,
-        "another.namespace:mosaic": {
-            "mosaicDefinition": {
-                Add mosaic definitions in this model to simplify transactions for a particular mosaic
-            }
-        } ,
-        "another.namespace.again:mosaic": {
-            "mosaicDefinition": {
-                ...
-            }
-        } */
-    }
-}
-
-let invoice = function() {
-    return  {
-        "v": "v = 1 for testnet, v = 2 for mainnet",
-        "type": 2,
-        "data": {
-            "addr": "",
-            "amount": 0,
-            "msg": "",
-            "name": ""
-        }
-    }
-}
+import Account from './objects/account';
+import Miscellaneous from './objects/miscellaneous';
+import Mosaic from './objects/mosaic';
+import Transactions from './objects/transactions';
+import QR from './objects/qr';
+import Wallet from './objects/wallet';
 
 /**
- * An un-prepared transfer transaction object
- *
- * @return {object}
- */
-let transferTransaction = function(recipient, amount, message) {
-    return {
-        "amount": amount || 0,
-        "recipient": recipient || "",
-        "recipientPublicKey": "",
-        "isMultisig": false,
-        "multisigAccount" : "",
-        "message": message || "",
-        "isEncrypted" : false,
-        "mosaics": []
-    }
-}
-
-/**
- * An un-prepared signature transaction object
- *
- * @param  {string} multisigAccount - The multisig account address
- * @param  {string} txHash - The multisig transaction hash
- * @return {object}
- */
-let signatureTransaction = function(multisigAccount, txHash) {
-    let compressedAccount = "";
-    if (typeof multisigAccount != "undefined" && multisigAccount.length) {
-        compressedAccount = multisigAccount.toUpperCase().replace(/-/g, "");
-    }
-
-    return {
-        "otherHash": {
-            "data": txHash || ""
-        },
-        "otherAccount": compressedAccount
-    }
-}
-
-let multisignatureModificationTransaction = {}
-
-let mosaicDefinitionTransaction = {}
-
-let namespaceProvisionTransaction = {}
-
-let importanceTransferTransaction = {}
-
-/**
- * Get an empty object
+ * Get an empty object 
  *
  * @param {string} objectName - The name of the object
  *
- * @retrun {object} - The desired object
+ * @return {object} - The desired object
  */
 let get = function(objectName) {
-    switch(objectName) {
-        case "common":
-            return common();
-            break;
-        case "endpoint":
-            return endpoint();
-            break;
-        case "mosaicAttachment":
-            return mosaicAttachment();
-            break;
-        case "mosaicDefinitionMetaDataPair":
-            return mosaicDefinitionMetaDataPair();
-            break;
-        case "invoice":
-            return invoice();
-            break;
-        case "transferTransaction":
-            return transferTransaction();
-            break;
-        case "signatureTransaction":
-            return signatureTransaction();
-            break;
-        default:
-            return {};
-    }
+    return _fetch(0, objectName);
 }
 
 /**
- * Get function creating objects
+ * Create an object
  *
  * @param {string} objectName - The name of the object
  *
- * @retrun {function} - The object creation function corresponding to the object name
+ * @return {function} - The object creation function corresponding to the object name
  */
 let create = function(objectName) {
+    return _fetch(1, objectName);
+}
+
+/**
+ * Fetch objects
+ *
+ * @param {number} type - 0 for get, 1 for creation
+ * @param {string} objectName - The name of the object
+ *
+ * @return {function|object} - The object creation function corresponding to the object name, or the object
+ */
+let _fetch = function(type, objectName) {
     switch(objectName) {
+        case "account":
+            return !type ? Account() : Account;
+            break;
+        case "accountInfoQR":
+            return !type ? QR.accountInfo(): QR.accountInfo;
+            break;
         case "common":
-            return common;
+            return !type ? Miscellaneous.common() : Miscellaneous.common;
+            break;
+        case "commonTransactionPart":
+            return !type ? Transactions.commonPart() : Transactions.commonPart;
             break;
         case "endpoint":
-            return endpoint;
+            return !type ? Miscellaneous.endpoint() : Miscellaneous.endpoint;
             break;
         case "mosaicAttachment":
-            return mosaicAttachment;
+            return !type ? Mosaic.attachment() : Mosaic.attachment;
+            break;
+        case "mosaicDefinitionMetaDataPair":
+            return Mosaic.definitionMetaDataPair();
+            break;
+        case "mosaicDefinitionTransaction":
+            return !type ? Transactions.mosaicDefinition() : Transactions.mosaicDefinition;
             break;
         case "invoice":
-            return invoice;
+            return !type ? QR.invoice() : QR.invoice;
             break;
         case "transferTransaction":
-            return transferTransaction;
+            return !type ? Transactions.transfer() : Transactions.transfer;
             break;
         case "signatureTransaction":
-            return signatureTransaction;
+            return !type ? Transactions.signature() : Transactions.signature;
+            break;
+        case "messageTypes":
+            return Miscellaneous.messageTypes();
+            break;
+        case "mosaicSupplyChangeTransaction":
+            return !type ? Transactions.mosaicSupplyChange() : Transactions.mosaicSupplyChange;
+            break;
+        case "namespaceProvisionTransaction":
+            return !type ? Transactions.namespaceProvision() : Transactions.namespaceProvision;
+            break;
+        case "wallet":
+            return !type ? Wallet() : Wallet;
+            break;
+        case "walletQR":
+            return !type ? QR.wallet() : QR.wallet;
             break;
         default:
             return {};
