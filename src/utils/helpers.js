@@ -1,23 +1,5 @@
 import convert from './convert';
-import TransactionTypes from '../model/transactionTypes';
-
-/**
- * Check if wallet already present in an array
- *
- * @param {string} walletName - A wallet name
- * @param {array} array - A wallets array
- *
- * @return {boolean} - True if present, false otherwise
- */
-let haveWallet = function(walletName, array) {
-    let i = null;
-    for (i = 0; array.length > i; i++) {
-        if (array[i].name === walletName) {
-            return true;
-        }
-    }
-    return false;
-}
+import Format from './format';
 
 /**
  * Check if a multisig transaction needs signature
@@ -56,32 +38,6 @@ let needsSignature = function(multisigTransaction, data) {
 }
 
 /**
- * Return the name of a transaction type id
- *
- * @param {number} id - A transaction type id
- *
- * @return {string} - The transaction type name
- */
-let txTypeToName = function(id) {
-    switch (id) {
-        case TransactionTypes.Transfer:
-            return 'Transfer';
-        case TransactionTypes.ImportanceTransfer:
-            return 'ImportanceTransfer';
-        case TransactionTypes.MultisigModification:
-            return 'MultisigModification';
-        case TransactionTypes.ProvisionNamespace:
-            return 'ProvisionNamespace';
-        case TransactionTypes.MosaicDefinition:
-            return 'MosaicDefinition';
-        case TransactionTypes.MosaicSupply:
-            return 'MosaicSupply';
-        default:
-            return 'Unknown_' + id;
-    }
-}
-
-/**
  * Check if a transaction is already present in an array of transactions
  *
  * @param {string} hash - A transaction hash
@@ -117,18 +73,6 @@ let getTransactionIndex = function(hash, array) {
     }
     return 0;
 };
-
-/**
- * Return mosaic name from mosaicId object
- *
- * @param {object} mosaicId - A mosaicId object
- *
- * @return {string} - The mosaic name
- */
-let mosaicIdToName = function(mosaicId) {
-    if (!mosaicId) return mosaicId;
-    return mosaicId.namespaceId + ":" + mosaicId.name;
-}
 
 /**
  * Parse uri to get hostname
@@ -369,7 +313,7 @@ let searchMosaicDefinitionArray = function(mosaicDefinitionArray, keys) {
     for (let i = 0; i < keys.length; i++) {
         for(let k = 0; k < mosaicDefinitionArray.length; k++) {
             if(mosaicDefinitionArray[k].mosaic.id.name === keys[i]) {
-                result[mosaicIdToName(mosaicDefinitionArray[k].mosaic.id)] = mosaicDefinitionArray[k].mosaic;
+                result[Format.mosaicIdToName(mosaicDefinitionArray[k].mosaic.id)] = mosaicDefinitionArray[k].mosaic;
             }
         }
     }
@@ -429,13 +373,26 @@ let formatEndpoint = function(endpoint) {
     return endpoint.host + ':' + endpoint.port;
 }
 
+/**
+ * Check if data is JSON
+ *
+ * @param {anything} data - Data to test
+ *
+ * @return {boolean} - True if JSON, false otherwise
+ */
+let isJSON = function(data) {
+    try {
+        JSON.parse(data);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
 module.exports = {
-    haveWallet,
     needsSignature,
-    txTypeToName,
     haveTx,
     getTransactionIndex,
-    mosaicIdToName,
     getHostname,
     haveCosig,
     getFileName,
@@ -454,5 +411,6 @@ module.exports = {
     grep,
     isTextAmountValid,
     cleanTextAmount,
-    formatEndpoint
+    formatEndpoint,
+    isJSON
 }
