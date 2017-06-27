@@ -149,21 +149,25 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
  * @return {boolean} - True if valid, false otherwise
  */
 let verify = function(fileContent, apostilleTransaction) {
-	// Get the signed hash sent in transaction
-	let apostilleHash = apostilleTransaction.message.payload;
+    let apostilleHash;
+    if(apostilleTransaction.type === 4100) {
+        apostilleHash = apostilleTransaction.otherTrans.message.payload;
+    } else {
+        apostilleHash = apostilleTransaction.message.payload;
+    }
 	// Get the checksum
-	let checksum = apostilleTransaction.message.payload.substring(0, 10);
+	let checksum = apostilleHash.substring(0, 10);
 	// Get the hashing byte
 	let hashingByte = checksum.substring(8);
 	// Retrieve the hashing method using the checksum in message and hash the file accordingly
-	let fileHash = retrieveHash(apostilleTransaction.message.payload, fileContent);
+	let fileHash = retrieveHash(apostilleHash, fileContent);
 	// Check if apostille is signed
 	if(isSigned(hashingByte)) {
 		// Verify signature
-		return KeyPair.verifySignature(apostilleTransaction.signer, fileHash, apostilleTransaction.message.payload.substring(10));
+		return KeyPair.verifySignature(apostilleTransaction.signer, fileHash, apostilleHash.substring(10));
 	} else {
 		// Check if hashed file match hash in transaction (without checksum)
-		return fileHash === apostilleTransaction.message.payload.substring(10);
+		return fileHash === apostilleHash.substring(10);
 	}
 }
 
