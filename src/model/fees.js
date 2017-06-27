@@ -1,7 +1,8 @@
 import Helpers from '../utils/helpers';
+import Format from '../utils/format';
 
 /**
- * The multisignature transacion fee
+ * The multisignature transaction fee
  *
  * @type {number}
  */
@@ -68,7 +69,7 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
     let supplyRelatedAdjustment = 0;
     for (let i = 0; i < attachedMosaics.length; i++) {
         let m = attachedMosaics[i];
-        let mosaicName = Helpers.mosaicIdToName(m.mosaicId);
+        let mosaicName = Format.mosaicIdToName(m.mosaicId);
         if (!(mosaicName in mosaics)) {
             return ['unknown mosaic divisibility']; //
         }
