@@ -173,7 +173,7 @@ Consult the code directly for details, almost all functions are commented, with 
 
 **Namespace**: `nem.model.objects`
 
-This namespace allow to esily `get` or `create` objects to use in the SDK. Each object is accessible via a keyword.
+This namespace allow to easily `get` or `create` objects to use in the SDK. Each object is accessible via a keyword.
 
 **Public methods**:
 - `get`
@@ -298,8 +298,8 @@ Consult `src/model/objects.js` for details about objects and creation parameters
 
 **Keywords**:
 - `transferTransaction`
-- `signatureTransaction`
 - `mosaicTransferTransaction`
+- `signatureTransaction`
 
 This namespace is used to prepare and send transactions. 
 
@@ -377,7 +377,7 @@ Amounts are in the smallest unit possible in a prepared transaction object:
 #### Signature transaction example:
 
 ```javascript
-// Create an object with parameters (multisig account address and co-signed transaction hash)
+// Create an object with parameters (multisig account address and inner transaction hash)
 var signatureTransaction = nem.model.objects.create("signatureTransaction")("TBCI2A67UQZAKCR6NS4JWAEICEIGEIM72G3MVW5S", "161d7f74ab9d332acd46f96650e74371d65b6e1a0f47b076bdd7ccea37903175");
 
 // Prepare the above object
@@ -477,18 +477,18 @@ var endpoint = nem.model.objects.create("endpoint")(nem.model.nodes.defaultTestn
 
 #### `nem.com.requests.account`
 - `data`: Gets account data
-- `harvestedBlocks`: Gets harvested blocks
-- `incomingTransactions`: Gets incoming transactions
-- `unconfirmedTransactions`: Gets unconfirmed transactions
-- `allTransactions`: Gets all transactions
-- `outgoingTransactions`: Gets outgoing transactions
-- `stopHarvesting`: Stop delegated harvesting
-- `startHarvesting`: Start delegated harvesting
 - `forwarded`: Gets the account data of the account for which the given account is the delegate account
-- `namespaces`: Gets namespaces that an account owns
-- `mosaics`: Gets mosaics that an account owns
-- `mosaicDefinitions`: Gets mosaic definitions that an account owns
-- `mosaicDefinitionsCreated`: Gets mosaic definitions that an account has created
+- `harvesting.blocks`: Gets harvested blocks
+- `harvesting.stop`: Stop delegated harvesting
+- `harvesting.start`: Start delegated harvesting
+- `namespaces.owned`: Gets namespaces that an account owns
+- `mosaics.owned`: Gets mosaics that an account owns
+- `mosaics.allDefinitions`: Gets all mosaic definitions that an account owns
+- `mosaics.definitions`: Gets mosaic definitions that an account has created
+- `transactions.incoming`: Gets incoming transactions
+- `transactions.unconfirmed`: Gets unconfirmed transactions
+- `transactions.all`: Gets all transactions
+- `transactions.outgoing`: Gets outgoing transactions
 - `unlockInfo`: Gets information about the maximum number of allowed harvesters and how many harvesters are already using the node
 
 #### `nem.com.requests.apostille`
@@ -655,12 +655,9 @@ Consult `src/com/websockets` for details.
 **Namespace**: `nem.utils.helpers`
 
 **Public methods**:
-- `haveWallet`
 - `needsSignature`
-- `txTypeToName`
 - `haveTx`
 - `getTransactionIndex`
-- `mosaicIdToName`
 - `getHostname`
 - `haveCosig`
 - `getFileName`
@@ -698,6 +695,8 @@ Consult `src/com/websockets` for details.
 - `splitHex`
 - `supply`
 - `supplyRaw`
+- `mosaicIdToName`
+- `txTypeToName`
 
 #### Format address 
 
