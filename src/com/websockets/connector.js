@@ -39,10 +39,17 @@ let connect = function() {
 		}
 	    self.stompClient = Stomp.over(self.socket);
 	    self.stompClient.debug = false;
+	    // Timeout fix in case NIS socket is not responding
+	    let timeoutFix = setTimeout(() => {
+	    	reject("Not responding after 10 seconds!");
+	    }, 10000);
 	    self.stompClient.connect({}, function(frame) {
+	    	// Clear the timeout fix
+	    	clearTimeout(timeoutFix);
 		    resolve(true);
 	    }, (err) => {
-	    	//console.log(err);
+	    	// Clear the timeout fix
+	    	clearTimeout(timeoutFix);
 	    	// Add one attempt
 	    	self.connectionAttempts++;
 	        // Try to reconnect
@@ -51,7 +58,7 @@ let connect = function() {
 	        		// Reset connection attempts
 	        		self.connectionAttempts = 0;
 	        		// Reject
-	        		reject("10 connection attempts failed !");
+	        		reject("10 connection attempts failed!");
 	        	} else {
 			        console.log("Trying to reconnect...");
 			        // Tries to connect again
