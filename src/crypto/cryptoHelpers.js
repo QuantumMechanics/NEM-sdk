@@ -94,9 +94,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
                 key: convert.hex2ua(pass.priv)
             };
             let d = decrypt(obj);
-            r = {
-                'priv': d
-            };
+            r = { 'priv': d };
         }
     } else if (algo === "pass:bip32") { // Wallets from PRNG
         let pass = derivePassSha(common.password, 20);
@@ -106,9 +104,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
             key: convert.hex2ua(pass.priv)
         };
         let d = decrypt(obj);
-        r = {
-            'priv': d
-        };
+        r = { 'priv': d };
     } else if (algo === "pass:enc") { // Private Key wallets
         let pass = derivePassSha(common.password, 20);
         let obj = {
@@ -117,9 +113,10 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
             key: convert.hex2ua(pass.priv)
         };
         let d = decrypt(obj);
-        r = {
-            'priv': d
-        };
+        r = { 'priv': d };
+    } else if (algo === "trezor") { // HW wallet
+        r = { 'priv': '' };
+        common.isHW = true;
     } else {
         //console.log("Unknown wallet encryption method");
         return false;
