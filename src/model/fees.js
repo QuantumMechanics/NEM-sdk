@@ -6,28 +6,28 @@ import Format from '../utils/format';
  *
  * @type {number}
  */
-const multisigTransaction = 6 * 1000000;
+const multisigTransaction = 3 * 1000000;
 
 /**
  * The provision namespace transaction rental fee for root namespace
  *
  * @type {number}
  */
-const rootProvisionNamespaceTransaction = 5000 * 1000000;
+const rootProvisionNamespaceTransaction = 100 * 1000000;
 
 /**
  * The provision namespace transaction rental fee for sub-namespace
  *
  * @type {number}
  */
-const subProvisionNamespaceTransaction = 200 * 1000000;
+const subProvisionNamespaceTransaction = 10 * 1000000;
 
 /**
  * The mosaic definition transaction fee
  *
  * @type {number}
  */
-const mosaicDefinitionTransaction = 500 * 1000000;
+const mosaicDefinitionTransaction = 10 * 1000000;
 
 /**
  * The common transaction fee for namespaces and mosaics
@@ -41,17 +41,23 @@ const namespaceAndMosaicCommon = 20 * 1000000;
  *
  * @type {number}
  */
-const signatureTransaction = 6 * 1000000;
+const signatureTransaction = 0.15 * 1000000;
 
 /**
- * Calculate message fee. 1 XEM per commenced 32 bytes
+ * Calculate message fee. 0.05 XEM per commenced 32 bytes
+ *
+ * If the message is empty, the fee will be 0
  *
  * @param {object} message - An message object
  *
  * @return {number} - The message fee
  */
 let calculateMessage = function (message) {
-	return Math.max(1, Math.floor((message.payload.length / 2) / 32) + 1);
+
+    if (!message.payload || !message.payload.length)
+        return 0.00;
+
+	return 0.05 * (Math.floor((message.payload.length / 2) / 32) + 1);
 }
 
 /**
@@ -82,7 +88,7 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
         let quantity = m.quantity;
         if (supply <= 10000 && divisibility === 0) {
             // Small business mosaic fee
-            fee = 1;
+            fee = 0.05;
         } else {
             let maxMosaicQuantity = 9000000000000000;
             let totalMosaicQuantity = supply * Math.pow(10, divisibility)
@@ -92,7 +98,7 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
             // Ex: 150'000 of nem:xem gives 149999.99999999997
             fee = calculateMinimum(Math.ceil(numNem));
         }
-        totalFee += Math.max(1, fee - supplyRelatedAdjustment);
+        totalFee += 0.05 * Math.max(1, fee - supplyRelatedAdjustment);
     }
     return Math.max(1, totalFee);
 }
@@ -100,13 +106,16 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
 /**
  * Calculate fees from an amount of XEM
  *
+ * Minimum is 0.05 XEM per rounddown(10000) XEM transfered
+ * capped at 1.25 XEM.
+ *
  * @param {number} numNem - An amount of XEM
  *
  * @return {number} - The minimum fee
  */
 let calculateMinimum = function(numNem) {
-    let fee = Math.floor(Math.max(1, numNem / 10000));
-    return fee > 25 ? 25 : fee;
+    let fee = 0.05 * Math.floor(Math.max(1, numNem / 10000));
+    return fee > 1.25 ? 1.25 : fee;
 }
 
 /**
