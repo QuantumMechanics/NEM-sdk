@@ -34,7 +34,7 @@ const mosaicDefinitionTransaction = 10 * 1000000;
  *
  * @type {number}
  */
-const namespaceAndMosaicCommon = 20 * 1000000;
+const namespaceAndMosaicCommon = 3 * 1000000;
 
 /**
  * The cosignature transaction fee
