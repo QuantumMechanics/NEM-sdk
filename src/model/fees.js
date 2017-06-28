@@ -2,11 +2,25 @@ import Helpers from '../utils/helpers';
 import Format from '../utils/format';
 
 /**
+ * The Fee structure's base fee
+ *
+ * @type {number}
+ */
+const baseTransactionFee = 3;
+
+/**
+ * The Fee structure's Fee factor
+ *
+ * @type {number}
+ */
+const feeFactor = 0.05;
+
+/**
  * The multisignature transaction fee
  *
  * @type {number}
  */
-const multisigTransaction = 3 * 1000000;
+const multisigTransaction = (baseTransactionFee * feeFactor) * 1000000;
 
 /**
  * The provision namespace transaction rental fee for root namespace
@@ -34,14 +48,14 @@ const mosaicDefinitionTransaction = 10 * 1000000;
  *
  * @type {number}
  */
-const namespaceAndMosaicCommon = 3 * 1000000;
+const namespaceAndMosaicCommon = (baseTransactionFee * feeFactor) * 1000000;
 
 /**
  * The cosignature transaction fee
  *
  * @type {number}
  */
-const signatureTransaction = 0.15 * 1000000;
+const signatureTransaction = (baseTransactionFee * feeFactor) * 1000000;
 
 /**
  * Calculate message fee. 0.05 XEM per commenced 32 bytes
