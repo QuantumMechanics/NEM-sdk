@@ -75,58 +75,22 @@ let getTransactionIndex = function(hash, array) {
 };
 
 /**
- * Parse uri to get hostname
- *
- * @param {string} uri - An uri string
- *
- * @return {string} - The uri hostname
- */
-let getHostname = function(uri) {
-    let _uriParser = document.createElement('a');
-    _uriParser.href = uri;
-    return _uriParser.hostname;
-}
-
-/**
  * Check if a cosignatory is already present in modifications array
  *
- * @param {string} address - A cosignatory address
  * @param {string} pubKey - A cosignatory public key
  * @param {array} array - A modifications array
  *
  * @return {boolean} - True if present, false otherwise
  */
-let haveCosig = function(address, pubKey, array) {
+let haveCosig = function(pubKey, array) {
     let i = null;
     for (i = 0; array.length > i; i++) {
-        if (array[i].address === address || array[i].pubKey === pubKey) {
+        if (array[i].cosignatoryAccount === pubKey) {
             return true;
         }
     }
     return false;
 };
-
-/**
- * Remove extension of a file name
- *
- * @param {string} filename - A file name with extension
- *
- * @return {string} - The file name without extension
- */
-let getFileName = function(filename) {
-    return filename.replace(/\.[^/.]+$/, "");
-};
-
-/**
- * Gets extension of a file name
- *
- * @param {string} filename - A file name with extension
- *
- * @return {string} - The file name extension
- */
-let getExtension = function(filename) {
-    return filename.split('.').pop();
-}
 
 /***
  * NEM epoch time
@@ -191,43 +155,6 @@ let isPublicKeyValid = function(publicKey) {
     } else {
         return true;
     }
-}
-
-/**
- * Check and format an url
- *
- * @param {string} node - A custom node from user input
- * @param {number} defaultWebsocketPort - A default websocket port
- *
- * @return {string|number} - The formatted node as string or 1
- */
-let checkAndFormatUrl = function (node, defaultWebsocketPort) {
-    // Detect if custom node doesn't begin with "http://"
-        var pattern = /^((http):\/\/)/;
-        if (!pattern.test(node)) {
-            node = "http://" + node;
-            let _uriParser = document.createElement('a');
-            _uriParser.href = node;
-            // If no port we add it
-            if (!_uriParser.port) {
-                node = node + ":" + defaultWebsocketPort;
-            } else if (_uriParser.port !== defaultWebsocketPort) {
-                // Port is not default websocket port
-                return 1;
-            }
-        } else {
-            // Start with "http://""
-            let _uriParser = document.createElement('a');
-            _uriParser.href = node;
-            // If no port we add it
-            if (!_uriParser.port) {
-                node = node + ":" + defaultWebsocketPort;
-            } else if (_uriParser.port !== defaultWebsocketPort) {
-                // Port is not default websocket port
-                return 1;
-            }
-        }
-        return node;
 }
  
 /**
@@ -393,15 +320,11 @@ module.exports = {
     needsSignature,
     haveTx,
     getTransactionIndex,
-    getHostname,
     haveCosig,
-    getFileName,
-    getExtension,
     createNEMTimeStamp,
     fixPrivateKey,
     isPrivateKeyValid,
     isPublicKeyValid,
-    checkAndFormatUrl,
     createTimeStamp,
     getTimestampShort,
     convertDateToString,
