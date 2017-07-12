@@ -2,6 +2,7 @@ import TransferTransaction from './transactions/transferTransaction';
 import SignatureTransaction from './transactions/signatureTransaction';
 import MosaicDefinitionTransaction from './transactions/mosaicDefinitionTransaction';
 import MosaicSupplyChangeTransaction from './transactions/mosaicSupplyChange';
+import MultisigAggregateModification from './transactions/multisigAggregateModificationTransaction';
 import NamespaceProvisionTransaction from './transactions/namespaceProvisionTransaction';
 import Send from './transactions/send';
 import Message from './transactions/message';
@@ -23,6 +24,9 @@ let prepare = function(objectName) {
             break;
         case "mosaicDefinitionTransaction":
             return MosaicDefinitionTransaction.prepare;
+            break;
+        case "multisigAggregateModificationTransaction":
+            return MultisigAggregateModification.prepare;
             break;
         case "namespaceProvisionTransaction":
             return NamespaceProvisionTransaction.prepare;

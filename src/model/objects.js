@@ -76,6 +76,12 @@ let _fetch = function(type, objectName) {
         case "mosaicSupplyChangeTransaction":
             return !type ? Transactions.mosaicSupplyChange() : Transactions.mosaicSupplyChange;
             break;
+        case "multisigAggregateModification":
+            return !type ? Transactions.multisigAggregateModification() : Transactions.multisigAggregateModification;
+            break;
+        case "multisigCosignatoryModification":
+            return !type ? Miscellaneous.multisigCosignatoryModification() : Miscellaneous.multisigCosignatoryModification;
+            break;
         case "namespaceProvisionTransaction":
             return !type ? Transactions.namespaceProvision() : Transactions.namespaceProvision;
             break;

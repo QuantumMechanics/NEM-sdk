@@ -48,8 +48,24 @@ let messageTypes = function() {
     }];
 }
 
+/**
+ * A multisig cosignatory modification object
+ *
+ * @param {number} type - 1 if an addition, 2 if deletion
+ * @param {string} publicKey - An account public key
+ *
+ * @return {object}
+ */
+let multisigCosignatoryModification = function(type, publicKey) {
+    return {
+        "modificationType": type || 1,
+        "cosignatoryAccount": publicKey
+    }
+}
+
 module.exports = {
     endpoint,
     common,
-    messageTypes
+    messageTypes,
+    multisigCosignatoryModification
 }

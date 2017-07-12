@@ -85,6 +85,20 @@ let mosaicSupplyChange = function() {
 }
 
 /**
+ * An un-prepared multisig aggregate modification transaction object
+ *
+ * @return {object}
+ */
+let multisigAggregateModification = function() {
+    return {
+        "modifications": [],
+        "relativeChange": null,
+        "isMultisig": false,
+        "multisigAccount" : ""
+    }
+}
+
+/**
  * An un-prepared namespace provision transaction object
  *
  * @param {string} namespaceName - A namespace name
@@ -124,6 +138,7 @@ let commonPart = function(txtype, senderPublicKey, timeStamp, due, version, netw
 }
 
 module.exports = {
+    multisigAggregateModification,
     transfer,
     signature,
     mosaicDefinition,
