@@ -1,6 +1,6 @@
 {
   "name": "nem-sdk",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "NEM Developer Kit for Node.js and the browser",
   "main": "build/index.js",
   "repository": {
