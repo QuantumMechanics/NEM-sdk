@@ -21,7 +21,7 @@ let prepare = function(common, tx, network) {
     let due = network === Network.data.testnet.id ? 60 : 24 * 60;
     let entity = _construct(actualSender, tx.mosaic, tx.supplyType, tx.delta, due, network);
     if (tx.isMultisig) {
-        entity = MultisigWrapper(kp.publicKey.toString(), entity, due);
+        entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
     }
     return entity;
 }

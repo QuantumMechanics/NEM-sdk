@@ -29,7 +29,7 @@ let prepare = function(common, tx, network){
     let due = network === Network.data.testnet.id ? 60 : 24 * 60;
     let entity = _construct(actualSender, rentalFeeSink, rentalFee, namespaceParent, mosaicName, mosaicDescription, mosaicProperties, levy, due, network);
     if (tx.isMultisig) {
-        entity = MultisigWrapper(kp.publicKey.toString(), entity, due);
+        entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
     }
     return entity;
 }
