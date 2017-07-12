@@ -3,7 +3,7 @@
  *
  * @type {string}
  */
-let defaultTestnet = 'http://bob.nem.ninja';
+let defaultTestnet = 'http://bigalice2.nem.ninja';
 
 /**
  * The default mainnet node
