@@ -74,9 +74,18 @@ let derivePassSha = function(password, count) {
  */
 let passwordToPrivatekey = function(common, walletAccount, algo) {
     // Errors
-    if(!common || !common.password || !walletAccount || !algo) throw new Error('Missing argument !');
-    // Processing
+    if(!common || !walletAccount || !algo) throw new Error('Missing argument !');
+
     let r = undefined;
+
+    if (algo === "trezor") { // HW wallet
+        r = { 'priv': '' };
+        common.isHW = true;
+    } else if (!common.password) {
+        throw new Error('Missing argument !');
+    }
+
+    // Processing
     if (algo === "pass:6k") { // Brain wallets
         if (!walletAccount.encrypted && !walletAccount.iv) {
             // Account private key is generated simply using a passphrase so it has no encrypted and iv
@@ -114,10 +123,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
         };
         let d = decrypt(obj);
         r = { 'priv': d };
-    } else if (algo === "trezor") { // HW wallet
-        r = { 'priv': '' };
-        common.isHW = true;
-    } else {
+    } else if (!r) {
         //console.log("Unknown wallet encryption method");
         return false;
     }
