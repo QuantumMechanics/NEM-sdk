@@ -2,6 +2,7 @@ import Network from '../network';
 import Helpers from '../../utils/helpers';
 import TransactionTypes from '../transactionTypes';
 import KeyPair from '../../crypto/keyPair';
+import Fees from '../fees';
 import Objects from '../objects';
 import Address from '../address';
 import MultisigWrapper from './multisigWrapper';
@@ -44,7 +45,7 @@ let _construct = function(senderPublicKey, modifications, relativeChange, isMult
     let hasNoRelativeChange = relativeChange === null || relativeChange === 0;
     let version = hasNoRelativeChange ? Network.getVersion(1, network) : Network.getVersion(2, network);
     let data = Objects.create("commonTransactionPart")(TransactionTypes.multisigModification, senderPublicKey, timeStamp, due, version);
-    let totalFee = (10 + 6 * modifications.length + (hasNoRelativeChange ? 0 : 6)) * 1000000;
+    let totalFee = Fees.multisigAggregateModificationTransaction;
     let custom = {
         'fee': totalFee,
         'modifications': modifications,
