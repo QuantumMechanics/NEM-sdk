@@ -116,6 +116,23 @@ let namespaceProvision = function(namespaceName, namespaceParent) {
 }
 
 /**
+ * An un-prepared importance transfer transaction object
+ *
+ * @param {string} remoteAccount - A remote public key
+ * @param {number} mode - 1 for activating, 2 for deactivating
+ *
+ * @return {object}
+ */
+let importanceTransfer = function(remoteAccount, mode) {
+    return {
+        "remoteAccount": remoteAccount || "",
+        "mode": mode || "",
+        "isMultisig": false,
+        "multisigAccount" : ""
+    }
+}
+
+/**
  * The common part of transactions
  *
  * @param {number} txType - A type of transaction
@@ -144,5 +161,6 @@ module.exports = {
     mosaicDefinition,
     mosaicSupplyChange,
     namespaceProvision,
+    importanceTransfer,
     commonPart
 }

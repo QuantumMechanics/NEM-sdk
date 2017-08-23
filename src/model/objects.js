@@ -85,6 +85,9 @@ let _fetch = function(type, objectName) {
         case "namespaceProvisionTransaction":
             return !type ? Transactions.namespaceProvision() : Transactions.namespaceProvision;
             break;
+        case "importanceTransferTransaction":
+            return !type ? Transactions.importanceTransfer() : Transactions.importanceTransfer;
+            break;
         case "wallet":
             return !type ? Wallet() : Wallet;
             break;
