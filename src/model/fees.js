@@ -57,6 +57,22 @@ const namespaceAndMosaicCommon = (baseTransactionFee * currentFeeFactor) * 10000
  */
 const signatureTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
 
+
+/**
+ * The importance transfer transaction fee
+ *
+ * @type {number}
+ */
+const importanceTransferTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
+
+/**
+ * The multisignature aggregate modification transaction fee
+ *
+ * @type {number}
+ */
+const multisigAggregateModificationTransaction = (10 * currentFeeFactor) * 1000000;
+
+
 /**
  * Calculate message fee. 0.05 XEM per commenced 32 bytes
  *
@@ -157,5 +173,8 @@ module.exports = {
     calculateMosaics,
     calculateMinimum,
     calculateMessage,
-    calculateXemEquivalent
+    calculateXemEquivalent,
+    currentFeeFactor,
+    importanceTransferTransaction,
+    multisigAggregateModificationTransaction
 }
