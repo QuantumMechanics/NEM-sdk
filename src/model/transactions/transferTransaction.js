@@ -80,7 +80,7 @@ let _construct = function(senderPublicKey, recipientCompressedKey, amount, messa
     let version = mosaics ? Network.getVersion(2, network) : Network.getVersion(1, network);
     let data = Objects.create("commonTransactionPart")(TransactionTypes.transfer, senderPublicKey, timeStamp, due, version);
     let msgFee = message.payload.length ? Fees.calculateMessage(message) : 0;
-    let fee = mosaics ? mosaicsFee : Fees.calculateMinimum(amount / 1000000);
+    let fee = mosaics ? mosaicsFee : Fees.currentFeeFactor * Fees.calculateMinimum(amount / 1000000);
     let totalFee = (msgFee + fee) * 1000000;
     let custom = {
         'recipient': recipientCompressedKey.toUpperCase().replace(/-/g, ''),
