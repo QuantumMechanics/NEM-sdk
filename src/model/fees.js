@@ -2,56 +2,76 @@ import Helpers from '../utils/helpers';
 import Format from '../utils/format';
 
 /**
+ * The Fee structure's base fee
+ *
+ * @type {number}
+ */
+const baseTransactionFee = 3;
+
+/**
+ * The Fee structure's Fee factor
+ *
+ * @type {number}
+ */
+const currentFeeFactor = 0.05;
+
+/**
  * The multisignature transaction fee
  *
  * @type {number}
  */
-const multisigTransaction = 6 * 1000000;
+const multisigTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
 
 /**
  * The provision namespace transaction rental fee for root namespace
  *
  * @type {number}
  */
-const rootProvisionNamespaceTransaction = 5000 * 1000000;
+const rootProvisionNamespaceTransaction = 100 * 1000000;
 
 /**
  * The provision namespace transaction rental fee for sub-namespace
  *
  * @type {number}
  */
-const subProvisionNamespaceTransaction = 200 * 1000000;
+const subProvisionNamespaceTransaction = 10 * 1000000;
 
 /**
  * The mosaic definition transaction fee
  *
  * @type {number}
  */
-const mosaicDefinitionTransaction = 500 * 1000000;
+const mosaicDefinitionTransaction = 10 * 1000000;
 
 /**
  * The common transaction fee for namespaces and mosaics
  *
  * @type {number}
  */
-const namespaceAndMosaicCommon = 20 * 1000000;
+const namespaceAndMosaicCommon = (baseTransactionFee * currentFeeFactor) * 1000000;
 
 /**
  * The cosignature transaction fee
  *
  * @type {number}
  */
-const signatureTransaction = 6 * 1000000;
+const signatureTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
 
 /**
- * Calculate message fee. 1 XEM per commenced 32 bytes
+ * Calculate message fee. 0.05 XEM per commenced 32 bytes
+ *
+ * If the message is empty, the fee will be 0
  *
  * @param {object} message - An message object
  *
  * @return {number} - The message fee
  */
-let calculateMessage = function (message) {
-	return Math.max(1, Math.floor((message.payload.length / 2) / 32) + 1);
+let calculateMessage = function(message) {
+
+    if (!message.payload || !message.payload.length)
+        return 0.00;
+
+    return currentFeeFactor * (Math.floor((message.payload.length / 2) / 32) + 1);
 }
 
 /**
@@ -63,7 +83,7 @@ let calculateMessage = function (message) {
  *
  * @return {number} - The fee amount for the mosaics in the transaction
  */
-let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
+let calculateMosaics = function(multiplier, mosaics, attachedMosaics) {
     let totalFee = 0;
     let fee = 0;
     let supplyRelatedAdjustment = 0;
@@ -82,7 +102,7 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
         let quantity = m.quantity;
         if (supply <= 10000 && divisibility === 0) {
             // Small business mosaic fee
-            fee = 1;
+            fee = currentFeeFactor;
         } else {
             let maxMosaicQuantity = 9000000000000000;
             let totalMosaicQuantity = supply * Math.pow(10, divisibility)
@@ -92,9 +112,9 @@ let calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
             // Ex: 150'000 of nem:xem gives 149999.99999999997
             fee = calculateMinimum(Math.ceil(numNem));
         }
-        totalFee += Math.max(1, fee - supplyRelatedAdjustment);
+        totalFee += currentFeeFactor * Math.max(1, fee - supplyRelatedAdjustment);
     }
-    return Math.max(1, totalFee);
+    return totalFee;
 }
 
 /**
