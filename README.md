@@ -555,6 +555,7 @@ If anyone has a solution to that, it is welcome.
 
 #### `nem.com.websockets.connector`
 - `create`: Create a connector object
+- `close`: Close the websocket connection 
 
 #### `nem.com.websockets.subscribe`
 - `errors`: Subscribes to error channel
