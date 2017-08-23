@@ -16,6 +16,12 @@ let prepare = function(common, tx) {
             'type': 2,
             'payload': CryptoHelpers.encode(common.privateKey, tx.recipientPublicKey, tx.message.toString())
         };
+    } else if (tx.messageType === 2 && common.isHW) {
+        return {
+            'type': 2,
+            'payload': Convert.utf8ToHex(tx.message.toString()),
+            'publicKey': tx.recipientPublicKey
+        };
     } else if(tx.messageType === 0 && Helpers.isHexadecimal(tx.message.toString())) {
         return {
             'type': 1,
