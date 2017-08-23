@@ -103,8 +103,6 @@ let searchOnMijin = [
  */
 let testnet = [
 	{
-	    uri: 'http://bob.nem.ninja'
-	}, {
 	        uri: 'http://104.128.226.60'
 	}, {
 	        uri: 'http://23.228.67.85'
