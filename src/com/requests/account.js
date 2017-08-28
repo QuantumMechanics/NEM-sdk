@@ -12,7 +12,7 @@ import Send from './send';
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 let data = function(endpoint, address) {
-	if (!Address.isValid(identifier)) {
+	if (!Address.isValid(address)) {
 		throw new Error('Invalid Address');
 	}
 	// Configure the request
