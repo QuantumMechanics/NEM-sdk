@@ -1,9 +1,10 @@
 import Helpers from '../../utils/helpers';
+import Address from '../../model/address';
 import Headers from './headers';
 import Send from './send';
 
 /**
- * Gets the AccountMetaDataPair of an account.
+ * Gets the AccountMetaDataPair of an account with an address.
  *
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
@@ -11,12 +12,39 @@ import Send from './send';
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 let data = function(endpoint, address) {
+	if (!Address.isValid(address)) {
+		throw new Error('Invalid Address');
+	}
 	// Configure the request
 	var options = {
 	    url: Helpers.formatEndpoint(endpoint) + '/account/get',
 	    method: 'GET',
 	    headers: Headers.urlEncoded,
 	    qs: {'address': address}
+	}
+	// Send the request
+	return Send(options);
+}
+
+/**
+ * Gets the AccountMetaDataPair of an account with a public Key.
+ *
+ * @param {object} endpoint - An NIS endpoint object
+ * @param {string} publicKey - An account public key
+ *
+ * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
+ */
+let dataFromPublicKey = function(endpoint, publicKey) {
+
+	if (!Helpers.isPublicKeyValid(publicKey)) {
+		throw new Error('Invalid Puplic key');
+	}
+	// Configure the public key request
+	const options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/account/get/from-public-key',
+	    method: 'GET',
+	    headers: Headers.urlEncoded,
+	    qs: {'publicKey': publicKey}
 	}
 	// Send the request
 	return Send(options);
@@ -305,6 +333,7 @@ let allTransactions = function(endpoint, address, txHash, txId){
 
 module.exports = {
 	data,
+	dataFromPublicKey,
 	unlockInfo,
 	forwarded,
 	mosaics: {
