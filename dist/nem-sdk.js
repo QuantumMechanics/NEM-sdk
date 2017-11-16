@@ -42565,7 +42565,7 @@ module.exports={
         "spec": ">=6.0.0 <7.0.0",
         "type": "range"
       },
-      "/home/jim/Bureau/sdfghjkl/update-2.0/NEM-sdk-master/node_modules/browserify-sign"
+      ""
     ]
   ],
   "_from": "elliptic@>=6.0.0 <7.0.0",
@@ -42600,7 +42600,7 @@ module.exports={
   "_shasum": "cac9af8762c85836187003c8dfe193e5e2eae5df",
   "_shrinkwrap": null,
   "_spec": "elliptic@^6.0.0",
-  "_where": "/home/jim/Bureau/sdfghjkl/update-2.0/NEM-sdk-master/node_modules/browserify-sign",
+  "_where": "",
   "author": {
     "name": "Fedor Indutny",
     "email": "fedor@indutny.com"
@@ -86609,7 +86609,7 @@ module.exports={
         "spec": ">=2.3.0 <2.4.0",
         "type": "range"
       },
-      "/home/jim/Bureau/sdfghjkl/update-2.0/NEM-sdk-master/node_modules/request"
+      ""
     ]
   ],
   "_from": "tough-cookie@>=2.3.0 <2.4.0",
@@ -86643,7 +86643,7 @@ module.exports={
   "_shasum": "0b618a5565b6dea90bf3425d04d55edc475a7561",
   "_shrinkwrap": null,
   "_spec": "tough-cookie@~2.3.0",
-  "_where": "/home/jim/Bureau/sdfghjkl/update-2.0/NEM-sdk-master/node_modules/request",
+  "_where": "",
   "author": {
     "name": "Jeremy Stashewsky",
     "email": "jstashewsky@salesforce.com"
