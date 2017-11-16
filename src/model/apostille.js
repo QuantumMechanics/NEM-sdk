@@ -50,13 +50,13 @@ const hashing = {
  * @return {string} - The file hash with checksum
  */
 let hashFileData = function(data, hashing, isPrivate) {
-    // Full checksum is 0xFE + 0x4E + 0x54 + 0x59 + hashing version byte
+    // Full checksum is 0xFE (added automatically if hex txes) + 0x4E + 0x54 + 0x59 + hashing version byte
     let checksum;
     // Append byte to checksum
     if (isPrivate) {
-        checksum = "fe4e5459" + hashing.signedVersion;
+        checksum = "4e5459" + hashing.signedVersion;
     } else {
-        checksum = "fe4e5459" + hashing.version;
+        checksum = "4e5459" + hashing.version;
     }
     // Build the apostille hash
     if (hashing.name === "MD5") {
@@ -102,9 +102,9 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
         // Create hash from file content and selected hashing
         let hash = hashFileData(fileContent, hashing, isPrivate);
         // Get checksum
-        let checksum = hash.substring(0, 10);
+        let checksum = hash.substring(0, 8);
         // Get hash without checksum
-        let dataHash = hash.substring(10);
+        let dataHash = hash.substring(8);
         // Set checksum + signed hash as message
         apostilleHash = checksum + kp.sign(dataHash).toString();
     } else {
@@ -118,6 +118,8 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
 
 	// Create transfer transaction object
 	let transaction = modelObjects.create("transferTransaction")(dedicatedAccount.address, 0, apostilleHash);
+    // Set message type to hexadecimal
+    transaction.messageType = 0;
 	// Prepare the transfer transaction object
 	let transactionEntity = Transactions.prepare("transferTransaction")(common, transaction, network);
 
@@ -125,11 +127,11 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
 		"data": {
 			"file": {
 				"name": fileName,
-				"hash": apostilleHash.substring(10),
+				"hash": apostilleHash.substring(8),
 				"content": fileContent
 			},
-			"hash": apostilleHash,
-			"checksum": apostilleHash.substring(0, 10),
+			"hash": "fe" + apostilleHash,
+            "checksum": "fe" + apostilleHash.substring(0, 8),
 			"dedicatedAccount": {
 				"address": dedicatedAccount.address,
 				"privateKey": dedicatedAccount.privateKey
