@@ -20,7 +20,7 @@ const currentFeeFactor = 0.05;
  *
  * @type {number}
  */
-const multisigTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
+const multisigTransaction = Math.floor((baseTransactionFee * currentFeeFactor) * 1000000);
 
 /**
  * The provision namespace transaction rental fee for root namespace
@@ -48,14 +48,14 @@ const mosaicDefinitionTransaction = 10 * 1000000;
  *
  * @type {number}
  */
-const namespaceAndMosaicCommon = (baseTransactionFee * currentFeeFactor) * 1000000;
+const namespaceAndMosaicCommon = Math.floor((baseTransactionFee * currentFeeFactor) * 1000000);
 
 /**
  * The cosignature transaction fee
  *
  * @type {number}
  */
-const signatureTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
+const signatureTransaction = Math.floor((baseTransactionFee * currentFeeFactor) * 1000000);
 
 
 /**
@@ -63,14 +63,14 @@ const signatureTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
  *
  * @type {number}
  */
-const importanceTransferTransaction = (baseTransactionFee * currentFeeFactor) * 1000000;
+const importanceTransferTransaction = Math.floor((baseTransactionFee * currentFeeFactor) * 1000000);
 
 /**
  * The multisignature aggregate modification transaction fee
  *
  * @type {number}
  */
-const multisigAggregateModificationTransaction = (10 * currentFeeFactor) * 1000000;
+const multisigAggregateModificationTransaction = Math.floor((10 * currentFeeFactor) * 1000000);
 
 
 /**
