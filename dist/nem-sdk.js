@@ -5,10 +5,6 @@ var _helpers = require('../../utils/helpers');
 
 var _helpers2 = _interopRequireDefault(_helpers);
 
-var _address = require('../../model/address');
-
-var _address2 = _interopRequireDefault(_address);
-
 var _headers = require('./headers');
 
 var _headers2 = _interopRequireDefault(_headers);
@@ -20,7 +16,7 @@ var _send2 = _interopRequireDefault(_send);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * Gets the AccountMetaDataPair of an account with an address.
+ * Gets the AccountMetaDataPair of an account.
  *
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
@@ -28,9 +24,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 var data = function data(endpoint, address) {
-	if (!_address2.default.isValid(address)) {
-		throw new Error('Invalid Address');
-	}
 	// Configure the request
 	var options = {
 		url: _helpers2.default.formatEndpoint(endpoint) + '/account/get',
@@ -50,10 +43,6 @@ var data = function data(endpoint, address) {
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 var dataFromPublicKey = function dataFromPublicKey(endpoint, publicKey) {
-
-	if (!_helpers2.default.isPublicKeyValid(publicKey)) {
-		throw new Error('Invalid Puplic key');
-	}
 	// Configure the public key request
 	var options = {
 		url: _helpers2.default.formatEndpoint(endpoint) + '/account/get/from-public-key',
@@ -184,8 +173,8 @@ var startHarvesting = function startHarvesting(endpoint, privateKey) {
 	var options = {
 		url: _helpers2.default.formatEndpoint(endpoint) + '/account/unlock',
 		method: 'POST',
-		headers: _headers2.default.urlEncoded,
-		qs: { 'value': privateKey }
+		json: true,
+		body: { 'value': privateKey }
 		// Send the request
 	};return (0, _send2.default)(options);
 };
@@ -203,8 +192,8 @@ var stopHarvesting = function stopHarvesting(endpoint, privateKey) {
 	var options = {
 		url: _helpers2.default.formatEndpoint(endpoint) + '/account/lock',
 		method: 'POST',
-		headers: _headers2.default.urlEncoded,
-		qs: { 'value': privateKey }
+		json: true,
+		body: { 'value': privateKey }
 		// Send the request
 	};return (0, _send2.default)(options);
 };
@@ -358,7 +347,7 @@ module.exports = {
 	}
 };
 
-},{"../../model/address":22,"../../utils/helpers":50,"./headers":5,"./send":9}],2:[function(require,module,exports){
+},{"../../utils/helpers":50,"./headers":5,"./send":9}],2:[function(require,module,exports){
 'use strict';
 
 var _send = require('./send');
@@ -781,19 +770,63 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * Gets all nodes of the node reward program
  *
- * @return {array} - An array of SuperNodeData objects
+ * @return {array} - An array of SuperNodeInfo objects
  */
 var all = function all() {
-	// Configure the request
-	var options = {
-		url: _nodes2.default.supernodes,
-		method: 'GET'
-		// Send the request
-	};return (0, _send2.default)(options);
+  // Configure the request
+  var options = {
+    url: _nodes2.default.supernodes,
+    method: 'GET'
+    // Send the request
+  };return (0, _send2.default)(options);
+};
+
+/**
+ * Gets the nearest supernodes
+ *
+ * @param {object} coords - A coordinates object: https://www.w3schools.com/html/html5_geolocation.asp
+ *
+ * @return {array} - An array of supernodeInfo objects
+ */
+var nearest = function nearest(coords) {
+  var obj = {
+    "latitude": coords.latitude,
+    "longitude": coords.longitude,
+    "numNodes": 5
+    // Configure the request
+  };var options = {
+    url: 'http://199.217.113.179:7782/nodes/nearest',
+    method: 'POST',
+    json: true,
+    body: obj
+    // Send the request
+  };return (0, _send2.default)(options);
+};
+
+/**
+ * Gets the all supernodes by status
+ *
+ * @param {number} status - 0 for all nodes, 1 for active nodes, 2 for inactive nodes
+ *
+ * @return {array} - An array of supernodeInfo objects
+ */
+var get = function get(status) {
+  var obj = {
+    "status": undefined === status ? 1 : status
+    // Configure the request
+  };var options = {
+    url: 'http://199.217.113.179:7782/nodes',
+    method: 'POST',
+    json: true,
+    body: obj
+    // Send the request
+  };return (0, _send2.default)(options);
 };
 
 module.exports = {
-	all: all
+  all: all,
+  nearest: nearest,
+  get: get
 };
 
 },{"../../model/nodes":26,"./send":9}],11:[function(require,module,exports){
@@ -6285,12 +6318,13 @@ var hashing = {
  * @param {string} tags - The apostille tags
  * @param {object} hashing - An hashing object
  * @param {boolean} isMultisig - True if transaction is multisig, false otherwise
+ * @param {object} multisigAccount - An [AccountInfo]{@link https://bob.nem.ninja/docs/#accountInfo} object
  * @param {boolean} isPrivate - True if apostille is private / transferable / updateable, false if public
  * @param {number} network - A network id
  *
  * @return {object} - An apostille object containing apostille data and the prepared transaction ready to be sent
  */
-var create = function create(common, fileName, fileContent, tags, hashing, isMultisig, isPrivate, network) {
+var create = function create(common, fileName, fileContent, tags, hashing, isMultisig, multisigAccount, isPrivate, network) {
     var dedicatedAccount = {};
     var apostilleHash = void 0;
     //
@@ -6318,6 +6352,9 @@ var create = function create(common, fileName, fileContent, tags, hashing, isMul
 
     // Create transfer transaction object
     var transaction = _objects2.default.create("transferTransaction")(dedicatedAccount.address, 0, apostilleHash);
+    // Multisig
+    transaction.isMultisig = isMultisig;
+    transaction.multisigAccount = multisigAccount;
     // Set message type to hexadecimal
     transaction.messageType = 0;
     // Prepare the transfer transaction object
@@ -6445,7 +6482,8 @@ module.exports = {
     create: create,
     generateAccount: generateAccount,
     hashing: hashing,
-    verify: verify
+    verify: verify,
+    isSigned: isSigned
 };
 
 },{"../crypto/keyPair":18,"../model/address":22,"../model/objects":27,"../model/sinks":34,"../model/transactions":36,"../utils/convert":48,"../utils/helpers":50,"crypto-js":178}],24:[function(require,module,exports){
@@ -6480,7 +6518,7 @@ var currentFeeFactor = 0.05;
  *
  * @type {number}
  */
-var multisigTransaction = baseTransactionFee * currentFeeFactor * 1000000;
+var multisigTransaction = Math.floor(baseTransactionFee * currentFeeFactor * 1000000);
 
 /**
  * The provision namespace transaction rental fee for root namespace
@@ -6508,28 +6546,28 @@ var mosaicDefinitionTransaction = 10 * 1000000;
  *
  * @type {number}
  */
-var namespaceAndMosaicCommon = baseTransactionFee * currentFeeFactor * 1000000;
+var namespaceAndMosaicCommon = Math.floor(baseTransactionFee * currentFeeFactor * 1000000);
 
 /**
  * The cosignature transaction fee
  *
  * @type {number}
  */
-var signatureTransaction = baseTransactionFee * currentFeeFactor * 1000000;
+var signatureTransaction = Math.floor(baseTransactionFee * currentFeeFactor * 1000000);
 
 /**
  * The importance transfer transaction fee
  *
  * @type {number}
  */
-var importanceTransferTransaction = baseTransactionFee * currentFeeFactor * 1000000;
+var importanceTransferTransaction = Math.floor(baseTransactionFee * currentFeeFactor * 1000000);
 
 /**
  * The multisignature aggregate modification transaction fee
  *
  * @type {number}
  */
-var multisigAggregateModificationTransaction = 10 * currentFeeFactor * 1000000;
+var multisigAggregateModificationTransaction = Math.floor(10 * currentFeeFactor * 1000000);
 
 /**
  * Calculate message fee. 0.05 XEM per commenced 32 bytes
@@ -8531,7 +8569,7 @@ var _construct = function _construct(senderPublicKey, recipientCompressedKey, am
     var data = _objects2.default.create("commonTransactionPart")(_transactionTypes2.default.transfer, senderPublicKey, timeStamp, due, version);
     var msgFee = message.payload.length ? _fees2.default.calculateMessage(message) : 0;
     var fee = mosaics ? mosaicsFee : _fees2.default.currentFeeFactor * _fees2.default.calculateMinimum(amount / 1000000);
-    var totalFee = (msgFee + fee) * 1000000;
+    var totalFee = Math.floor((msgFee + fee) * 1000000);
     var custom = {
         'recipient': recipientCompressedKey.toUpperCase().replace(/-/g, ''),
         'amount': amount,
