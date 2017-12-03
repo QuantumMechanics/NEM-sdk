@@ -1,10 +1,9 @@
 import Helpers from '../../utils/helpers';
-import Address from '../../model/address';
 import Headers from './headers';
 import Send from './send';
 
 /**
- * Gets the AccountMetaDataPair of an account with an address.
+ * Gets the AccountMetaDataPair of an account.
  *
  * @param {object} endpoint - An NIS endpoint object
  * @param {string} address - An account address
@@ -12,9 +11,6 @@ import Send from './send';
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 let data = function(endpoint, address) {
-	if (!Address.isValid(address)) {
-		throw new Error('Invalid Address');
-	}
 	// Configure the request
 	var options = {
 	    url: Helpers.formatEndpoint(endpoint) + '/account/get',
@@ -35,10 +31,6 @@ let data = function(endpoint, address) {
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
 let dataFromPublicKey = function(endpoint, publicKey) {
-
-	if (!Helpers.isPublicKeyValid(publicKey)) {
-		throw new Error('Invalid Puplic key');
-	}
 	// Configure the public key request
 	const options = {
 	    url: Helpers.formatEndpoint(endpoint) + '/account/get/from-public-key',
@@ -175,8 +167,8 @@ let startHarvesting = function(endpoint, privateKey){
 	var options = {
 	    url: Helpers.formatEndpoint(endpoint) + '/account/unlock',
 	    method: 'POST',
-	    headers: Headers.urlEncoded,
-		qs: {'value': privateKey}
+	    json: true,
+		body: {'value': privateKey}
 	}
 	// Send the request
 	return Send(options);
@@ -195,8 +187,8 @@ let stopHarvesting = function(endpoint, privateKey){
 	var options = {
 	    url: Helpers.formatEndpoint(endpoint) + '/account/lock',
 	    method: 'POST',
-	    headers: Headers.urlEncoded,
-		qs: {'value': privateKey}
+	    json: true,
+		body: {'value': privateKey}
 	}
 	// Send the request
 	return Send(options);
