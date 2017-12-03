@@ -85,12 +85,13 @@ let hashFileData = function(data, hashing, isPrivate) {
  * @param {string} tags - The apostille tags
  * @param {object} hashing - An hashing object
  * @param {boolean} isMultisig - True if transaction is multisig, false otherwise
+ * @param {object} multisigAccount - An [AccountInfo]{@link https://bob.nem.ninja/docs/#accountInfo} object
  * @param {boolean} isPrivate - True if apostille is private / transferable / updateable, false if public
  * @param {number} network - A network id
  *
  * @return {object} - An apostille object containing apostille data and the prepared transaction ready to be sent
  */
-let create = function(common, fileName, fileContent, tags, hashing, isMultisig, isPrivate, network) {
+let create = function(common, fileName, fileContent, tags, hashing, isMultisig, multisigAccount, isPrivate, network) {
 	let dedicatedAccount = {};
 	let apostilleHash;
 	//
@@ -118,6 +119,9 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
 
 	// Create transfer transaction object
 	let transaction = modelObjects.create("transferTransaction")(dedicatedAccount.address, 0, apostilleHash);
+    // Multisig
+    transaction.isMultisig = isMultisig;
+    transaction.multisigAccount = multisigAccount;
     // Set message type to hexadecimal
     transaction.messageType = 0;
 	// Prepare the transfer transaction object
@@ -131,7 +135,7 @@ let create = function(common, fileName, fileContent, tags, hashing, isMultisig, 
 				"content": fileContent
 			},
 			"hash": "fe" + apostilleHash,
-            "checksum": "fe" + apostilleHash.substring(0, 8),
+			"checksum": "fe" + apostilleHash.substring(0, 8),
 			"dedicatedAccount": {
 				"address": dedicatedAccount.address,
 				"privateKey": dedicatedAccount.privateKey
@@ -246,5 +250,6 @@ module.exports = {
     create,
     generateAccount,
     hashing,
-    verify
+    verify,
+    isSigned
 }
