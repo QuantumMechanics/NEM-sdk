@@ -1,6 +1,6 @@
 {
   "name": "nem-sdk",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "NEM Developer Kit for Node.js and the browser",
   "main": "build/index.js",
   "repository": {
@@ -35,6 +35,6 @@
     "mocha": "^2.4.5",
     "through": "2.3.8",
     "duplexer": "0.1.1",
-    "uglify-js": "~1.3.5"
+    "uglify-js": "~2.6.0"
   }
 }
