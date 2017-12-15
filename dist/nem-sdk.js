@@ -6620,14 +6620,20 @@ var multisigAggregateModificationTransaction = Math.floor(10 * currentFeeFactor 
  * If the message is empty, the fee will be 0
  *
  * @param {object} message - An message object
+ * @param {boolean} isHW - True if hardware wallet, false otherwise
  *
  * @return {number} - The message fee
  */
-var calculateMessage = function calculateMessage(message) {
+var calculateMessage = function calculateMessage(message, isHW) {
 
   if (!message.payload || !message.payload.length) return 0.00;
 
-  return currentFeeFactor * (Math.floor(message.payload.length / 2 / 32) + 1);
+  var length = message.payload.length / 2;
+
+  // Add salt and IV and round up to AES block size
+  if (isHW && message.type == 2) length = 32 + 16 + Math.ceil(length / 16) * 16;
+
+  return currentFeeFactor * (Math.floor(length / 32) + 1);
 };
 
 /**
@@ -8557,10 +8563,11 @@ var prepare = function prepare(common, tx, network) {
     var recipientCompressedKey = tx.recipient.toString();
     var amount = Math.round(tx.amount * 1000000);
     var message = _message2.default.prepare(common, tx);
+    var msgFee = _fees2.default.calculateMessage(message, common.isHW);
     var due = network === _network2.default.data.testnet.id ? 60 : 24 * 60;
     var mosaics = null;
     var mosaicsFee = null;
-    var entity = _construct(actualSender, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network);
+    var entity = _construct(actualSender, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network);
     if (tx.isMultisig) {
         entity = (0, _multisigWrapper2.default)(kp.publicKey.toString(), entity, due, network);
     }
@@ -8584,10 +8591,11 @@ var prepareMosaic = function prepareMosaic(common, tx, mosaicDefinitionMetaDataP
     var recipientCompressedKey = tx.recipient.toString();
     var amount = Math.round(tx.amount * 1000000);
     var message = _message2.default.prepare(common, tx);
+    var msgFee = _fees2.default.calculateMessage(message, common.isHW);
     var due = network === _network2.default.data.testnet.id ? 60 : 24 * 60;
     var mosaics = tx.mosaics;
     var mosaicsFee = _fees2.default.calculateMosaics(amount, mosaicDefinitionMetaDataPair, mosaics);
-    var entity = _construct(actualSender, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network);
+    var entity = _construct(actualSender, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network);
     if (tx.isMultisig) {
         entity = (0, _multisigWrapper2.default)(kp.publicKey.toString(), entity, due, network);
     }
@@ -8608,11 +8616,10 @@ var prepareMosaic = function prepareMosaic(common, tx, mosaicDefinitionMetaDataP
  *
  * @return {object} - A [TransferTransaction]{@link http://bob.nem.ninja/docs/#transferTransaction} object
  */
-var _construct = function _construct(senderPublicKey, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network) {
+var _construct = function _construct(senderPublicKey, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network) {
     var timeStamp = _helpers2.default.createNEMTimeStamp();
     var version = mosaics ? _network2.default.getVersion(2, network) : _network2.default.getVersion(1, network);
     var data = _objects2.default.create("commonTransactionPart")(_transactionTypes2.default.transfer, senderPublicKey, timeStamp, due, version);
-    var msgFee = message.payload.length ? _fees2.default.calculateMessage(message) : 0;
     var fee = mosaics ? mosaicsFee : _fees2.default.currentFeeFactor * _fees2.default.calculateMinimum(amount / 1000000);
     var totalFee = Math.floor((msgFee + fee) * 1000000);
     var custom = {
