@@ -79,15 +79,22 @@ const multisigAggregateModificationTransaction = Math.floor((10 * currentFeeFact
  * If the message is empty, the fee will be 0
  *
  * @param {object} message - An message object
+ * @param {boolean} isHW - True if hardware wallet, false otherwise
  *
  * @return {number} - The message fee
  */
-let calculateMessage = function(message) {
+let calculateMessage = function(message, isHW) {
 
     if (!message.payload || !message.payload.length)
         return 0.00;
 
-    return currentFeeFactor * (Math.floor((message.payload.length / 2) / 32) + 1);
+    let length = message.payload.length / 2;
+
+    // Add salt and IV and round up to AES block size
+    if (isHW && message.type == 2)
+        length = 32 + 16 + Math.ceil(length / 16) * 16;
+
+    return currentFeeFactor * (Math.floor(length / 32) + 1);
 }
 
 /**

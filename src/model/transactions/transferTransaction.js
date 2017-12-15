@@ -23,10 +23,11 @@ let prepare = function(common, tx, network){
     let recipientCompressedKey = tx.recipient.toString();
     let amount = Math.round(tx.amount * 1000000);
     let message = Message.prepare(common, tx);
+    let msgFee = Fees.calculateMessage(message, common.isHW);
     let due = network === Network.data.testnet.id ? 60 : 24 * 60;
     let mosaics = null;
     let mosaicsFee = null
-    let entity = _construct(actualSender, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network);
+    let entity = _construct(actualSender, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network);
     if (tx.isMultisig) {
         entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
     }
@@ -51,10 +52,11 @@ let prepareMosaic = function(common, tx, mosaicDefinitionMetaDataPair, network){
     let recipientCompressedKey = tx.recipient.toString();
     let amount = Math.round(tx.amount * 1000000);
     let message = Message.prepare(common, tx);
+    let msgFee = Fees.calculateMessage(message, common.isHW);
     let due = network === Network.data.testnet.id ? 60 : 24 * 60;
     let mosaics = tx.mosaics;
     let mosaicsFee = Fees.calculateMosaics(amount, mosaicDefinitionMetaDataPair, mosaics);
-    let entity = _construct(actualSender, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network);
+    let entity = _construct(actualSender, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network);
     if (tx.isMultisig) {
         entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
     }
@@ -75,11 +77,10 @@ let prepareMosaic = function(common, tx, mosaicDefinitionMetaDataPair, network){
  *
  * @return {object} - A [TransferTransaction]{@link http://bob.nem.ninja/docs/#transferTransaction} object
  */
-let _construct = function(senderPublicKey, recipientCompressedKey, amount, message, due, mosaics, mosaicsFee, network) {
+let _construct = function(senderPublicKey, recipientCompressedKey, amount, message, msgFee, due, mosaics, mosaicsFee, network) {
     let timeStamp = Helpers.createNEMTimeStamp();
     let version = mosaics ? Network.getVersion(2, network) : Network.getVersion(1, network);
     let data = Objects.create("commonTransactionPart")(TransactionTypes.transfer, senderPublicKey, timeStamp, due, version);
-    let msgFee = message.payload.length ? Fees.calculateMessage(message) : 0;
     let fee = mosaics ? mosaicsFee : Fees.currentFeeFactor * Fees.calculateMinimum(amount / 1000000);
     let totalFee = Math.floor((msgFee + fee) * 1000000);
     let custom = {
