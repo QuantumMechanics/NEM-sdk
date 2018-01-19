@@ -8,15 +8,15 @@ import Helpers from '../../utils/helpers';
  *
  * @return {object} - A [BlockHeight]{@link http://bob.nem.ninja/docs/#block-chain-height} object
  */
-let height = function (endpoint) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/chain/height',
-	    method: 'GET'
-	}
-	// Send the request
-	return Send(options);
-}
+const height = function (endpoint) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/chain/height`,
+    method: 'GET',
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets the current last block of the chain.
@@ -25,15 +25,15 @@ let height = function (endpoint) {
  *
  * @return {object} -
  */
-let lastBlock = function(endpoint){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/chain/last-block',
-	    method: 'GET'
-	}
-	// Send the request
-	return Send(options);
-}
+const lastBlock = function (endpoint) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/chain/last-block`,
+    method: 'GET',
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets network time (in ms)
@@ -42,18 +42,18 @@ let lastBlock = function(endpoint){
  *
  * @return {object} - A [communicationTimeStamps]{@link http://bob.nem.ninja/docs/#communicationTimeStamps} object
  */
-let time = function (endpoint) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/time-sync/network-time',
-	    method: 'GET'
-	}
-	// Send the request
-	return Send(options);
-}
+const time = function (endpoint) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/time-sync/network-time`,
+    method: 'GET',
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	height,
-	lastBlock,
-	time
-}
+  height,
+  lastBlock,
+  time,
+};

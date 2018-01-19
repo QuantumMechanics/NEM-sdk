@@ -10,17 +10,17 @@ import Send from './send';
  *
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
-let data = function(endpoint, address) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/get',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'address': address}
-	}
-	// Send the request
-	return Send(options);
-}
+const data = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/get`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets the AccountMetaDataPair of an account with a public Key.
@@ -30,17 +30,17 @@ let data = function(endpoint, address) {
  *
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
-let dataFromPublicKey = function(endpoint, publicKey) {
-	// Configure the public key request
-	const options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/get/from-public-key',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'publicKey': publicKey}
-	}
-	// Send the request
-	return Send(options);
-}
+const dataFromPublicKey = function (endpoint, publicKey) {
+  // Configure the public key request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/get/from-public-key`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { publicKey },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets an array of harvest info objects for an account.
@@ -50,17 +50,17 @@ let dataFromPublicKey = function(endpoint, publicKey) {
  *
  * @return {array} - An array of [HarvestInfo]{@link http://bob.nem.ninja/docs/#harvestInfo} objects
  */
-let harvestedBlocks = function(endpoint, address){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/harvests',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'address': address}
-	}
-	// Send the request
-	return Send(options);
-}
+const harvestedBlocks = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/harvests`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets an array of TransactionMetaDataPair objects where the recipient has the address given as parameter to the request.
@@ -72,22 +72,22 @@ let harvestedBlocks = function(endpoint, address){
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let incomingTransactions = function(endpoint, address, txHash, txId){
-	// Arrange
-	let params = {'address': address};
-	if (txHash) params['hash'] = txHash;
-	if (txId) params['id'] = txId;
+const incomingTransactions = function (endpoint, address, txHash, txId) {
+  // Arrange
+  const params = { address };
+  if (txHash) params.hash = txHash;
+  if (txId) params.id = txId;
 
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/incoming',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: params
-	}
-	// Send the request
-	return Send(options);
-}
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/transfers/incoming`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: params,
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets an array of TransactionMetaDataPair objects where the sender has the address given as parameter to the request.
@@ -99,22 +99,22 @@ let incomingTransactions = function(endpoint, address, txHash, txId){
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let outgoingTransactions = function(endpoint, address, txHash, txId){
-	// Arrange
-	let params = {'address': address};
-	if (txHash) params['hash'] = txHash;
-	if (txId) params['id'] = txId;
+const outgoingTransactions = function (endpoint, address, txHash, txId) {
+  // Arrange
+  const params = { address };
+  if (txHash) params.hash = txHash;
+  if (txId) params.id = txId;
 
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/outgoing',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: params
-	}
-	// Send the request
-	return Send(options);
-}
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/transfers/outgoing`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: params,
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets the array of transactions for which an account is the sender or receiver and which have not yet been included in a block.
@@ -124,17 +124,17 @@ let outgoingTransactions = function(endpoint, address, txHash, txId){
  *
  * @return {array} - An array of [UnconfirmedTransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#unconfirmedTransactionMetaDataPair} objects
  */
-let unconfirmedTransactions = function(endpoint, address){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/unconfirmedTransactions',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'address': address}
-	}
-	// Send the request
-	return Send(options);
-}
+const unconfirmedTransactions = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/unconfirmedTransactions`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets information about the maximum number of allowed harvesters and how many harvesters are already using the node
@@ -143,15 +143,15 @@ let unconfirmedTransactions = function(endpoint, address){
  *
  * @return {object} - An [UnlockInfo]{@link http://bob.nem.ninja/docs/#retrieving-the-unlock-info} object
  */
-let unlockInfo = function(endpoint) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/unlocked/info',
-	    method: 'POST',
-	    headers: Headers.urlEncoded
-	}
-	// Send the request
-	return Send(options);
+const unlockInfo = function (endpoint) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/unlocked/info`,
+    method: 'POST',
+    headers: Headers.urlEncoded,
+  };
+  // Send the request
+  return Send(options);
 };
 
 /**
@@ -162,19 +162,19 @@ let unlockInfo = function(endpoint) {
  *
  * @return - Nothing
  */
-let startHarvesting = function(endpoint, privateKey){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/unlock',
-	    method: 'POST',
-	    json: true,
-		body: {'value': privateKey}
-	}
-	// Send the request
-	return Send(options);
+const startHarvesting = function (endpoint, privateKey) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/unlock`,
+    method: 'POST',
+    json: true,
+    body: { value: privateKey },
+  };
+  // Send the request
+  return Send(options);
 };
 
- /**
+/**
  * Locks an account (stops harvesting).
  *
  * @param {object} endpoint - An NIS endpoint object
@@ -182,16 +182,16 @@ let startHarvesting = function(endpoint, privateKey){
  *
  * @return - Nothing
  */
-let stopHarvesting = function(endpoint, privateKey){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/lock',
-	    method: 'POST',
-	    json: true,
-		body: {'value': privateKey}
-	}
-	// Send the request
-	return Send(options);
+const stopHarvesting = function (endpoint, privateKey) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/lock`,
+    method: 'POST',
+    json: true,
+    body: { value: privateKey },
+  };
+  // Send the request
+  return Send(options);
 };
 
 /**
@@ -202,17 +202,17 @@ let stopHarvesting = function(endpoint, privateKey){
  *
  * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
  */
-let forwarded = function(endpoint, address) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/get/forwarded',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'address': address}
-	}
-	// Send the request
-	return Send(options);
-}
+const forwarded = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/get/forwarded`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets namespaces that an account owns
@@ -223,17 +223,17 @@ let forwarded = function(endpoint, address) {
  *
  * @return {object} - An array of [NamespaceMetaDataPair]{@link http://bob.nem.ninja/docs/#namespaceMetaDataPair} objects
  */
-let namespacesOwned = function(endpoint, address, parent){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/namespace/page',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: { 'address': address, 'parent': parent || ""}
-	}
-	// Send the request
-	return Send(options);
-}
+const namespacesOwned = function (endpoint, address, parent) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/namespace/page`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address, parent: parent || '' },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets mosaic definitions that an account has created
@@ -244,17 +244,17 @@ let namespacesOwned = function(endpoint, address, parent){
  *
  * @return {object} - An array of [MosaicDefinition]{@link http://bob.nem.ninja/docs/#mosaicDefinition} objects
  */
-let mosaicDefinitionsCreated = function(endpoint, address, parent){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/mosaic/definition/page',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: { 'address': address, 'parent': parent || ""}
-	}
-	// Send the request
-	return Send(options);
-}
+const mosaicDefinitionsCreated = function (endpoint, address, parent) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/mosaic/definition/page`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address, parent: parent || '' },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets mosaic definitions that an account owns
@@ -264,17 +264,17 @@ let mosaicDefinitionsCreated = function(endpoint, address, parent){
  *
  * @return {array} - An array of [MosaicDefinition]{@link http://bob.nem.ninja/docs/#mosaicDefinition} objects
  */
-let mosaicDefinitions = function(endpoint, address){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/mosaic/owned/definition',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: { 'address': address }
-	}
-	// Send the request
-	return Send(options);
-}
+const mosaicDefinitions = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/mosaic/owned/definition`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets mosaics that an account owns
@@ -284,17 +284,17 @@ let mosaicDefinitions = function(endpoint, address){
  *
  * @return {array} - An array of [Mosaic]{@link http://bob.nem.ninja/docs/#mosaic} objects
  */
-let mosaicsOwned = function(endpoint, address){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/mosaic/owned',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: { 'address': address }
-	}
-	// Send the request
-	return Send(options);
-}
+const mosaicsOwned = function (endpoint, address) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/mosaic/owned`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: { address },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets all transactions of an account
@@ -306,45 +306,45 @@ let mosaicsOwned = function(endpoint, address){
  *
  * @return {array} - An array of [TransactionMetaDataPair]{@link http://bob.nem.ninja/docs/#transactionMetaDataPair} objects
  */
-let allTransactions = function(endpoint, address, txHash, txId){
-	// Arrange
-	let params = {'address': address};
-	if (txHash) params['hash'] = txHash;
-	if (txId) params['id'] = txId;
+const allTransactions = function (endpoint, address, txHash, txId) {
+  // Arrange
+  const params = { address };
+  if (txHash) params.hash = txHash;
+  if (txId) params.id = txId;
 
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/account/transfers/all',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: params
-	}
-	// Send the request
-	return Send(options);
-}
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/account/transfers/all`,
+    method: 'GET',
+    headers: Headers.urlEncoded,
+    qs: params,
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	data,
-	dataFromPublicKey,
-	unlockInfo,
-	forwarded,
-	mosaics: {
-		owned: mosaicsOwned,
-		definitions: mosaicDefinitionsCreated,
-		allDefinitions: mosaicDefinitions
-	},
-	namespaces: {
-		owned: namespacesOwned
-	},
-	harvesting: {
-		blocks: harvestedBlocks,
-		start: startHarvesting,
-		stop: stopHarvesting
-	},
-	transactions: {
-		incoming: incomingTransactions,
-		outgoing: outgoingTransactions,
-		unconfirmed: unconfirmedTransactions,
-		all: allTransactions
-	}
-}
+  data,
+  dataFromPublicKey,
+  unlockInfo,
+  forwarded,
+  mosaics: {
+    owned: mosaicsOwned,
+    definitions: mosaicDefinitionsCreated,
+    allDefinitions: mosaicDefinitions,
+  },
+  namespaces: {
+    owned: namespacesOwned,
+  },
+  harvesting: {
+    blocks: harvestedBlocks,
+    start: startHarvesting,
+    stop: stopHarvesting,
+  },
+  transactions: {
+    incoming: incomingTransactions,
+    outgoing: outgoingTransactions,
+    unconfirmed: unconfirmedTransactions,
+    all: allTransactions,
+  },
+};

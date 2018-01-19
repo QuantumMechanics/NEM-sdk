@@ -11,18 +11,18 @@ import Nodes from '../../model/nodes';
  *
  * @return {boolean} - True if valid, false otherwise
  */
-let audit = function(publicKey, data, signedData) {
-	// Configure the request
-	var options = {
-	    url: Nodes.apostilleAuditServer,
-	    method: 'POST',
-	    headers: Headers.urlEncoded,
-	    qs: {'publicKey': publicKey, 'data': data,'signedData': signedData}
-	}
-	// Send the request
-	return Send(options);
-}
+const audit = function (publicKey, data, signedData) {
+  // Configure the request
+  const options = {
+    url: Nodes.apostilleAuditServer,
+    method: 'POST',
+    headers: Headers.urlEncoded,
+    qs: { publicKey, data, signedData },
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	audit
-}
+  audit,
+};

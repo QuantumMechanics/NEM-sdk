@@ -7,34 +7,7 @@ import Objects from '../objects';
 import Sinks from '../sinks';
 import MultisigWrapper from './multisigWrapper';
 
-/**
- * Prepare a mosaic definition transaction
- *
- * @param {object} common - A common object
- * @param {object} tx - An un-prepared mosaicDefinitionTransaction object
- * @param {number} network - A network id
- *
- * @return {object} - A [MosaicDefinitionCreationTransaction]{@link http://bob.nem.ninja/docs/#mosaicDefinitionCreationTransaction} object ready for serialization
- */
-let prepare = function(common, tx, network){
-    let kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
-    let actualSender = tx.isMultisig ? tx.multisigAccount.publicKey : kp.publicKey.toString();
-    let rentalFeeSink = Sinks.mosaic[network].toUpperCase().replace(/-/g, '');
-    let rentalFee = Fees.mosaicDefinitionTransaction;
-    let namespaceParent = tx.namespaceParent.fqn;
-    let mosaicName = tx.mosaicName.toString();
-    let mosaicDescription = tx.mosaicDescription.toString();
-    let mosaicProperties = tx.properties;
-    let levy = tx.levy.mosaic ? tx.levy : null;
-    let due = network === Network.data.testnet.id ? 60 : 24 * 60;
-    let entity = _construct(actualSender, rentalFeeSink, rentalFee, namespaceParent, mosaicName, mosaicDescription, mosaicProperties, levy, due, network);
-    if (tx.isMultisig) {
-        entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
-    }
-    return entity;
-}
-
-/***
+/** *
  * Create a mosaic definition transaction object
  *
  * @param {string} senderPublicKey - The sender account public key
@@ -50,38 +23,64 @@ let prepare = function(common, tx, network){
  *
  * @return {object} - A [MosaicDefinitionCreationTransaction]{@link http://bob.nem.ninja/docs/#mosaicDefinitionCreationTransaction} object
  */
-let _construct = function(senderPublicKey, rentalFeeSink, rentalFee, namespaceParent, mosaicName, mosaicDescription, mosaicProperties, levy, due, network) {
-    let timeStamp = Helpers.createNEMTimeStamp();
-    let version = Network.getVersion(1, network);
-    let data = Objects.create("commonTransactionPart")(TransactionTypes.mosaicDefinition, senderPublicKey, timeStamp, due, version);
-    let fee = Fees.namespaceAndMosaicCommon;
-    let levyData = levy ? {
-        'type': levy.feeType,
-        'recipient': levy.address.toUpperCase().replace(/-/g, ''),
-        'mosaicId': levy.mosaic,
-        'fee': levy.fee,
-    } : null;
-    let custom = {
-        'creationFeeSink': rentalFeeSink.replace(/-/g, ''),
-        'creationFee': rentalFee,
-        'mosaicDefinition': {
-            'creator': senderPublicKey,
-            'id': {
-                'namespaceId': namespaceParent,
-                'name': mosaicName,
-            },
-            'description': mosaicDescription,
-            'properties': Object.keys(mosaicProperties).map((key, index) => {
-                return { "name": key, "value": mosaicProperties[key].toString() };
-            }),
-            'levy': levyData
-        },
-        'fee': fee
-    };
-    var entity = Helpers.extendObj(data, custom);
-    return entity;
-}
+const _construct = function (senderPublicKey, rentalFeeSink, rentalFee, namespaceParent, mosaicName, mosaicDescription, mosaicProperties, levy, due, network) {
+  const timeStamp = Helpers.createNEMTimeStamp();
+  const version = Network.getVersion(1, network);
+  const data = Objects.create('commonTransactionPart')(TransactionTypes.mosaicDefinition, senderPublicKey, timeStamp, due, version);
+  const fee = Fees.namespaceAndMosaicCommon;
+  const levyData = levy ? {
+    type: levy.feeType,
+    recipient: levy.address.toUpperCase().replace(/-/g, ''),
+    mosaicId: levy.mosaic,
+    fee: levy.fee,
+  } : null;
+  const custom = {
+    creationFeeSink: rentalFeeSink.replace(/-/g, ''),
+    creationFee: rentalFee,
+    mosaicDefinition: {
+      creator: senderPublicKey,
+      id: {
+        namespaceId: namespaceParent,
+        name: mosaicName,
+      },
+      description: mosaicDescription,
+      properties: Object.keys(mosaicProperties).map(key => ({ name: key, value: mosaicProperties[key].toString() })),
+      levy: levyData,
+    },
+    fee,
+  };
+  const entity = Helpers.extendObj(data, custom);
+  return entity;
+};
+
+
+/**
+ * Prepare a mosaic definition transaction
+ *
+ * @param {object} common - A common object
+ * @param {object} tx - An un-prepared mosaicDefinitionTransaction object
+ * @param {number} network - A network id
+ *
+ * @return {object} - A [MosaicDefinitionCreationTransaction]{@link http://bob.nem.ninja/docs/#mosaicDefinitionCreationTransaction} object ready for serialization
+ */
+const prepare = function (common, tx, network) {
+  const kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
+  const actualSender = tx.isMultisig ? tx.multisigAccount.publicKey : kp.publicKey.toString();
+  const rentalFeeSink = Sinks.mosaic[network].toUpperCase().replace(/-/g, '');
+  const rentalFee = Fees.mosaicDefinitionTransaction;
+  const namespaceParent = tx.namespaceParent.fqn;
+  const mosaicName = tx.mosaicName.toString();
+  const mosaicDescription = tx.mosaicDescription.toString();
+  const mosaicProperties = tx.properties;
+  const levy = tx.levy.mosaic ? tx.levy : null;
+  const due = network === Network.data.testnet.id ? 60 : 24 * 60;
+  let entity = _construct(actualSender, rentalFeeSink, rentalFee, namespaceParent, mosaicName, mosaicDescription, mosaicProperties, levy, due, network);
+  if (tx.isMultisig) {
+    entity = MultisigWrapper(kp.publicKey.toString(), entity, due, network);
+  }
+  return entity;
+};
 
 module.exports = {
-    prepare
-}
+  prepare,
+};

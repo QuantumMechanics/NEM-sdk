@@ -10,19 +10,19 @@
  *
  * @return {object} - A wallet object
  */
-export default function(walletName, addr, brain, algo, encrypted, network) {
-    return {
-        "name": walletName,
-        "accounts": {
-            "0": {
-                "brain": brain,
-                "algo": algo,
-                "encrypted": encrypted.ciphertext || "",
-                "iv": encrypted.iv || "",
-                "address": addr.toUpperCase().replace(/-/g, ''),
-                "label": 'Primary',
-                "network": network,
-            }
-        }
-    };
+export default function (walletName, addr, brain, algo, encrypted, network) {
+  return {
+    name: walletName,
+    accounts: {
+      0: {
+        brain,
+        algo,
+        encrypted: encrypted.ciphertext || '',
+        iv: encrypted.iv || '',
+        address: addr.toUpperCase().replace(/-/g, ''),
+        label: 'Primary',
+        network,
+      },
+    },
+  };
 }

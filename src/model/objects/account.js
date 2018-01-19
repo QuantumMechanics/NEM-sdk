@@ -9,12 +9,12 @@
  *
  * @return {object} - An account object
  */
-export default function(address, label, child, encrypted, iv) {
-    return {
-        "address": address || "",
-        "label": label || "",
-        "child": child || "",
-        "encrypted": encrypted || "",
-        "iv": iv || ""
-    }
+export default function (address, label, child, encrypted, iv) {
+  return {
+    address: address || '',
+    label: label || '',
+    child: child || '',
+    encrypted: encrypted || '',
+    iv: iv || '',
+  };
 }

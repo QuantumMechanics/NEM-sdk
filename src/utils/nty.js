@@ -13,23 +13,23 @@
  *
  * @return {array} - The notary data
  */
-let createNotaryData = function(filename, tags, fileHash, txHash, txMultisigHash, owner, fromMultisig, dedicatedAccount, dedicatedPrivateKey) {
-        let d = new Date();
-        return { 
-            "data": [{
-                "filename": filename,
-                "tags": tags,
-                "fileHash": fileHash,
-                "owner": owner,
-                "fromMultisig": fromMultisig,
-                "dedicatedAccount": dedicatedAccount,
-                "dedicatedPrivateKey": dedicatedPrivateKey,
-                "txHash": txHash,
-                "txMultisigHash": txMultisigHash,
-                "timeStamp": d.toUTCString()
-            }]
-        };
-}
+const createNotaryData = function (filename, tags, fileHash, txHash, txMultisigHash, owner, fromMultisig, dedicatedAccount, dedicatedPrivateKey) {
+  const d = new Date();
+  return {
+    data: [{
+      filename,
+      tags,
+      fileHash,
+      owner,
+      fromMultisig,
+      dedicatedAccount,
+      dedicatedPrivateKey,
+      txHash,
+      txMultisigHash,
+      timeStamp: d.toUTCString(),
+    }],
+  };
+};
 
 /**
  * Update notary data
@@ -39,12 +39,12 @@ let createNotaryData = function(filename, tags, fileHash, txHash, txMultisigHash
  *
  * @return {array} - The updated notary data array
  */
-let updateNotaryData = function(ntyData, newNtyData) {
-        ntyData.data.push(newNtyData.data[0]);
-        return ntyData;
-}
+const updateNotaryData = function (ntyData, newNtyData) {
+  ntyData.data.push(newNtyData.data[0]);
+  return ntyData;
+};
 
 module.exports = {
-    createNotaryData,
-    updateNotaryData
-}
+  createNotaryData,
+  updateNotaryData,
+};

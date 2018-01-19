@@ -7,18 +7,18 @@
  *
  * @return {object}
  */
-let transfer = function(recipient, amount, message) {
-    return {
-        "amount": amount || 0,
-        "recipient": recipient || "",
-        "recipientPublicKey": "",
-        "isMultisig": false,
-        "multisigAccount" : "",
-        "message": message || "",
-        "messageType" : 1,
-        "mosaics": []
-    }
-}
+const transfer = function (recipient, amount, message) {
+  return {
+    amount: amount || 0,
+    recipient: recipient || '',
+    recipientPublicKey: '',
+    isMultisig: false,
+    multisigAccount: '',
+    message: message || '',
+    messageType: 1,
+    mosaics: [],
+  };
+};
 
 /**
  * An un-prepared signature transaction object
@@ -28,75 +28,75 @@ let transfer = function(recipient, amount, message) {
  *
  * @return {object}
  */
-let signature = function(multisigAccount, txHash) {
-    let compressedAccount = "";
-    if (typeof multisigAccount != "undefined" && multisigAccount.length) {
-        compressedAccount = multisigAccount.toUpperCase().replace(/-/g, "");
-    }
+const signature = function (multisigAccount, txHash) {
+  let compressedAccount = '';
+  if (typeof multisigAccount !== 'undefined' && multisigAccount.length) {
+    compressedAccount = multisigAccount.toUpperCase().replace(/-/g, '');
+  }
 
-    return {
-        "otherHash": {
-            "data": txHash || ""
-        },
-        "otherAccount": compressedAccount
-    }
-}
+  return {
+    otherHash: {
+      data: txHash || '',
+    },
+    otherAccount: compressedAccount,
+  };
+};
 
 /**
  * An un-prepared mosaic definition transaction object
  *
  * @return {object}
  */
-let mosaicDefinition = function() {
-    return {
-        "mosaicName": "",
-        "namespaceParent": "",
-        "mosaicDescription": "",
-        "properties": {
-            "initialSupply": 0,
-            "divisibility": 0,
-            "transferable": true,
-            "supplyMutable": true
-        },
-        "levy": {
-            "mosaic": null,
-            "address": "",
-            "feeType": 1,
-            "fee": 5
-        },
-        "isMultisig": false,
-        "multisigAccount" : ""
-    }
-}
+const mosaicDefinition = function () {
+  return {
+    mosaicName: '',
+    namespaceParent: '',
+    mosaicDescription: '',
+    properties: {
+      initialSupply: 0,
+      divisibility: 0,
+      transferable: true,
+      supplyMutable: true,
+    },
+    levy: {
+      mosaic: null,
+      address: '',
+      feeType: 1,
+      fee: 5,
+    },
+    isMultisig: false,
+    multisigAccount: '',
+  };
+};
 
 /**
  * An un-prepared mosaic supply change transaction object
  *
  * @return {object}
  */
-let mosaicSupplyChange = function() {
-    return {
-        "mosaic": "",
-        "supplyType": 1,
-        "delta": 0,
-        "isMultisig": false,
-        "multisigAccount" : ""
-    }
-}
+const mosaicSupplyChange = function () {
+  return {
+    mosaic: '',
+    supplyType: 1,
+    delta: 0,
+    isMultisig: false,
+    multisigAccount: '',
+  };
+};
 
 /**
  * An un-prepared multisig aggregate modification transaction object
  *
  * @return {object}
  */
-let multisigAggregateModification = function() {
-    return {
-        "modifications": [],
-        "relativeChange": null,
-        "isMultisig": false,
-        "multisigAccount" : ""
-    }
-}
+const multisigAggregateModification = function () {
+  return {
+    modifications: [],
+    relativeChange: null,
+    isMultisig: false,
+    multisigAccount: '',
+  };
+};
 
 /**
  * An un-prepared namespace provision transaction object
@@ -106,14 +106,14 @@ let multisigAggregateModification = function() {
  *
  * @return {object}
  */
-let namespaceProvision = function(namespaceName, namespaceParent) {
-    return {
-        "namespaceName": namespaceName || "",
-        "namespaceParent": namespaceParent || null,
-        "isMultisig": false,
-        "multisigAccount" : ""
-    }
-}
+const namespaceProvision = function (namespaceName, namespaceParent) {
+  return {
+    namespaceName: namespaceName || '',
+    namespaceParent: namespaceParent || null,
+    isMultisig: false,
+    multisigAccount: '',
+  };
+};
 
 /**
  * An un-prepared importance transfer transaction object
@@ -123,14 +123,14 @@ let namespaceProvision = function(namespaceName, namespaceParent) {
  *
  * @return {object}
  */
-let importanceTransfer = function(remoteAccount, mode) {
-    return {
-        "remoteAccount": remoteAccount || "",
-        "mode": mode || "",
-        "isMultisig": false,
-        "multisigAccount" : ""
-    }
-}
+const importanceTransfer = function (remoteAccount, mode) {
+  return {
+    remoteAccount: remoteAccount || '',
+    mode: mode || '',
+    isMultisig: false,
+    multisigAccount: '',
+  };
+};
 
 /**
  * The common part of transactions
@@ -144,23 +144,23 @@ let importanceTransfer = function(remoteAccount, mode) {
  *
  * @return {object} - A common transaction object
  */
-let commonPart = function(txtype, senderPublicKey, timeStamp, due, version, network) {
-    return {
-        'type': txtype || "",
-        'version': version || "",
-        'signer': senderPublicKey || "",
-        'timeStamp': timeStamp || "",
-        'deadline': timeStamp + due * 60 || ""
-    };
-}
+const commonPart = function (txtype, senderPublicKey, timeStamp, due, version) {
+  return {
+    type: txtype || '',
+    version: version || '',
+    signer: senderPublicKey || '',
+    timeStamp: timeStamp || '',
+    deadline: timeStamp + due * 60 || '',
+  };
+};
 
 module.exports = {
-    multisigAggregateModification,
-    transfer,
-    signature,
-    mosaicDefinition,
-    mosaicSupplyChange,
-    namespaceProvision,
-    importanceTransfer,
-    commonPart
-}
+  multisigAggregateModification,
+  transfer,
+  signature,
+  mosaicDefinition,
+  mosaicSupplyChange,
+  namespaceProvision,
+  importanceTransfer,
+  commonPart,
+};

@@ -6,11 +6,11 @@
  *
  * @return {object}
  */
-let endpoint = function(host, port) {
-    return {
-        "host": host || "",
-        "port": port || ""
-    }
+const endpoint = function (host, port) {
+  return {
+    host: host || '',
+    port: port || '',
+  };
 };
 
 /**
@@ -22,12 +22,12 @@ let endpoint = function(host, port) {
  *
  * @return {object}
  */
-let common = function(password, privateKey, isHW) {
-	return {
-        "password": password || "",
-	    "privateKey": privateKey || "",
-        "isHW": isHW || false
-    }
+const common = function (password, privateKey, isHW) {
+  return {
+    password: password || '',
+    privateKey: privateKey || '',
+    isHW: isHW || false,
+  };
 };
 
 /**
@@ -35,18 +35,18 @@ let common = function(password, privateKey, isHW) {
  *
  * @return {array}
  */
-let messageTypes = function() {
-    return [{
-        "value": 0,
-        "name": "Hexadecimal"
-    }, {
-        "value": 1,
-        "name": "Unencrypted"
-    }, {
-        "value": 2,
-        "name": "Encrypted"
-    }];
-}
+const messageTypes = function () {
+  return [{
+    value: 0,
+    name: 'Hexadecimal',
+  }, {
+    value: 1,
+    name: 'Unencrypted',
+  }, {
+    value: 2,
+    name: 'Encrypted',
+  }];
+};
 
 /**
  * A multisig cosignatory modification object
@@ -56,16 +56,16 @@ let messageTypes = function() {
  *
  * @return {object}
  */
-let multisigCosignatoryModification = function(type, publicKey) {
-    return {
-        "modificationType": type || 1,
-        "cosignatoryAccount": publicKey
-    }
-}
+const multisigCosignatoryModification = function (type, publicKey) {
+  return {
+    modificationType: type || 1,
+    cosignatoryAccount: publicKey,
+  };
+};
 
 module.exports = {
-    endpoint,
-    common,
-    messageTypes,
-    multisigCosignatoryModification
-}
+  endpoint,
+  common,
+  messageTypes,
+  multisigCosignatoryModification,
+};

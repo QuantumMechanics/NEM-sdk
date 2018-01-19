@@ -5,7 +5,7 @@
  *
  * @default
  */
-let transfer = 0x101; // 257
+const transfer = 0x101; // 257
 
 /**
  * The importance transfer type
@@ -14,7 +14,7 @@ let transfer = 0x101; // 257
  *
  * @default
  */
-let importanceTransfer = 0x801; // 2049
+const importanceTransfer = 0x801; // 2049
 
 /**
  * The aggregate modification transaction type
@@ -23,7 +23,7 @@ let importanceTransfer = 0x801; // 2049
  *
  * @default
  */
-let multisigModification = 0x1001; // 4097
+const multisigModification = 0x1001; // 4097
 
 /**
  * The multisignature signature transaction type
@@ -32,7 +32,7 @@ let multisigModification = 0x1001; // 4097
  *
  * @default
  */
-let multisigSignature = 0x1002; // 4098
+const multisigSignature = 0x1002; // 4098
 
 /**
  * The multisignature transaction type
@@ -41,7 +41,7 @@ let multisigSignature = 0x1002; // 4098
  *
  * @default
  */
-let multisigTransaction = 0x1004; // 4100
+const multisigTransaction = 0x1004; // 4100
 
 /**
  * The provision namespace transaction type
@@ -50,7 +50,7 @@ let multisigTransaction = 0x1004; // 4100
  *
  * @default
  */
-let provisionNamespace = 0x2001; // 8193
+const provisionNamespace = 0x2001; // 8193
 
 /**
  * The mosaic definition transaction type
@@ -59,7 +59,7 @@ let provisionNamespace = 0x2001; // 8193
  *
  * @default
  */
-let mosaicDefinition = 0x4001; // 16385
+const mosaicDefinition = 0x4001; // 16385
 
 /**
  * The mosaic supply change transaction type
@@ -68,15 +68,15 @@ let mosaicDefinition = 0x4001; // 16385
  *
  * @default
  */
-let mosaicSupply = 0x4002; // 16386
+const mosaicSupply = 0x4002; // 16386
 
 module.exports = {
-    transfer,
-    importanceTransfer,
-    multisigModification,
-    multisigSignature,
-    multisigTransaction,
-    provisionNamespace,
-    mosaicDefinition,
-    mosaicSupply
-}
+  transfer,
+  importanceTransfer,
+  multisigModification,
+  multisigSignature,
+  multisigTransaction,
+  provisionNamespace,
+  mosaicDefinition,
+  mosaicSupply,
+};

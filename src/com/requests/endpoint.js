@@ -8,16 +8,16 @@ import Helpers from '../../utils/helpers';
  *
  * @return {object} - A [NemRequestResult]{@link http://bob.nem.ninja/docs/#nemRequestResult} object
  */
-let heartbeat = function(endpoint) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/heartbeat',
-	    method: 'GET'
-	}
-	// Send the request
-	return Send(options);
+const heartbeat = function (endpoint) {
+  // Configure the request
+  const options = {
+    url: `${Helpers.formatEndpoint(endpoint)}/heartbeat`,
+    method: 'GET',
+  };
+  // Send the request
+  return Send(options);
 };
 
 module.exports = {
-	heartbeat
-}
+  heartbeat,
+};

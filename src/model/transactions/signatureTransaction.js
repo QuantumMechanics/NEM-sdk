@@ -14,25 +14,25 @@ import Objects from '../objects';
  *
  * @return {object} - A [MultisigSignatureTransaction]{@link http://bob.nem.ninja/docs/#multisigSignatureTransaction} object ready for serialization
  */
-let prepare = function(common, tx, network) {
-    if (!common || !tx || !network) throw new Error('Missing parameter !');
-    let kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
-    let due = network === Network.data.testnet.id ? 60 : 24 * 60;
+const prepare = function (common, tx, network) {
+  if (!common || !tx || !network) throw new Error('Missing parameter !');
+  const kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
+  const due = network === Network.data.testnet.id ? 60 : 24 * 60;
 
-    let senderPublicKey = kp.publicKey.toString();
-    let timeStamp = Helpers.createNEMTimeStamp();
-    let version = Network.getVersion(1, network);
-    let data = Objects.create("commonTransactionPart")(TransactionTypes.multisigSignature, senderPublicKey, timeStamp, due, version);
-    let fee = Fees.signatureTransaction;
+  const senderPublicKey = kp.publicKey.toString();
+  const timeStamp = Helpers.createNEMTimeStamp();
+  const version = Network.getVersion(1, network);
+  const data = Objects.create('commonTransactionPart')(TransactionTypes.multisigSignature, senderPublicKey, timeStamp, due, version);
+  const fee = Fees.signatureTransaction;
 
-    let custom = {
-        'fee': fee
-    };
-    let entity = Helpers.extendObj(tx, data, custom);
-    return entity;
-}
+  const custom = {
+    fee,
+  };
+  const entity = Helpers.extendObj(tx, data, custom);
+  return entity;
+};
 
 module.exports = {
-    prepare
-}
+  prepare,
+};
 

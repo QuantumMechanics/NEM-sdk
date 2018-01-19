@@ -9,45 +9,37 @@ import Send from './transactions/send';
 import Message from './transactions/message';
 
 /**
- * Prepare a transaction object 
+ * Prepare a transaction object
  *
  * @param {string} objectName - The name of the object to prepare
  *
  * @retrun {function} - The prepare function corresponding to the object name
  */
-let prepare = function(objectName) {
-    switch(objectName) {
-        case "transferTransaction":
-            return TransferTransaction.prepare;
-            break;
-        case "mosaicTransferTransaction":
-            return TransferTransaction.prepareMosaic;
-            break;
-        case "mosaicDefinitionTransaction":
-            return MosaicDefinitionTransaction.prepare;
-            break;
-        case "multisigAggregateModificationTransaction":
-            return MultisigAggregateModification.prepare;
-            break;
-        case "namespaceProvisionTransaction":
-            return NamespaceProvisionTransaction.prepare;
-            break;
-        case "signatureTransaction":
-            return SignatureTransaction.prepare;
-            break;
-        case "mosaicSupplyChangeTransaction":
-            return MosaicSupplyChangeTransaction.prepare;
-            break;
-        case "importanceTransferTransaction":
-            return ImportanceTransferTransaction.prepare;
-            break;
-        default:
-            return {};
-    }
-}
+const prepare = function (objectName) {
+  switch (objectName) {
+    case 'transferTransaction':
+      return TransferTransaction.prepare;
+    case 'mosaicTransferTransaction':
+      return TransferTransaction.prepareMosaic;
+    case 'mosaicDefinitionTransaction':
+      return MosaicDefinitionTransaction.prepare;
+    case 'multisigAggregateModificationTransaction':
+      return MultisigAggregateModification.prepare;
+    case 'namespaceProvisionTransaction':
+      return NamespaceProvisionTransaction.prepare;
+    case 'signatureTransaction':
+      return SignatureTransaction.prepare;
+    case 'mosaicSupplyChangeTransaction':
+      return MosaicSupplyChangeTransaction.prepare;
+    case 'importanceTransferTransaction':
+      return ImportanceTransferTransaction.prepare;
+    default:
+      return {};
+  }
+};
 
 module.exports = {
-    prepare,
-    send: Send,
-    prepareMessage: Message.prepare
-}
+  prepare,
+  send: Send,
+  prepareMessage: Message.prepare,
+};

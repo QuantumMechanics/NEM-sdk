@@ -14,16 +14,16 @@ import Objects from '../objects';
  *
  * @return {object} - A [MultisigTransaction]{@link http://bob.nem.ninja/docs/#multisigTransaction} object
  */
-let multisigWrapper = function(senderPublicKey, innerEntity, due, network) {
-	let timeStamp = Helpers.createNEMTimeStamp();
-    let version = Network.getVersion(1, network);
-    let data = Objects.create("commonTransactionPart")(TransactionTypes.multisigTransaction, senderPublicKey, timeStamp, due, version, network);
-    let custom = {
-        'fee': Fees.multisigTransaction,
-        'otherTrans': innerEntity
-    };
-    let entity = Helpers.extendObj(data, custom);
-    return entity;
-}
+const multisigWrapper = function (senderPublicKey, innerEntity, due, network) {
+  const timeStamp = Helpers.createNEMTimeStamp();
+  const version = Network.getVersion(1, network);
+  const data = Objects.create('commonTransactionPart')(TransactionTypes.multisigTransaction, senderPublicKey, timeStamp, due, version, network);
+  const custom = {
+    fee: Fees.multisigTransaction,
+    otherTrans: innerEntity,
+  };
+  const entity = Helpers.extendObj(data, custom);
+  return entity;
+};
 
 export default multisigWrapper;

@@ -1,5 +1,5 @@
-import { create as createKeyPair } from './crypto/keyPair';
-import { verifySignature } from './crypto/keyPair';
+import CryptoJS from 'crypto-js';
+import { create as createKeyPair, verifySignature } from './crypto/keyPair'; // eslint-disable-line
 import address from './model/address';
 import convert from './utils/convert';
 import format from './utils/format';
@@ -17,41 +17,40 @@ import transactions from './model/transactions';
 import objects from './model/objects';
 import requests from './com/requests';
 import fees from './model/fees';
-import CryptoJS from 'crypto-js';
 import websockets from './com/websockets';
 import apostille from './model/apostille';
 
 export default {
-	crypto: {
-		keyPair: {
-			create: createKeyPair
-		},
-		helpers: cryptoHelpers,
-		nacl,
-		js: CryptoJS,
-		verifySignature: verifySignature
-	},
-	model: {
-		address,
-		network,
-		nodes,
-		transactionTypes,
-		sinks,
-		wallet,
-		transactions,
-		objects,
-		fees,
-		apostille
-	},
-	utils: {
-		convert,
-		helpers,
-		nty,
-		serialization,
-		format
-	},
-	com: {
-		requests,
-		websockets
-	}
+  crypto: {
+    keyPair: {
+      create: createKeyPair,
+    },
+    helpers: cryptoHelpers,
+    nacl,
+    js: CryptoJS,
+    verifySignature,
+  },
+  model: {
+    address,
+    network,
+    nodes,
+    transactionTypes,
+    sinks,
+    wallet,
+    transactions,
+    objects,
+    fees,
+    apostille,
+  },
+  utils: {
+    convert,
+    helpers,
+    nty,
+    serialization,
+    format,
+  },
+  com: {
+    requests,
+    websockets,
+  },
 };

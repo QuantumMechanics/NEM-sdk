@@ -83,62 +83,16 @@ const multisigAggregateModificationTransaction = Math.floor((10 * currentFeeFact
  *
  * @return {number} - The message fee
  */
-let calculateMessage = function(message, isHW) {
+const calculateMessage = function (message, isHW) {
+  if (!message.payload || !message.payload.length) { return 0.00; }
 
-    if (!message.payload || !message.payload.length)
-        return 0.00;
+  let length = message.payload.length / 2;
 
-    let length = message.payload.length / 2;
+  // Add salt and IV and round up to AES block size
+  if (isHW && message.type === 2) { length = 32 + 16 + Math.ceil(length / 16) * 16; }
 
-    // Add salt and IV and round up to AES block size
-    if (isHW && message.type == 2)
-        length = 32 + 16 + Math.ceil(length / 16) * 16;
-
-    return currentFeeFactor * (Math.floor(length / 32) + 1);
-}
-
-/**
- * Calculate fees for mosaics included in a transfer transaction
- *
- * @param {number} multiplier - A quantity multiplier
- * @param {object} mosaics - A mosaicDefinitionMetaDataPair object
- * @param {array} attachedMosaics - An array of mosaics to send
- *
- * @return {number} - The fee amount for the mosaics in the transaction
- */
-let calculateMosaics = function(multiplier, mosaics, attachedMosaics) {
-    let totalFee = 0;
-    let fee = 0;
-    let supplyRelatedAdjustment = 0;
-    for (let i = 0; i < attachedMosaics.length; i++) {
-        let m = attachedMosaics[i];
-        let mosaicName = Format.mosaicIdToName(m.mosaicId);
-        if (!(mosaicName in mosaics)) {
-            return ['unknown mosaic divisibility']; //
-        }
-        let mosaicDefinitionMetaDataPair = mosaics[mosaicName];
-        let divisibilityProperties = Helpers.grep(mosaicDefinitionMetaDataPair.mosaicDefinition.properties, function(w) {
-            return w.name === "divisibility";
-        });
-        let divisibility = divisibilityProperties.length === 1 ? ~~(divisibilityProperties[0].value) : 0;
-        let supply = mosaicDefinitionMetaDataPair.mosaicDefinition.properties[1].value; //
-        let quantity = m.quantity;
-        if (supply <= 10000 && divisibility === 0) {
-            // Small business mosaic fee
-            fee = currentFeeFactor;
-        } else {
-            let maxMosaicQuantity = 9000000000000000;
-            let totalMosaicQuantity = supply * Math.pow(10, divisibility)
-            supplyRelatedAdjustment = Math.floor(0.8 * Math.log(maxMosaicQuantity / totalMosaicQuantity));
-            let numNem = calculateXemEquivalent(multiplier, quantity, supply, divisibility);
-            // Using Math.ceil below because xem equivalent returned is sometimes a bit lower than it should
-            // Ex: 150'000 of nem:xem gives 149999.99999999997
-            fee = calculateMinimum(Math.ceil(numNem));
-        }
-        totalFee += currentFeeFactor * Math.max(1, fee - supplyRelatedAdjustment);
-    }
-    return totalFee;
-}
+  return currentFeeFactor * (Math.floor(length / 32) + 1);
+};
 
 /**
  * Calculate fees from an amount of XEM
@@ -147,10 +101,10 @@ let calculateMosaics = function(multiplier, mosaics, attachedMosaics) {
  *
  * @return {number} - The minimum fee
  */
-let calculateMinimum = function(numNem) {
-    let fee = Math.floor(Math.max(1, numNem / 10000));
-    return fee > 25 ? 25 : fee;
-}
+const calculateMinimum = function (numNem) {
+  const fee = Math.floor(Math.max(1, numNem / 10000));
+  return fee > 25 ? 25 : fee;
+};
 
 /**
  * Calculate mosaic quantity equivalent in XEM
@@ -162,26 +116,68 @@ let calculateMinimum = function(numNem) {
  *
  * @return {number} - The XEM equivalent of a mosaic quantity
  */
-let calculateXemEquivalent = function(multiplier, q, sup, divisibility) {
-    if (sup === 0) {
-        return 0;
+const calculateXemEquivalent = function (multiplier, q, sup, divisibility) {
+  if (sup === 0) {
+    return 0;
+  }
+  // TODO: can this go out of JS (2^54) bounds? (possible BUG)
+  return 8999999999 * q * multiplier / sup / (10 ** (divisibility + 6));
+};
+
+/**
+ * Calculate fees for mosaics included in a transfer transaction
+ *
+ * @param {number} multiplier - A quantity multiplier
+ * @param {object} mosaics - A mosaicDefinitionMetaDataPair object
+ * @param {array} attachedMosaics - An array of mosaics to send
+ *
+ * @return {number} - The fee amount for the mosaics in the transaction
+ */
+const calculateMosaics = function (multiplier, mosaics, attachedMosaics) {
+  let totalFee = 0;
+  let fee = 0;
+  let supplyRelatedAdjustment = 0;
+  for (let i = 0; i < attachedMosaics.length; i++) {
+    const m = attachedMosaics[i];
+    const mosaicName = Format.mosaicIdToName(m.mosaicId);
+    if (!(mosaicName in mosaics)) {
+      return ['unknown mosaic divisibility']; //
     }
-    // TODO: can this go out of JS (2^54) bounds? (possible BUG)
-    return 8999999999 * q * multiplier / sup / Math.pow(10, divisibility + 6);
-}
+    const mosaicDefinitionMetaDataPair = mosaics[mosaicName];
+    const divisibilityProperties = Helpers.grep(mosaicDefinitionMetaDataPair.mosaicDefinition.properties, w => w.name === 'divisibility');
+    const divisibility = divisibilityProperties.length === 1 ? ~~(divisibilityProperties[0].value) : 0;
+    const supply = mosaicDefinitionMetaDataPair.mosaicDefinition.properties[1].value; //
+    const quantity = m.quantity;
+    if (supply <= 10000 && divisibility === 0) {
+      // Small business mosaic fee
+      fee = currentFeeFactor;
+    } else {
+      const maxMosaicQuantity = 9000000000000000;
+      const totalMosaicQuantity = supply * (10 ** divisibility);
+      supplyRelatedAdjustment = Math.floor(0.8 * Math.log(maxMosaicQuantity / totalMosaicQuantity));
+      const numNem = calculateXemEquivalent(multiplier, quantity, supply, divisibility);
+      // Using Math.ceil below because xem equivalent returned is sometimes a bit lower than it should
+      // Ex: 150'000 of nem:xem gives 149999.99999999997
+      fee = calculateMinimum(Math.ceil(numNem));
+    }
+    totalFee += currentFeeFactor * Math.max(1, fee - supplyRelatedAdjustment);
+  }
+  return totalFee;
+};
+
 
 module.exports = {
-    multisigTransaction,
-    rootProvisionNamespaceTransaction,
-    subProvisionNamespaceTransaction,
-    mosaicDefinitionTransaction,
-    namespaceAndMosaicCommon,
-    signatureTransaction,
-    calculateMosaics,
-    calculateMinimum,
-    calculateMessage,
-    calculateXemEquivalent,
-    currentFeeFactor,
-    importanceTransferTransaction,
-    multisigAggregateModificationTransaction
-}
+  multisigTransaction,
+  rootProvisionNamespaceTransaction,
+  subProvisionNamespaceTransaction,
+  mosaicDefinitionTransaction,
+  namespaceAndMosaicCommon,
+  signatureTransaction,
+  calculateMosaics,
+  calculateMinimum,
+  calculateMessage,
+  calculateXemEquivalent,
+  currentFeeFactor,
+  importanceTransferTransaction,
+  multisigAggregateModificationTransaction,
+};

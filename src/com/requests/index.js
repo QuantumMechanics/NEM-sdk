@@ -9,13 +9,13 @@ import supernodes from './supernodes';
 import transaction from './transaction';
 
 export default {
-	account: account,
-	apostille: apostille,
-	chain: chain,
-	endpoint: endpoint,
-	market: market,
-	mosaic: mosaic,
-	namespace: namespace,
-	supernodes: supernodes,
-	transaction: transaction
-}
+  account,
+  apostille,
+  chain,
+  endpoint,
+  market,
+  mosaic,
+  namespace,
+  supernodes,
+  transaction,
+};

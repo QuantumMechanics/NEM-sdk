@@ -8,16 +8,16 @@
  *
  * @return {object} - An account info object
  */
-let accountInfo = function(version, type, address, name) {
-    return {
-        "v": version || "",
-        "type": 1 || "",
-        "data": {
-            "addr": address || "",
-            "name": name || ""
-        }
-    }
-}
+const accountInfo = function (version, type, address, name) {
+  return {
+    v: version || '',
+    type: 1 || '',
+    data: {
+      addr: address || '',
+      name: name || '',
+    },
+  };
+};
 
 /**
  * A wallet object for mobile QR
@@ -30,33 +30,33 @@ let accountInfo = function(version, type, address, name) {
  *
  * @return {object} - A wallet object
  */
-let wallet = function(version, type, name, encrypted, salt) {
-    return {
-        "v": version || "",
-        "type": type || "",
-        "data": {
-            "name": name || "",
-            "priv_key": encrypted || "",
-            "salt": salt || ""
-        }
-    }
-}
+const wallet = function (version, type, name, encrypted, salt) {
+  return {
+    v: version || '',
+    type: type || '',
+    data: {
+      name: name || '',
+      priv_key: encrypted || '',
+      salt: salt || '',
+    },
+  };
+};
 
-let invoice = function() {
-    return  {
-        "v": "v = 1 for testnet, v = 2 for mainnet",
-        "type": 2,
-        "data": {
-            "addr": "",
-            "amount": 0,
-            "msg": "",
-            "name": ""
-        }
-    }
-}
+const invoice = function () {
+  return {
+    v: 'v = 1 for testnet, v = 2 for mainnet',
+    type: 2,
+    data: {
+      addr: '',
+      amount: 0,
+      msg: '',
+      name: '',
+    },
+  };
+};
 
 module.exports = {
-    accountInfo,
-    wallet,
-    invoice
-}
+  accountInfo,
+  wallet,
+  invoice,
+};

@@ -15,17 +15,17 @@ import Objects from './objects';
  *
  * @return {object} - A PRNG wallet object
  */
-let createPRNG = function (walletName, password, network) {
-    if (!walletName.length || !password.length || !network) throw new Error('A parameter is missing !');
-    // Generate keypair from random private key
-    var privateKey = convert.ua2hex(nacl.randomBytes(32));
-    var kp = KeyPair.create(privateKey);
-    // Create address from public key
-    let addr = Address.toAddress(kp.publicKey.toString(), network);
-    // Encrypt private key using password
-    let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
-    return Objects.create("wallet")(walletName, addr, true, "pass:bip32", encrypted, network);
-}
+const createPRNG = function (walletName, password, network) {
+  if (!walletName.length || !password.length || !network) throw new Error('A parameter is missing !');
+  // Generate keypair from random private key
+  const privateKey = convert.ua2hex(nacl.randomBytes(32));
+  const kp = KeyPair.create(privateKey);
+  // Create address from public key
+  const addr = Address.toAddress(kp.publicKey.toString(), network);
+  // Encrypt private key using password
+  const encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
+  return Objects.create('wallet')(walletName, addr, true, 'pass:bip32', encrypted, network);
+};
 
 /**
  * Create a wallet containing a private key generated using a derived passphrase
@@ -36,14 +36,14 @@ let createPRNG = function (walletName, password, network) {
  *
  * @return {object} - A Brain wallet object
  */
-let createBrain = function (walletName, passphrase, network) {
-    if (!walletName.length || !passphrase.length || !network) throw new Error('A parameter is missing !');
-    var privateKey = CryptoHelpers.derivePassSha(passphrase, 6000).priv;
-    var kp = KeyPair.create(privateKey);
-    // Create address from public key
-    let addr = Address.toAddress(kp.publicKey.toString(), network);
-    return Objects.create("wallet")(walletName, addr, true, "pass:6k", "", network);
-}
+const createBrain = function (walletName, passphrase, network) {
+  if (!walletName.length || !passphrase.length || !network) throw new Error('A parameter is missing !');
+  const privateKey = CryptoHelpers.derivePassSha(passphrase, 6000).priv;
+  const kp = KeyPair.create(privateKey);
+  // Create address from public key
+  const addr = Address.toAddress(kp.publicKey.toString(), network);
+  return Objects.create('wallet')(walletName, addr, true, 'pass:6k', '', network);
+};
 
 /**
  * Create a wallet containing any private key
@@ -55,19 +55,19 @@ let createBrain = function (walletName, passphrase, network) {
  *
  * @return {object} - A private key wallet object
  */
-let importPrivateKey = function (walletName, password, privateKey, network) {
-    if (!walletName.length || !password.length || !network || !privateKey) throw new Error('A parameter is missing !');
-    if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
-    // Create address from private key
-    let kp = KeyPair.create(privateKey);
-    let addr = Address.toAddress(kp.publicKey.toString(), network);
-    // Encrypt private key using password
-    let encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
-    return Objects.create("wallet")(walletName, addr, false, "pass:enc", encrypted, network);
-}
+const importPrivateKey = function (walletName, password, privateKey, network) {
+  if (!walletName.length || !password.length || !network || !privateKey) throw new Error('A parameter is missing !');
+  if (!Helpers.isPrivateKeyValid(privateKey)) throw new Error('Private key is not valid !');
+  // Create address from private key
+  const kp = KeyPair.create(privateKey);
+  const addr = Address.toAddress(kp.publicKey.toString(), network);
+  // Encrypt private key using password
+  const encrypted = CryptoHelpers.encodePrivKey(privateKey, password);
+  return Objects.create('wallet')(walletName, addr, false, 'pass:enc', encrypted, network);
+};
 
 module.exports = {
-    createPRNG,
-    createBrain,
-    importPrivateKey
-}
+  createPRNG,
+  createBrain,
+  importPrivateKey,
+};

@@ -10,31 +10,30 @@ import Helpers from '../../utils/helpers';
  *
  * @return {object} - A prepared message object
  */
-let prepare = function(common, tx) {
-    if (tx.messageType === 2 && common.privateKey) {
-        return {
-            'type': 2,
-            'payload': CryptoHelpers.encode(common.privateKey, tx.recipientPublicKey, tx.message.toString())
-        };
-    } else if (tx.messageType === 2 && common.isHW) {
-        return {
-            'type': 2,
-            'payload': Convert.utf8ToHex(tx.message.toString()),
-            'publicKey': tx.recipientPublicKey
-        };
-    } else if(tx.messageType === 0 && Helpers.isHexadecimal(tx.message.toString())) {
-        return {
-            'type': 1,
-            'payload': 'fe' + tx.message.toString()
-        };
-    } else {
-        return {
-            'type': 1,
-            'payload': Convert.utf8ToHex(tx.message.toString())
-        };
-    }
-}
+const prepare = function (common, tx) {
+  if (tx.messageType === 2 && common.privateKey) {
+    return {
+      type: 2,
+      payload: CryptoHelpers.encode(common.privateKey, tx.recipientPublicKey, tx.message.toString()),
+    };
+  } else if (tx.messageType === 2 && common.isHW) {
+    return {
+      type: 2,
+      payload: Convert.utf8ToHex(tx.message.toString()),
+      publicKey: tx.recipientPublicKey,
+    };
+  } else if (tx.messageType === 0 && Helpers.isHexadecimal(tx.message.toString())) {
+    return {
+      type: 1,
+      payload: `fe${tx.message.toString()}`,
+    };
+  }
+  return {
+    type: 1,
+    payload: Convert.utf8ToHex(tx.message.toString()),
+  };
+};
 
 module.exports = {
-    prepare
-}
+  prepare,
+};

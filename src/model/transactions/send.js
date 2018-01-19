@@ -13,18 +13,18 @@ import Requests from '../../com/requests';
  *
  * @return {promise} - An announce transaction promise of the com.requests service
  */
-let send = function(common, entity, endpoint) {
-    if(!endpoint || !entity || !common) throw new Error('Missing parameter !');
-    if (common.privateKey.length !== 64 && common.privateKey.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
-    if (!Helpers.isHexadecimal(common.privateKey)) throw new Error('Private key must be hexadecimal only !');
-    let kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
-    let result = Serialization.serializeTransaction(entity);
-    let signature = kp.sign(result);
-    let obj = {
-        'data': Convert.ua2hex(result),
-        'signature': signature.toString()
-    };
-    return Requests.transaction.announce(endpoint, JSON.stringify(obj));
-}
+const send = function (common, entity, endpoint) {
+  if (!endpoint || !entity || !common) throw new Error('Missing parameter !');
+  if (common.privateKey.length !== 64 && common.privateKey.length !== 66) throw new Error('Invalid private key, length must be 64 or 66 characters !');
+  if (!Helpers.isHexadecimal(common.privateKey)) throw new Error('Private key must be hexadecimal only !');
+  const kp = KeyPair.create(Helpers.fixPrivateKey(common.privateKey));
+  const result = Serialization.serializeTransaction(entity);
+  const signature = kp.sign(result);
+  const obj = {
+    data: Convert.ua2hex(result),
+    signature: signature.toString(),
+  };
+  return Requests.transaction.announce(endpoint, JSON.stringify(obj));
+};
 
 export default send;
