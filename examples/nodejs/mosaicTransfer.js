@@ -43,7 +43,7 @@ transferTransaction.mosaics.push(mosaicAttachment2);
 nem.com.requests.namespace.mosaicDefinitions(endpoint, mosaicAttachment2.mosaicId.namespaceId).then(function(res) {
 
 	// Look for the mosaic definition(s) we want in the request response (Could use ["eur", "usd"] to return eur and usd mosaicDefinitionMetaDataPairs)
-	var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res, ["eur"]);
+	var neededDefinition = nem.utils.helpers.searchMosaicDefinitionArray(res.data, ["eur"]);
 	
 	// Get full name of mosaic to use as object key
 	var fullMosaicName  = nem.utils.format.mosaicIdToName(mosaicAttachment2.mosaicId);
