@@ -121,7 +121,7 @@ let calculateMosaics = function(multiplier, mosaics, attachedMosaics) {
             return w.name === "divisibility";
         });
         let divisibility = divisibilityProperties.length === 1 ? ~~(divisibilityProperties[0].value) : 0;
-        let supply = mosaicDefinitionMetaDataPair.mosaicDefinition.properties[1].value; //
+        let supply = mosaicDefinitionMetaDataPair.supply; //
         let quantity = m.quantity;
         if (supply <= 10000 && divisibility === 0) {
             // Small business mosaic fee
