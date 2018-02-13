@@ -64,7 +64,7 @@ $(document).ready(function () {
 		var transactionEntity = nem.model.transactions.prepare("transferTransaction")(common, transferTransaction, nem.model.network.data.testnet.id);
 
 		// Create a key pair object from private key
-		var kp = nem.crypto.keyPair.create(common.privateKey);
+		var kp = nem.crypto.keyPair.create(nem.utils.helpers.fixPrivateKey(common.privateKey));
 
 		// Serialize the transaction
 		var serialized = nem.utils.serialization.serializeTransaction(transactionEntity);
