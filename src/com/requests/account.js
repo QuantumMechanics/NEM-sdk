@@ -323,9 +323,99 @@ let allTransactions = function(endpoint, address, txHash, txId){
 	return Send(options);
 }
 
+/**
+ * Gets the AccountMetaDataPair of an array of accounts.
+ *
+ * @param {string} endpoint - An NIS endpoint object
+ * @param {array} addresses - An array of account addresses
+ *
+ * @return {object} - An object that contains an array of [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} objects
+ */
+let getBatchAccountData = function(endpoint, addresses){
+	let obj = {
+        'data':[]
+    };
+    for(var i = 0; i < addresses.length; i++){
+        obj.data.push({'account':addresses[i]});
+	}
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/account/get/batch',
+	    method: 'POST',
+	    json: true,
+		body: obj
+	}
+	// Send the request
+	return Send(options);
+};
+
+/**
+ * Gets the AccountMetaDataPair of an array of accounts from an historical height.
+ *
+ * @param {string} endpoint - An NIS endpoint object
+ * @param {array} addresses - An array of account addresses
+ * @param {integer} block - The block height
+ *
+ * @return {object} - Account information for all the accounts on the given block
+ */
+let getBatchHistoricalAccountData = function(endpoint, addresses, block){
+	let obj = {
+        'accounts':[],
+        'startHeight': block,
+        'endHeight': block,
+        'incrementBy': 1
+    };
+    for(var i = 0; i < addresses.length; i++){
+        obj.accounts.push({'account':addresses[i]});
+	}
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/account/historical/get/batch',
+	    method: 'POST',
+	    json: true,
+		body: obj
+	}
+	// Send the request
+	return Send(options);
+};
+
+/**
+ * Gets the AccountMetaDataPair of an account from a certain block.
+ *
+ * @param {string} endpoint - An NIS endpoint object
+ * @param {string} address - An account address
+ * @param {integer} block - the block height
+ *
+ * @return {object} - An [AccountMetaDataPair]{@link http://bob.nem.ninja/docs/#accountMetaDataPair} object
+ */
+let getHistoricalAccountData = function(endpoint, address, block) {
+	let obj = {
+        'params': {
+            'address': address,
+            'startHeight': block,
+            'endHeight': block,
+            'increment': 1
+        }
+	};
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/account/historical/get',
+	    method: 'GET',
+	    headers: Headers.urlEncoded,
+	    qs: obj
+	}
+	// Send the request
+	return Send(options);
+}
+
 module.exports = {
 	data,
 	dataFromPublicKey,
+	batchData: getBatchAccountData,
+	historical: {
+		data: getHistoricalAccountData,
+		batchData: getBatchHistoricalAccountData
+	},
 	unlockInfo,
 	forwarded,
 	mosaics: {

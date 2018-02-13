@@ -52,8 +52,29 @@ let time = function (endpoint) {
 	return Send(options);
 }
 
+/**
+ * Gets a block by its height
+ *
+ * @param {string} endpoint - An NIS endpoint object
+ * @param {integer} height - The height of the block
+ *
+ * @return {object} - A block object
+ */
+let blockByHeight = function(endpoint, height){
+	// Configure the request
+	var options = {
+	    url: Helpers.formatEndpoint(endpoint) + '/block/at/public',
+	    method: 'POST',
+	    json: true,
+		body: {'height': height}
+	}
+	// Send the request
+	return Send(options);
+};
+
 module.exports = {
 	height,
 	lastBlock,
-	time
+	time,
+	blockByHeight
 }
