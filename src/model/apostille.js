@@ -1,6 +1,7 @@
 import CryptoJS from 'crypto-js';
 import Helpers from '../utils/helpers';
 import Convert from '../utils/convert';
+import Format from '../utils/format';
 import KeyPair from '../crypto/keyPair';
 import Address from '../model/address';
 import Sinks from '../model/sinks';
@@ -161,6 +162,8 @@ let verify = function(fileContent, apostilleTransaction) {
     } else {
         apostilleHash = apostilleTransaction.message.payload;
     }
+    apostilleHash = Format.hexToUtf8(apostilleHash);
+
 	// Get the checksum
 	let checksum = apostilleHash.substring(0, 10);
 	// Get the hashing byte
