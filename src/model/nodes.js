@@ -3,14 +3,14 @@
  *
  * @type {string}
  */
-let defaultTestnet = 'http://bigalice2.nem.ninja';
+let defaultTestnet = 'http://23.228.67.85';
 
 /**
  * The default mainnet node
  *
  * @type {string}
  */
-let defaultMainnet = 'http://alice6.nem.ninja';
+let defaultMainnet = 'http://hugealice3.nem.ninja';
 
 /**
  * The default mijin node
@@ -122,6 +122,14 @@ let testnet = [
  */
 let mainnet = [
     {
+        uri: 'http://hugealice.nem.ninja'
+    }, {
+        uri: 'http://hugealice2.nem.ninja'
+    }, {
+        uri: 'http://hugealice3.nem.ninja'
+    }, {
+        uri: 'http://hugealice4.nem.ninja'
+    }, {
         uri: 'http://62.75.171.41'
     }, {
         uri: 'http://san.nem.ninja'
