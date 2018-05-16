@@ -30,7 +30,7 @@ let requestAccountData = function(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function() {
-            requestData(connector, address);
+            requestAccountData(connector, address);
         }, 100);
     } else {
         // Use address if provided
