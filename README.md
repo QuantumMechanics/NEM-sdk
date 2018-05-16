@@ -3,12 +3,6 @@ NEM Developer Kit for Node.js and the browser
 
 ---
 
-This SDK is just a "draft" for now, lot of things will change as development and feedback goes, but it is enough to start developing great applications.
-
-[Nano Wallet](https://github.com/NemProject/NanoWallet) will integrate this library instead of everything being merged in the same project. So we have a real separation between core and client.
-
----
-
 #### Features:
 - Easy integration
 - Organised in namespaces
