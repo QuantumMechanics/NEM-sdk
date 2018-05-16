@@ -1081,7 +1081,7 @@ var requestAccountData = function requestAccountData(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function () {
-            requestData(connector, address);
+            requestAccountData(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -1127,7 +1127,7 @@ var requestMosaicDefinitions = function requestMosaicDefinitions(connector, addr
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function () {
-            requestRecentTransactions(connector, address);
+            requestMosaicDefinitions(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -1150,7 +1150,7 @@ var requestMosaics = function requestMosaics(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function () {
-            requestRecentTransactions(connector, address);
+            requestMosaics(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -1173,7 +1173,7 @@ var requestNamespaces = function requestNamespaces(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function () {
-            requestRecentTransactions(connector, address);
+            requestNamespaces(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -6941,14 +6941,14 @@ module.exports = {
  *
  * @type {string}
  */
-var defaultTestnet = 'http://bigalice2.nem.ninja';
+var defaultTestnet = 'http://23.228.67.85';
 
 /**
  * The default mainnet node
  *
  * @type {string}
  */
-var defaultMainnet = 'http://alice6.nem.ninja';
+var defaultMainnet = 'http://hugealice3.nem.ninja';
 
 /**
  * The default mijin node
@@ -7049,6 +7049,14 @@ var testnet = [{
  * @type {array}
  */
 var mainnet = [{
+  uri: 'http://hugealice.nem.ninja'
+}, {
+  uri: 'http://hugealice2.nem.ninja'
+}, {
+  uri: 'http://hugealice3.nem.ninja'
+}, {
+  uri: 'http://hugealice4.nem.ninja'
+}, {
   uri: 'http://62.75.171.41'
 }, {
   uri: 'http://san.nem.ninja'
