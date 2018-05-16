@@ -76,7 +76,7 @@ let requestMosaicDefinitions = function(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function() {
-            requestRecentTransactions(connector, address);
+            requestMosaicDefinitions(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -99,7 +99,7 @@ let requestMosaics = function(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function() {
-            requestRecentTransactions(connector, address);
+            requestMosaics(connector, address);
         }, 100);
     } else {
         // Use address if provided
@@ -122,7 +122,7 @@ let requestNamespaces = function(connector, address) {
     // If not ready, wait a bit more...
     if (!checkReadyState(connector)) {
         self.timeoutHandle = setTimeout(function() {
-            requestRecentTransactions(connector, address);
+            requestNamespaces(connector, address);
         }, 100);
     } else {
         // Use address if provided
