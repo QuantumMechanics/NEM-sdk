@@ -129,7 +129,7 @@ let calculateMosaics = function(multiplier, mosaics, attachedMosaics) {
         } else {
             let maxMosaicQuantity = 9000000000000000;
             let totalMosaicQuantity = supply * Math.pow(10, divisibility)
-            supplyRelatedAdjustment = Math.floor(0.8 * Math.log(maxMosaicQuantity / totalMosaicQuantity));
+            supplyRelatedAdjustment = Math.floor(0.8 * Math.log(Math.floor(maxMosaicQuantity / totalMosaicQuantity)));
             let numNem = calculateXemEquivalent(multiplier, quantity, supply, divisibility);
             // Using Math.ceil below because xem equivalent returned is sometimes a bit lower than it should
             // Ex: 150'000 of nem:xem gives 149999.99999999997
