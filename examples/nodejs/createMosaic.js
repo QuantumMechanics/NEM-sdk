@@ -11,7 +11,7 @@ var common = nem.model.objects.create("common")("", "Private key");
 var tx = nem.model.objects.get("mosaicDefinitionTransaction");
 
 // Define the mosaic
-tx.mosaicName = "myMosaic";
+tx.mosaicName = "mymosaic";
 tx.namespaceParent = {
 	"fqn": "nano.example"
 };
@@ -27,4 +27,10 @@ tx.properties.supplyMutable = true;
 var transactionEntity = nem.model.transactions.prepare("mosaicDefinitionTransaction")(common, tx, nem.model.network.data.testnet.id);
 
 // Serialize transaction and announce
-nem.model.transactions.send(common, transactionEntity, endpoint)
+nem.model.transactions.send(common, transactionEntity, endpoint).then((result) => {
+	// Check status
+	console.info("answer:", result )
+}, (err) => {
+	console.error("erro:", err)
+	throw (err);
+});
