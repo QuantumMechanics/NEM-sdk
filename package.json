@@ -26,7 +26,7 @@
     "babel-plugin-transform-inline-environment-variables": "^6.8.0",
     "crypto-js": "3.1.9-1",
     "jquery": "3.0.0",
-    "request": "2.81.0",
+    "request": "2.88.0",
     "sockjs-client": "1.1.4"
   },
   "devDependencies": {
