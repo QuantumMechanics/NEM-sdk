@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha --compilers js:babel-core/register -- recursive",
-    "build": "babel src --out-dir build --source-maps",
+    "build": "babel src --presets babel-preset-es2015 --out-dir build --source-maps",
     "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js",
     "minify": "uglifyjs dist/nem-sdk.js > dist/nem-sdk.min.js",
     "version": "npm run build && npm run browserify && npm run minify && git add -A dist/",
@@ -20,16 +20,16 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "crypto-js": "3.1.9-1",
     "jquery": "3.0.0",
     "request": "2.81.0",
     "sockjs-client": "1.1.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.7",
-    "@babel/preset-env": "^7.8.7",
-    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "browserify": "14.1.0",
     "chai": "^3.5.0",
     "duplexer": "0.1.1",
