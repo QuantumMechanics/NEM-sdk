@@ -78,7 +78,7 @@ let passwordToPrivatekey = function(common, walletAccount, algo) {
 
     let r = undefined;
 
-    if (algo === "trezor") { // HW wallet
+    if (algo === "trezor" || algo === "ledger") { // HW wallet
         r = { 'priv': '' };
         common.isHW = true;
     } else if (!common.password) {
