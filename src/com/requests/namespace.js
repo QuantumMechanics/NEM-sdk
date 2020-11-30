@@ -1,6 +1,6 @@
-import Send from './send';
-import Headers from './headers';
-import Helpers from '../../utils/helpers';
+import Send from "./send";
+import Headers from "./headers";
+import Helpers from "../../utils/helpers";
 
 /**
  * Gets root namespaces.
@@ -10,17 +10,17 @@ import Helpers from '../../utils/helpers';
  *
  * @return {object} - An array of [NamespaceMetaDataPair]{@link http://bob.nem.ninja/docs/#namespaceMetaDataPair} objects
  */
-let roots = function(endpoint, id){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/namespace/root/page',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: undefined === id ? {'pageSize': 100} : { 'id': id, 'pageSize':100}
-	}
-	// Send the request
-	return Send(options);
-}
+let roots = function (endpoint, id) {
+  // Configure the request
+  var options = {
+    url: Helpers.formatEndpoint(endpoint) + "/namespace/root/page",
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: undefined === id ? { pageSize: 100 } : { id: id, pageSize: 100 },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets mosaic definitions of a namespace
@@ -30,17 +30,17 @@ let roots = function(endpoint, id){
  *
  * @return {object} - An array of [MosaicDefinition]{@link http://bob.nem.ninja/docs/#mosaicDefinition} objects
  */
-let mosaicDefinitions = function(endpoint, id){
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/namespace/mosaic/definition/page',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'namespace': id}
-	}
-	// Send the request
-	return Send(options);
-}
+let mosaicDefinitions = function (endpoint, id) {
+  // Configure the request
+  var options = {
+    url: Helpers.formatEndpoint(endpoint) + "/namespace/mosaic/definition/page",
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: { namespace: id },
+  };
+  // Send the request
+  return Send(options);
+};
 
 /**
  * Gets the namespace with given id.
@@ -50,20 +50,20 @@ let mosaicDefinitions = function(endpoint, id){
  *
  * @return {object} - A [NamespaceInfo]{@link http://bob.nem.ninja/docs/#namespace} object
  */
-let info = function(endpoint, id) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/namespace',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'namespace': id}
-	}
-	// Send the request
-	return Send(options);
-}
+let info = function (endpoint, id) {
+  // Configure the request
+  var options = {
+    url: Helpers.formatEndpoint(endpoint) + "/namespace",
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: { namespace: id },
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	roots,
-	mosaicDefinitions,
-	info
-}
+  roots,
+  mosaicDefinitions,
+  info,
+};

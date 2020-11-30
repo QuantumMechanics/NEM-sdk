@@ -1,6 +1,6 @@
-import Send from './send';
-import Headers from './headers';
-import Nodes from '../../model/nodes';
+import Send from "./send";
+import Headers from "./headers";
+import Nodes from "../../model/nodes";
 
 /**
  * Audit an apostille file
@@ -11,18 +11,18 @@ import Nodes from '../../model/nodes';
  *
  * @return {boolean} - True if valid, false otherwise
  */
-let audit = function(publicKey, data, signedData) {
-	// Configure the request
-	var options = {
-	    url: Nodes.apostilleAuditServer,
-	    method: 'POST',
-	    headers: Headers.urlEncoded,
-	    qs: {'publicKey': publicKey, 'data': data,'signedData': signedData}
-	}
-	// Send the request
-	return Send(options);
-}
+let audit = function (publicKey, data, signedData) {
+  // Configure the request
+  var options = {
+    url: Nodes.apostilleAuditServer,
+    method: "POST",
+    headers: Headers.urlEncoded,
+    params: { publicKey: publicKey, data: data, signedData: signedData },
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	audit
-}
+  audit,
+};

@@ -1,22 +1,22 @@
-import Send from './send';
-import Headers from './headers';
-import Nodes from '../../model/nodes';
+import Send from "./send";
+import Headers from "./headers";
+import Nodes from "../../model/nodes";
 
 /**
  * Gets market information from Poloniex api
  *
  * @return {object} - A MarketInfo object
  */
-let xem = function(){
-	// Configure the request
-	var options = {
-	    url: Nodes.marketInfo,
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'command': 'returnTicker'}
-	}
-	// Send the request
-	return Send(options);
+let xem = function () {
+  // Configure the request
+  var options = {
+    url: Nodes.marketInfo,
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: { command: "returnTicker" },
+  };
+  // Send the request
+  return Send(options);
 };
 
 /**
@@ -24,19 +24,19 @@ let xem = function(){
  *
  * @return {object} - A MarketInfo object
  */
-let btc = function(){
-	// Configure the request
-	var options = {
-	    url: Nodes.btcPrice,
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'cors': true}
-	}
-	// Send the request
-	return Send(options);
+let btc = function () {
+  // Configure the request
+  var options = {
+    url: Nodes.btcPrice,
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: { cors: true },
+  };
+  // Send the request
+  return Send(options);
 };
 
 module.exports = {
-	xem,
-	btc
-}
+  xem,
+  btc,
+};

@@ -1,6 +1,6 @@
-import Send from './send';
-import Headers from './headers';
-import Helpers from '../../utils/helpers';
+import Send from "./send";
+import Headers from "./headers";
+import Helpers from "../../utils/helpers";
 
 /**
  * Gets the current supply of a mosaic
@@ -10,18 +10,18 @@ import Helpers from '../../utils/helpers';
  *
  * @return {object} - A mosaicSupplyInfo object
  */
-let supply = function(endpoint, id) {
-	// Configure the request
-	var options = {
-	    url: Helpers.formatEndpoint(endpoint) + '/mosaic/supply',
-	    method: 'GET',
-	    headers: Headers.urlEncoded,
-	    qs: {'mosaicId': id}
-	}
-	// Send the request
-	return Send(options);
-}
+let supply = function (endpoint, id) {
+  // Configure the request
+  var options = {
+    url: Helpers.formatEndpoint(endpoint) + "/mosaic/supply",
+    method: "GET",
+    headers: Headers.urlEncoded,
+    params: { mosaicId: id },
+  };
+  // Send the request
+  return Send(options);
+};
 
 module.exports = {
-	supply
-}
+  supply,
+};
