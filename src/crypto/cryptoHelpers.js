@@ -50,13 +50,13 @@ let derivePassSha = function(password, count) {
     if(!count || count <= 0) throw new Error('Please provide a count number above 0');
     // Processing
     let data = password;
-    console.time('sha3^n generation time');
+    // console.time('sha3^n generation time');
     for (let i = 0; i < count; ++i) {
         data = CryptoJS.SHA3(data, {
             outputLength: 256
         });
     }
-    console.timeEnd('sha3^n generation time');
+    // console.timeEnd('sha3^n generation time');
     // Result
     return {
         'priv': CryptoJS.enc.Hex.stringify(data)
