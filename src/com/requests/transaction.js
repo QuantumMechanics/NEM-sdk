@@ -15,8 +15,8 @@ let announce = function (endpoint, serializedTransaction) {
   var options = {
     url: Helpers.formatEndpoint(endpoint) + "/transaction/announce",
     method: "POST",
-    headers: Headers.json(serializedTransaction),
-    json: JSON.parse(serializedTransaction),
+    headers: Headers.json,
+    data: JSON.parse(serializedTransaction),
   };
   // Send the request
   return Send(options);
