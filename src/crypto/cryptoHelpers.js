@@ -49,6 +49,7 @@ let toMobileKey = function (password, privateKey) {
  *
  * @return {object} - The derived private key
  */
+<<<<<<< HEAD
 let derivePassSha = function (password, count) {
   // Errors
   if (!password) throw new Error("Missing argument !");
@@ -67,6 +68,25 @@ let derivePassSha = function (password, count) {
   return {
     priv: CryptoJS.enc.Hex.stringify(data),
   };
+=======
+let derivePassSha = function(password, count) {
+    // Errors
+    if(!password) throw new Error('Missing argument !');
+    if(!count || count <= 0) throw new Error('Please provide a count number above 0');
+    // Processing
+    let data = password;
+    // console.time('sha3^n generation time');
+    for (let i = 0; i < count; ++i) {
+        data = CryptoJS.SHA3(data, {
+            outputLength: 256
+        });
+    }
+    // console.timeEnd('sha3^n generation time');
+    // Result
+    return {
+        'priv': CryptoJS.enc.Hex.stringify(data)
+    };
+>>>>>>> 6c825036852854b9f06ac5faa09aba3d7e7cd343
 };
 
 /**
