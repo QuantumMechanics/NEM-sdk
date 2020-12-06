@@ -4,24 +4,19 @@
  * @type {object}
  */
 const urlEncoded = {
-	'Content-Type': 'application/x-www-form-urlencoded'
-}
+  "Content-Type": "application/x-www-form-urlencoded",
+};
 
 /**
  * Create an application/json header
  *
- * @param {data} - A json string
- *
- * @return {object} - An application/json header with content length
+ * @return {object} - An application/json header
  */
-let json = function(data) {
-	return {
-		"Content-Type": "application/json",
-	    "Content-Length": Buffer.from(data).byteLength
-	}
-}
+const json = {
+  "Content-Type": "application/json",
+};
 
 module.exports = {
-	urlEncoded,
-	json
-}
+  urlEncoded,
+  json,
+};
