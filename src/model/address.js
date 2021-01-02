@@ -81,7 +81,8 @@ let b32decode = function(s) {
 * @return {string} - The NEM address
 */
 let toAddress = function(publicKey, networkId) {
-    let binPubKey = CryptoJS.enc.Hex.parse(publicKey);
+    const publicKeyHex = publicKey.toString('hex');
+    let binPubKey = CryptoJS.enc.Hex.parse(publicKeyHex);
     let hash = CryptoJS.SHA3(binPubKey, {
         outputLength: 256
     });
