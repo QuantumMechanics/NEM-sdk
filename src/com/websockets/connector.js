@@ -22,6 +22,19 @@ let create = function(endpoint, address) {
 }
 
 /**
+ * Check to detect the environment
+ * https://stackoverflow.com/questions/17575790/environment-detection-node-js-or-browser
+ */
+let isBrowser = function() {
+	try {
+		return this === window;
+	}
+	catch(e){ 
+		return false;
+	}
+}
+
+/**
  * Tries to establish a connection. 
  *
  * @return {promise} - A resolved or rejected promise
@@ -29,7 +42,7 @@ let create = function(endpoint, address) {
 let connect = function() {
 	return new Promise((resolve, reject) => {
 		var self = this;
-		if (!SockJSBrowser) self.socket = new SockJSNode(self.endpoint.host + ':' + self.endpoint.port + '/w/messages');
+		if (!isBrowser()) self.socket = new SockJSNode(self.endpoint.host + ':' + self.endpoint.port + '/w/messages');
 		else self.socket = new SockJSBrowser(self.endpoint.host + ':' + self.endpoint.port + '/w/messages');
 	    self.stompClient = Stomp.over(self.socket);
 	    self.stompClient.debug = false;
