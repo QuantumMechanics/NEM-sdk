@@ -1,6 +1,6 @@
 {
   "name": "nem-sdk",
-  "version": "1.6.9",
+  "version": "1.6.11",
   "description": "NEM Developer Kit for Node.js and the browser",
   "main": "build/index.js",
   "repository": {
@@ -13,8 +13,7 @@
     "browserify": "mkdir -p dist && browserify -r through -r duplexer -r ./build/index.js:nem-sdk > dist/nem-sdk.js",
     "minify": "uglifyjs dist/nem-sdk.js > dist/nem-sdk.min.js",
     "version": "npm run build && npm run browserify && npm run minify && git add -A dist/",
-    "postversion": "git push origin master && git push --tags",
-    "postinstall": "npm run build"
+    "postversion": "git push origin master && git push --tags"
   },
   "keywords": [],
   "author": "",
