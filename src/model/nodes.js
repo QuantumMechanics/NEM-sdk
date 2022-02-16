@@ -3,7 +3,7 @@
  *
  * @type {string}
  */
-let defaultTestnet = 'http://23.228.67.85';
+let defaultTestnet = 'http://hugetestalice.nem.ninja';
 
 /**
  * The default mainnet node
@@ -46,18 +46,14 @@ let mijinExplorer = '';
  * @type {array}
  */
 let searchOnTestnet = [
-	{
-	    'uri': 'http://bigalice2.nem.ninja',
-	    'location': 'America / New_York'
-	},
-	{
-	    'uri': 'http://192.3.61.243',
-	    'location': 'America / Los_Angeles'
-	},
-	{
-	    'uri': 'http://23.228.67.85',
-	    'location': 'America / Los_Angeles'
-	}
+    {
+        'uri': 'http://hugetestalice.nem.ninja',
+        'location': 'Germany'
+    },
+    {
+        'uri': 'http://hugetestalice2.nem.ninja',
+        'location': 'Germany'
+    }
 ];
 
 /**
@@ -66,22 +62,13 @@ let searchOnTestnet = [
  * @type {array}
  */
 let searchOnMainnet = [
-	{
-	    'uri': 'http://62.75.171.41',
-	    'location': 'Germany'
-	}, {
-	    'uri': 'http://104.251.212.131',
-	    'location': 'USA'
-	}, {
-	    'uri': 'http://45.124.65.125',
-	    'location': 'Hong Kong'
-	}, {
-	    'uri': 'http://185.53.131.101',
-	    'location': 'Netherlands'
-	}, {
-	    'uri': 'http://sz.nemchina.com',
-	    'location': 'China'
-	}
+    {
+        'uri': 'http://hugealice.nem.ninja',
+        'location': 'Germany'
+    }, {
+        'uri': 'http://bigalice3.nem.ninja',
+        'location': 'Germany'
+    }
 ];
 
 /**
@@ -90,10 +77,10 @@ let searchOnMainnet = [
  * @type {array}
  */
 let searchOnMijin = [
-	{
-	    'uri': '',
-	    'location': ''
-	}
+    {
+        'uri': '',
+        'location': ''
+    }
 ];
 
 /**
@@ -102,17 +89,13 @@ let searchOnMijin = [
  * @type {array}
  */
 let testnet = [
-	{
-	        uri: 'http://104.128.226.60'
-	}, {
-	        uri: 'http://23.228.67.85'
-	}, {
-	        uri: 'http://192.3.61.243'
-	}, {
-	        uri: 'http://50.3.87.123'
-	}, {
-	    uri: 'http://localhost'
-	}
+    {
+        uri: 'http://hugetestalice.nem.ninja'
+    }, {
+        uri: 'http://hugetestalice2.nem.ninja'
+    }, {
+        uri: 'http://localhost'
+    }
 ];
 
 /**
@@ -130,7 +113,7 @@ let mainnet = [
     }, {
         uri: 'http://hugealice4.nem.ninja'
     }, {
-        uri: 'http://62.75.171.41'
+        uri: 'http://bigalice3.nem.ninja'
     }, {
         uri: 'http://san.nem.ninja'
     }, {
@@ -142,17 +125,13 @@ let mainnet = [
     }, {
         uri: 'http://nijuichi.nem.ninja'
     }, {
-        uri: 'http://alice2.nem.ninja'
-    }, {
-        uri: 'http://alice3.nem.ninja'
-    }, {
-        uri: 'http://alice4.nem.ninja'
-    }, {
         uri: 'http://alice5.nem.ninja'
     }, {
         uri: 'http://alice6.nem.ninja'
     }, {
         uri: 'http://alice7.nem.ninja'
+    }, {
+        uri: 'http://alice8.nem.ninja'
     }, {
         uri: 'http://localhost'
     }
@@ -164,9 +143,9 @@ let mainnet = [
  * @type {array}
  */
 let mijin = [
-	{
-	    uri: ''
-	}
+    {
+        uri: ''
+    }
 ];
 
 /**
