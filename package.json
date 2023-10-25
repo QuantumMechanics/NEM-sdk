@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "crypto-js": "4.1.1",
+    "crypto-js": "4.2.0",
     "jquery": "3.6.0",
     "request": "2.88.2",
     "sockjs-client": "1.1.4"
